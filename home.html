@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href=/css/style.css">   
+</head>
+
+<body onload="returnFilm('star',1)">
+    <div class="container">
+        <header>
+            <a onclick="f2()">Home</a>
+            <form id="query">
+                <input id="in" type="text" placeholder="Search">
+            </form>
+            <a onclick="f()">Admin</a>         
+        </header>
+
+        <div class="cont">
+            <div id="cards">
+<!--          
+                <div class="card1" href="/rougue-one">
+                    <img class="thumbnail" id="r1" src="Rogu_One.jpg">
+                    <p id="title">Rogu On: A Star Wars Story (2016)</p>
+                    <p id="hyde"></p>
+                </div>
+                <div class="card2"></div>
+-->             
+            </div>
+            <div class="dots">
+                <p>Prev</p>
+                <span id="x"></span>
+                <span onclick="nextPage(2)" style="cursor: pointer;"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <p>Next</p>
+            </div>
+        </div>
+
+        <footer>
+            
+        </footer>
+    </div>
+
+</body>
+
+<script>
+    const key = '82f35181';
+
+    const apiLink = `http://www.omdbapi.com/?apikey=${key}&i=`; //ot &t=barbie&y=2023
+    const poster = `http://img.omdbapi.com/?apikey=${key}&i=`;
+    const search_api = `http://www.omdbapi.com?apikey=${key}&s=`;
+
+    const cards = document.getElementById("cards");
+    const query = document.getElementById("query");
+
+    async function returnFilm(searchItem,num){
+        
+        try{
+            const response = await fetch(search_api+searchItem+`&page=${num}`);
+            const data = await response.json();
+            const results = data.Search;
+
+            results.forEach(item => {
+                const card = document.createElement('a');
+                card.setAttribute('class', 'card1');
+                card.href= `./movies/${item.imdbID}`
+
+                const title = document.createElement('p');
+                title.setAttribute('class', 'title');
+                title.innerHTML = item.Title;
+
+                const id = document.createElement('p');
+                id.setAttribute('class', 'hyde');
+                id.innerHTML = item.imdbID;
+
+                const img = document.createElement('img');
+                img.setAttribute('class', 'thumbnail');
+                img.src = item.Poster;
+
+                card.appendChild(img);
+                card.appendChild(title);
+                card.appendChild(id);
+
+                cards.appendChild(card);
+            })
+        }catch(error){
+            console.error('Error fetching data:', error);
+        }
+    }   
+
+    function nextPage(num){
+        returnFilm(searchItem,num);
+    }
+
+    query.addEventListener("submit", (e) => {
+        e.preventDefault();
+        cards.innerHTML = '';
+
+        const searchItem = document.getElementById("in").value; // Move this inside the event listener
+
+        if (searchItem) {
+            returnFilm(searchItem,1);
+            document.getElementById("in").value = ""; // Clear the search input
+        }
+    });
+</script>
+
+</html>
