@@ -14,7 +14,7 @@
         <a><button id="login">Login</button></a>
         <div class="content3">
             <h1>Movies Reviews</h1>
-            <form>
+            <form id="query2">
                 <input id="in2" type="text" placeholder="Search">
                 <!--<button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>-->
             </form>
@@ -25,10 +25,10 @@
 
 <script>
     document.addEventListener( 'DOMContentLoaded' , () => {
-        const form= document.getElementById("query");
+        const form= document.getElementById("query2");
         form.addEventListener('submit', (event) => {
             event.preventDefault();
-            const input = document.getElementById('in');
+            const input = document.getElementById('in2');
             
             const item = input.value.trim();
 
