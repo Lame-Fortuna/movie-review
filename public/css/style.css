@@ -1,6 +1,9 @@
 *{
     box-sizing: border-box;
 }
+
+/*--------------------- Results -------------------------------------------*/
+
 body{
     background-image: conic-gradient(from 90deg at bottom right,rgb(40, 70, 70), #131720); 
     margin: 0;
@@ -14,35 +17,36 @@ a {
     padding: 0;
 }
 header{
-    color: white;
+    color: azure;
     background-color:#153143;
     position: sticky;
     top:0;
-    padding: 0 20px 0 0 ;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     border-bottom: black solid;
     font-size: 25px;
 }
-header button, #login{
+header button{
     cursor: pointer;
     background-color: inherit;
     color: inherit;
     border: none;
-    font-family: inherit;
     font-weight: bold;
     font-size: 25px;
     padding: 25px ;
 }
-header button:hover, #login:hover{
+header button:hover{
     background-color: black;
+}
+#query{
+    width: 50%;
 }
 #in{
     color: white;
     background-color: black;
-    padding: 15px;
-    width: 300px;
+    padding: 12px;
+    width: 100%;
     border: black 3px solid;
     border-radius: 20px;
 }
@@ -65,7 +69,7 @@ header button:hover, #login:hover{
     background-color:#38435b;
     border-radius: 15px;
     box-shadow: 2px 2px black;
-    height: 450px;
+    height: 400px;
     width: 200px;
     margin: 25px;
 }
@@ -102,13 +106,36 @@ header button:hover, #login:hover{
     background-color: gray;
 }
 
+@media (max-width: 520px){
+    .cont{
+        padding: 0;
+    }
+    .card1{
+        margin: 5px;
+        width: 140px;
+        height: 280px;
+    }
+    .thumbnail{
+        height: 210px;
+    }
+}
+
+@media (max-width: 600px){
+    header button{
+        font-size: 20px;
+        padding: 20px 13px;
+    }
+    #in{
+        padding: 12px 10px;
+    }
+}
+
 @media (max-width: 900px){
     .cont{
         width: 100%;
     }
     .card1{
-        margin: 10px;
-        width: 180px;
+        margin: 20px;
     }
 }
 
@@ -118,7 +145,7 @@ header button:hover, #login:hover{
     margin: auto; 
     width: 97%;
     height: fit-content;
-    margin: 10px 0 15px 10px;
+    margin: 10px 10px;
     display: flex;
     background-color: azure; 
     border-radius: 15px;
@@ -187,12 +214,11 @@ textarea{
     display: none;
 }
 .rev1, .collapsible{
-    margin: 2px 20px;
+    margin: 2px 0;
     width: 95%;
     padding: 10px;
     border: solid black;
     border-radius: 15px;
-    overflow: scroll;
     background-color: beige;
 }
 .rev1{
@@ -201,12 +227,12 @@ textarea{
 
 .review{
     width: 50%;
-    border-left: solid;
+    margin-left: 3px;
     padding: 10px 40px;
 }
 .allrev{
-    overflow: scroll;
-    max-height: 700px;
+    overflow: auto;
+    height: 500px;
 }
 @media(max-width:1300px){
     .plot, .info{
@@ -241,7 +267,8 @@ textarea{
     
     .review{
         border-left:none;
-        border-top: solid 4px;
+        margin: 0;
+        border-top: solid 4px #131720;
     }
     .content2{
         flex-direction: row;
@@ -251,6 +278,16 @@ textarea{
     }
 }
 @media(max-width:600px){
+    .container2{
+        margin: 5px  auto;
+    }
+    .stars i{
+        margin: 10px 0;
+        color: black;
+        font-size: 15px;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
     .poster{
         width: 350px;
         height: 500px;

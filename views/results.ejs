@@ -5,7 +5,7 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href="/css/style.css"> 
+    <link rel='stylesheet' href="/css/style.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
 </head>
 
@@ -15,9 +15,8 @@
             <a href="/" ><button>Home</button></a>
             <form id="query">
                 <input id="in" type="text" placeholder="Search">
-                <!--<button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>-->
             </form>
-            <a onclick="f()">Admin</a>         
+            <a onclick="f()"><button>Admin</button></a>         
         </header>
 
         <div class="cont">
@@ -25,7 +24,7 @@
                 <% if( !results ){}else{ %>
                 <% for(item of results){ %>  
                     <a class="card1" href="/movies/<%=item.imdbID%>">
-                        <img class="thumbnail" src="<%=item.Poster%>" alt="/public/poster.jpg">
+                        <img class="thumbnail" src="<%=item.Poster%>" alt="/images/poster.jpg">
                         <p class="title"><%=item.Title%></p>
                         <p class="year"><%=item.Year%></p>
                     </a>

@@ -5,7 +5,7 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="stylesheet" href='/css/style.css'>
+    <link rel="stylesheet" href='/public/css/style.css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
@@ -14,9 +14,8 @@
         <a href="/" ><button>Home</button></a>
         <form id="query">
             <input id="in" type="text" placeholder="Search">
-            <!--<button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>-->
         </form>
-        <a>Admin</a>         
+        <a onclick="f()"><button>Admin</button></a>         
     </header>
 
     <div class="container2">
@@ -92,7 +91,7 @@
                                 <p><%= item.usr %></p>
                             </div>
                             <div>
-                                <div style="display: flex;">
+                                <div class="stars">
                                     <p>
                                         <% const totalStars = 10; %>
                                         <% const filledStars = item.rating; %>
