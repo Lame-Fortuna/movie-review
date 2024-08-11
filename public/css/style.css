@@ -27,7 +27,7 @@ header{
     border-bottom: black solid;
     font-size: 25px;
 }
-header button{
+header button, #login{
     cursor: pointer;
     background-color: inherit;
     color: inherit;
@@ -36,7 +36,7 @@ header button{
     font-size: 25px;
     padding: 25px ;
 }
-header button:hover{
+header button:hover,  #login:hover{
     background-color: black;
 }
 #query{
@@ -284,7 +284,7 @@ textarea{
     .stars i{
         margin: 10px 0;
         color: black;
-        font-size: 15px;
+        font-size: 20px;
         cursor: pointer;
         transition: color 0.2s ease;
     }
@@ -323,4 +323,13 @@ textarea{
     position: absolute;
     top: 0;
     right: 0;
+}
+#in2{
+    color: white;
+    background-color: black;
+    font-size: large;
+    padding: 15px;
+    width: 70%;
+    border: black 3px solid;
+    border-radius: 25px;
 }
