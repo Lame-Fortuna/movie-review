@@ -33,7 +33,7 @@
 
             <div class="content2">
                 <div class="poster">
-                    <img src="<%=item2.Poster%>" alt="/images/poster.jpg">
+                    <img src="<%=item2.Poster%>" alt="https://i.ibb.co/GTBQnzQ/poster.jpg">
                 </div>
 
                 <div class="info">
@@ -81,7 +81,7 @@
             <hr>
 
             <!-- Display all the submitted reviews -->
-            <div class="allrev">
+            <div class="allrev" id="revs">
                 <% if (!item1 || item1.length === 0) { %>
                     <p>No reviews yet</p>
                 <% } else { %>
@@ -119,14 +119,17 @@
 <script>
     //New Review
     const hydeButton = document.getElementById("close");
-    const form= document.getElementById("new");
+    const form = document.getElementById("new");
+    const allrev = document.getElementById("revs");
     function show(){
         form.style.display='block';
         hydeButton.style.display='block';
+        allrev.style.height="30vh";
     }
     function hyde(){
         form.style.display='none';
         hydeButton.style.display='none';
+        allrev.style.height="63vh";
     }
 
     document.addEventListener('DOMContentLoaded', function() {

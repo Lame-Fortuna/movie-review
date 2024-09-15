@@ -109,6 +109,7 @@ app.get('/movies/:id', async (req, res) => {
         "Metascore":"100","imdbRating":"8.3","imdbVotes":"429,568","imdbID":"tt0052357",
         "Type":"movie","Response":"True"
     };
+    //const img= '/public/poster.jpg'
 
     // Fetching Information from database
     try {
