@@ -33,7 +33,7 @@
 
             <div class="content2">
                 <div class="poster">
-                    <img src="<%=item2.Poster%>" alt="https://i.ibb.co/GTBQnzQ/poster.jpg">
+                    <img src="<%=item2.Poster%>" onerror="this.onerror=null; this.src='/images/poster.jpg';" >
                 </div>
 
                 <div class="info">
@@ -161,7 +161,7 @@
             const item = input.value.trim();
 
             const url = `/search/${item}`;
-            if (item.length >= 3) {
+            if (item.length >= 2) {
                 window.location.href = `/search/${encodeURIComponent(item)}`;
             }
         })
