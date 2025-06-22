@@ -1,2 +1,10 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@keyframes scrollX {
+  0% { scroll-behavior: smooth; }
+  25% { transform: translateX(-100%); }
+  50% { transform: translateX(-200%); }
+  75% { transform: translateX(-300%); }
+  100% { transform: translateX(0); }
+}

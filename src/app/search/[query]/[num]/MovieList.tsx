@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Navbar from '../../../components/nav'
 
 type Movie = {
   imdbID: string;
@@ -17,37 +18,11 @@ type Props = {
 
 export default function MovieList({ movies, query, page }: Props) {
   return (
-    <div className="container mx-auto">
-      {/* Search + Nav */}
-      <nav className="navbar bg-base-100 shadow mb-2 px-4">
-        <div className="flex-1">
-          <a className="btn btn-ghost text-xl" href="/">Home</a>
-        </div>
-        <div className="flex-none">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const val = (e.target as any).search.value.trim();
-              if (val.length >= 2) {
-                window.location.href = `/search/${encodeURIComponent(val)}/1`;
-              }
-            }}
-          >
-            <input
-              name="search"
-              type="text"
-              placeholder="Search"
-              className="input input-bordered"
-            />
-          </form>
-        </div>
-        <div className="ml-4">
-          <button className="btn btn-outline">Admin</button>
-        </div>
-      </nav>
+    <div className="w-full">
+      <Navbar />
 
       {/* Filter Dropdown */}
-      <div className="mb-4 w-full flex items-center justify-end">
+      <div className="w-[95%] m-4 flex items-center justify-end">
         <label className="text-lg pr-3">Filter</label>
         <select className="select select-bordere w-30">
           <option>Sort By</option>
@@ -58,7 +33,7 @@ export default function MovieList({ movies, query, page }: Props) {
       </div>
 
       {/* Movie Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 p-4">
+      <div className="w-[90%] m-auto flex flex-wrap justify-center p-4">
         {movies.length === 0 ? (
           <p>No results found</p>
         ) : (
@@ -66,12 +41,12 @@ export default function MovieList({ movies, query, page }: Props) {
             const [src, setSrc] = useState(`${movie.Poster}`);
 
             return (
-              <a key={movie.imdbID} className="card w-full bg-[#38435b] shadow-xl" href={`/movies/${movie.imdbID}`}>
+              <a key={movie.imdbID} className="card w-60 h-100 m-3 bg-[#38435b] shadow-xl text-center overflow-hidden" href={`/movies/${movie.imdbID}`}>
                 <figure>
                   <img
                     src={src}
                     alt={movie.Title}
-                    className="w-full h-auto object-cover"
+                    className="w-full h-80 object-top"
                     onError={() => setSrc('/images/poster.jpg')}
                   />
                 </figure>

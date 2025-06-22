@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Navbar from '../../components/nav'
 
 type Review = {
   usr: string
@@ -48,32 +49,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
 
   return (
     <div className="min-h-screen bg-base-200">
-      <nav className="navbar bg-base-100 shadow mb-2 px-4">
-        <div className="flex-1">
-          <a className="btn btn-ghost text-xl" href="/">Home</a>
-        </div>
-        <div className="flex-none">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault()
-              const val = (e.target as any).search.value.trim()
-              if (val.length >= 2) {
-                window.location.href = `/search/${encodeURIComponent(val)}/1`
-              }
-            }}
-          >
-            <input
-              name="search"
-              type="text"
-              placeholder="Search"
-              className="input input-bordered"
-            />
-          </form>
-        </div>
-        <div className="ml-4">
-          <button className="btn btn-outline">Admin</button>
-        </div>
-      </nav>
+      <Navbar />
 
       <main className="w-[97%] max-w-screen-xl min-h-fit lg:h-[85vh] mx-auto p-6 flex flex-col lg:flex-row gap-6 bg-cyan-50 text-black rounded-lg shadow-lg overflow-hidden">
         {/* Movie Info */}
