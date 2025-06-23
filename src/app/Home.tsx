@@ -36,7 +36,7 @@ function MovieCard({ movie }: { movie: Movie }) {
         onError={() => setSrc('/images/poster.jpg')}
       />
       <p className='text-lg '>{movie.title}</p>
-      <p>2025</p>
+      <p>{movie.year}</p>
     </a>
   );
 }
@@ -91,6 +91,7 @@ export default function Home({ movies }: Props) {
                 <h2 className="text-white text-3xl ml-6 md:text-5xl font-bold drop-shadow-xl">
                   {movie.title}
                 </h2>
+                <h3>{movie.year}</h3>
               </div>
             </div>
           ))}

@@ -4,7 +4,7 @@ import Home from './Home';
 
 type Movie = {
   id: number;
-  year?: number; // made optional
+  year?: number;
   title: string;
   poster_path: string;
   backdrop_path: string;
