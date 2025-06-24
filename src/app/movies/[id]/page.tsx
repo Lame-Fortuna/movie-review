@@ -1,5 +1,7 @@
 import { getCollection } from '@/lib/mongodb'
 
+type Params = Promise<{ id: string }>;
+
 async function fetchTMDBInfo(tmdbId: string): Promise<any> {
   const res = await fetch(`https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${process.env.TMDB_key}`)
   if (!res.ok) throw new Error('Failed to fetch from TMDB')
@@ -14,12 +16,8 @@ async function fetchOMDBInfo(imdbID: string): Promise<any> {
 
 import MovieClient from './MovieClient'
 
-type PageProps = {
-  params: { id: string }
-}
-
-export default async function MoviePage({ params }: PageProps) {
-  const { id } = params
+export default async function MoviePage(props: { params: Params }) {
+  const { id } = await props.params;
 
   // Get reviews from MongoDB
   const collection = await getCollection()

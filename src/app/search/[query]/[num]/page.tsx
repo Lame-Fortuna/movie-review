@@ -1,11 +1,6 @@
 import MovieList from './MovieList'
 
-type PageProps = {
-  params: {
-    query: string
-    num: string
-  }
-}
+type Params = Promise<{ query: string; num: number }>;
 
 type Movie = {
   imdbID: string
@@ -39,11 +34,10 @@ async function fetchTMDBMovies(query: string, page: number): Promise<Movie[]> {
   }))
 }
 
-export default async function SearchResults({ params }: PageProps) {
-  const { query, num } = params
-  const page = parseInt(num, 10) || 1
+export default async function SearchResults(props: { params: Params }) {
+  const { query, num } = await props.params
 
-  const results = await fetchTMDBMovies(query, page)
+  const results = await fetchTMDBMovies(query, num)
 
-  return <MovieList movies={results} query={query} page={page} />
+  return <MovieList movies={results} query={query} page={num} />
 }

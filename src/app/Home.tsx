@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Navbar from './components/nav'
+import Image from 'next/image';
+
 
 type Movie = {
   id: number;
@@ -29,7 +31,7 @@ function MovieCard({ movie }: { movie: Movie }) {
       href={`/movies/${movie.id}`}
       className="carousel-item flex flex-col text-center justify-between pb-5 w-50 h-80 bg-[#38435b] rounded overflow-hidden shadow-md "
     >
-      <img
+      <Image
         src={src}
         alt={movie.title}
         className="w-full max-h-65 object-fill"

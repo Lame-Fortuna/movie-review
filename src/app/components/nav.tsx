@@ -1,10 +1,11 @@
 import React from 'react'
+import Link from 'next/link';
 
 export default function Navbar() {
   return (
     <nav className="navbar bg-gray-900 shadow px-4">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl" href="/">Home</a>
+          <Link className="btn btn-ghost text-xl" href="/">Home</Link>
         </div>
         <form
           className="flex-none"

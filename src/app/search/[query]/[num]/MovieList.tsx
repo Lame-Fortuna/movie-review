@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Navbar from '../../../components/nav'
+import Image from 'next/image';
 
 type Movie = {
   imdbID: string;
@@ -43,7 +44,7 @@ export default function MovieList({ movies, query, page }: Props) {
             return (
               <a key={movie.imdbID} className="card w-60 h-100 m-3 bg-[#38435b] shadow-xl text-center overflow-hidden" href={`/movies/${movie.imdbID}`}>
                 <figure>
-                  <img
+                  <Image
                     src={src}
                     alt={movie.Title}
                     className="w-full h-80 object-top"

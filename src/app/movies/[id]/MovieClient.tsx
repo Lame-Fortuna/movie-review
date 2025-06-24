@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Navbar from '../../components/nav'
+import Image from 'next/image'
 
 type Review = {
   usr: string
@@ -65,7 +66,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
           <hr />
 
           <div className="flex gap-4 mt-4">
-            <img
+            <Image
               src={posterSrc}
               onError={() => setPosterSrc('/images/poster.jpg')}
               alt="Poster"
@@ -220,7 +221,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
               localReviews.map((item, i) => (
                 <div key={i} className="flex gap-2 p-3 bg-orange-100 shadow rounded-lg">
                   <div className="w-[20%] text-center border-r pr-2 flex flex-col items-center gap-2">
-                    <img
+                    <Image
                       className="rounded-full w-16 h-16 object-cover"
                       src="/images/Screenshot 2025-01-19 004453.png"
                       alt="profile pic"
