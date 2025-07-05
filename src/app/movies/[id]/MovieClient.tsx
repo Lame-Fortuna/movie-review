@@ -217,7 +217,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
             {/* Review Form */}
             {showForm && (
               <form
-                className="form-control bg-orange-100 p-6 rounded-box shadow-xl w-full max-w-2xl"
+                className="form-control flex flex-col bg-orange-100 p-6 rounded-box shadow-xl w-full max-w-2xl"
                 onSubmit={async (e) => {
                   e.preventDefault();
                   const form = e.currentTarget;
@@ -327,7 +327,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
             </div>
           </div>
 
-          {/* Recommendations Section (Empty) */}
+          {/* Recommendations Section*/}
           <div className="space-y-4">
             <h2 className="text-2xl font-semibold">Recommendations</h2>
             <hr />
@@ -346,14 +346,14 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
               <div className="flex flex-wrap justify-center">
                 {rec.map((m) => (
                   <Link href={`/movies/${m.id}`} key={m.id}>
-                    <div className="card bg-[#38435b] shadow h-60 w-35 overflow-hidden m-2">
+                    <div className="card bg-[#38435b] shadow h-60 w-30 overflow-hidden m-2">
                       <img
                         src={m.poster}
                         alt={m.title}
                         className="h-40 w-full object-cover rounded-t"
                       />
                       <div className="p-2">
-                        <h3 className="font-bold text-center text-sm color-white">
+                        <h3 className="font-bold text-center text-sm text-white">
                           {m.title} {m.year}
                         </h3>
                       </div>

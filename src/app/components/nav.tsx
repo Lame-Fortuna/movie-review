@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <nav className="navbar bg-gray-900 shadow px-4">
+    <nav className="navbar bg-gray-900 shadow px-2">
       <div className="flex-1">
         <Link className="btn btn-ghost text-xl" href="/">
           Home
@@ -26,7 +26,7 @@ export default function Navbar() {
           className="input input-bordered"
         />
       </form>
-      <div className="ml-4">
+      <div className="ml-2">
         <button className="btn btn-outline">Login</button>
       </div>
     </nav>
