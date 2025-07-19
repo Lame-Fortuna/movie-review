@@ -1,7 +1,7 @@
-# Filmphile - Movie Review Platform | [Live](https://film-atlas.onrender.com/)
+# Film Atlas - Movie Database | [Live](https://film-atlas.onrender.com/)
 
 
-**Filmphile** is a full-stack movie review platform built with **Next.js**, **MongoDB**, **JavaScript**, **Tailwind CSS**, and integrated with the **TMDB API**. The platform enables real-time movie search, reviews, and personalized recommendations.
+**Film Atlas** is a full-stack movie review platform built with **Next.js**, **MongoDB**, **JavaScript**, **Tailwind CSS**, and integrated with the **TMDB API**. The platform enables real-time movie search, reviews, and personalized recommendations.
 
 ## Technologies Used
 - **Next.js** (Full-stack)
