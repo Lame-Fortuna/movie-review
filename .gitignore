@@ -42,3 +42,6 @@ next-env.d.ts
 
 .vscode
 You're essentially migrating a Node.txt
+
+# future feature
+route.js

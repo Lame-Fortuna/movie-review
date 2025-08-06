@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Navbar from "../../../components/nav";
+import Head from "next/head";
 
 type Movie = {
   imdbID: string;
@@ -36,6 +37,11 @@ export default function MovieList({
 
   return (
     <div className="w-full">
+      <Head>
+        {showSort? <title>{query} Movies</title>: <title>Result for {query}</title>}
+        <title>{}</title>
+      </Head>
+
       <Navbar />
 
       {/* Sort Filter */}

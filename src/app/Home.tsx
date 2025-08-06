@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Navbar from "./components/nav";
+import Head from 'next/head';
 
 const genreMap: Record<string, number> = {
   action: 28,
@@ -118,6 +119,10 @@ function CarouselSection({
 export default function Home({ movies }: Props) {
   return (
     <div className="bg-base-200 min-h-screen text-white">
+      <Head>
+        <title>Film Atlas</title>
+      </Head>
+
       <Navbar />
 
       {/* Trending Carousel */}

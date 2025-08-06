@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "../../components/nav";
 import Link from "next/link";
+import Head from "next/head";
 
 type Review = {
   usr: string;
@@ -82,14 +83,19 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
 
   return (
     <div className="min-h-screen bg-base-200">
+      <Head>
+        <title>{movie.Title}</title>
+      </Head>
+
       <Navbar />
 
       <main className="w-[97%] max-w-screen-xl min-h-fit lg:h-[85vh] mx-auto p-6 flex flex-col lg:flex-row gap-6 bg-cyan-50 text-black rounded-lg shadow-lg overflow-hidden">
         {/* Left Section (Poster and Title) */}
         <section className="lg:w-1/3 flex-none">
           <h1 className="text-3xl font-bold mb-4">
-            {movie.Title} ({movie.Year})
+            {movie.Title}
           </h1>
+          <h1 className="text-2xl font-bold mb-4">{movie.Year}</h1>
 
           <div className="flex flex-wrap gap-2 mb-4">
             <p className="font-extrabold text-orange-500">{movie.Rated}</p>
