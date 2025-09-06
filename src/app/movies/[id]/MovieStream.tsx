@@ -290,7 +290,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
               localReviews.map((item, i) => (
                 <div
                   key={i}
-                  className="flex gap-2 p-3 bg-orange-100 shadow rounded-lg"
+                  className="flex w-[60%] mx-auto gap-2 p-3 bg-orange-100 shadow rounded-lg"
                 >
                   <div className="w-[20%] text-center border-r pr-2 flex flex-col items-center gap-2">
                     <img

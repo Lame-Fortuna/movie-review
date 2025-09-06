@@ -1,11 +1,12 @@
 import { getCollection } from "../../../lib/mongodb";
 import MovieStream from "./MovieStream";
+import MovieClient from "./MovieClient"; // Make sure this exists and is correctly imported
 
 type Params = Promise<{ id: string }>;
 
 async function fetchTMDBInfo(tmdbId: string): Promise<any> {
   const res = await fetch(
-    `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${process.env.TMDB_key}`,
+    `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${process.env.TMDB_key}`
   );
   if (!res.ok) throw new Error("Failed to fetch from TMDB");
   return await res.json();
@@ -13,12 +14,11 @@ async function fetchTMDBInfo(tmdbId: string): Promise<any> {
 
 async function fetchOMDBInfo(imdbID: string): Promise<any> {
   const res = await fetch(
-    `http://www.omdbapi.com/?apikey=${process.env.key}&i=${imdbID}`,
+    `http://www.omdbapi.com/?apikey=${process.env.key}&i=${imdbID}`
   );
   if (!res.ok) throw new Error("Failed to fetch from OMDB");
   return await res.json();
 }
-
 
 export default async function MoviePage(props: { params: Params }) {
   const { id } = await props.params;
@@ -40,7 +40,6 @@ export default async function MoviePage(props: { params: Params }) {
     // Use OMDb as primary data source (to match MovieClient format)
     movie = {
       ...omdbData,
-      // Fall back to TMDB values if OMDb fields are missing
       Poster: `https://image.tmdb.org/t/p/w500${tmdbData.poster_path}`,
       Poster2: `public/images/poster.jpg`,
       Title: omdbData.Title || tmdbData.title,
@@ -53,7 +52,6 @@ export default async function MoviePage(props: { params: Params }) {
       imdbID: imdbID,
     };
   } else {
-    // If no IMDb ID, fallback entirely to TMDB structure
     movie = {
       Title: tmdbData.title,
       Year: tmdbData.release_date?.split("-")[0],
@@ -71,5 +69,10 @@ export default async function MoviePage(props: { params: Params }) {
     };
   }
 
-  return <MovieStream id={id} movie={movie} reviews={reviews} />;
+  // ⬇️ Check if the DB document has a `src` field to determine which component to render
+  const hasStream = Boolean(dbDoc?.src);
+
+  return hasStream
+    ? <MovieStream id={id} movie={movie} reviews={reviews} />
+    : <MovieClient id={id} movie={movie} reviews={reviews} />;
 }
