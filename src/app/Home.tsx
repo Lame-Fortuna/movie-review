@@ -121,6 +121,7 @@ export default function Home({ movies }: Props) {
     <div className="bg-base-200 min-h-screen text-white">
       <Head>
         <title>Film Atlas</title>
+        <meta property="og:title" content="Film Atlas" key="title" />
       </Head>
 
       <Navbar />

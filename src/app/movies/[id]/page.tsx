@@ -1,4 +1,5 @@
 import { getCollection } from "../../../lib/mongodb";
+import MovieStream from "./MovieStream";
 
 type Params = Promise<{ id: string }>;
 
@@ -18,7 +19,6 @@ async function fetchOMDBInfo(imdbID: string): Promise<any> {
   return await res.json();
 }
 
-import MovieClient from "./MovieClient";
 
 export default async function MoviePage(props: { params: Params }) {
   const { id } = await props.params;
@@ -71,5 +71,5 @@ export default async function MoviePage(props: { params: Params }) {
     };
   }
 
-  return <MovieClient id={id} movie={movie} reviews={reviews} />;
+  return <MovieStream id={id} movie={movie} reviews={reviews} />;
 }
