@@ -83,9 +83,6 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
 
   return (
     <div className="min-h-screen bg-base-200">
-      <Head>
-        <title>{movie.Title}</title>
-      </Head>
 
       <Navbar />
 

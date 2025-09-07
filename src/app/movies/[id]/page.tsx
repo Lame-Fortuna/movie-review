@@ -4,6 +4,18 @@ import MovieClient from "./MovieClient"; // Make sure this exists and is correct
 
 type Params = Promise<{ id: string }>;
 
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const tmdbData = await fetch(
+    `https://api.themoviedb.org/3/movie/${params.id}?api_key=${process.env.TMDB_key}`
+  );
+  const data = await tmdbData.json();
+
+  return {
+    title: data.title || "Movie Page",
+    description: data.overview || "Movie details and reviews",
+  };
+}
+
 async function fetchTMDBInfo(tmdbId: string): Promise<any> {
   const res = await fetch(
     `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${process.env.TMDB_key}`
