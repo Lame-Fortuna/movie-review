@@ -89,6 +89,6 @@ export default async function MoviePage(props: { params: Params }) {
   const src = dbDoc?.src;
 
   return hasStream
-    ? <MovieClient id={id} movie={{ ...movie, src }} reviews={reviews} />
+    ? <MovieStream id={id} movie={{ ...movie, src }} reviews={reviews} />
     : <MovieClient id={id} movie={movie} reviews={reviews} />;
 }
