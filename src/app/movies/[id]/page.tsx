@@ -71,8 +71,9 @@ export default async function MoviePage(props: { params: Params }) {
 
   // ⬇️ Check if the DB document has a `src` field to determine which component to render
   const hasStream = Boolean(dbDoc?.src);
+  const src = dbDoc?.src;
 
   return hasStream
-    ? <MovieStream id={id} movie={movie} reviews={reviews} />
+    ? <MovieClient id={id} movie={{ ...movie, src }} reviews={reviews} />
     : <MovieClient id={id} movie={movie} reviews={reviews} />;
 }

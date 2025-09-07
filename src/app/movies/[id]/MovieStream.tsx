@@ -15,6 +15,7 @@ type MovieClientProps = {
   id: string;
   movie: any;
   reviews: Review[];
+  src?: string;
 };
 
 function calculateStats(reviews: Review[]) {
@@ -91,7 +92,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
         <h1 className="text-4xl font-bold mb-4">{movie.Year}</h1>
 
         {/* Embedded Movie */}
-        <iframe className="aspect-video w-[90%] mx-auto" src="https://archive.org/embed/the.-maltese.-falcon.-1941.1080p"></iframe>
+        <iframe className="aspect-video w-[90%] mx-auto" src={movie.src}></iframe>
 
         {/* Overview */}
         <section className="w-[80%] mx-auto">
@@ -290,7 +291,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
               localReviews.map((item, i) => (
                 <div
                   key={i}
-                  className="flex w-[60%] mx-auto gap-2 p-3 bg-orange-100 shadow rounded-lg"
+                  className="flex w-[80%] mx-auto gap-2 p-3 bg-orange-100 shadow rounded-lg"
                 >
                   <div className="w-[20%] text-center border-r pr-2 flex flex-col items-center gap-2">
                     <img

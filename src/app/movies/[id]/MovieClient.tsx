@@ -89,7 +89,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
 
       <Navbar />
 
-      <main className="w-[97%] max-w-screen-xl min-h-fit lg:h-[85vh] mx-auto p-6 flex flex-col lg:flex-row gap-6 bg-cyan-50 text-black rounded-lg shadow-lg overflow-hidden">
+      <main className="w-[97%] min-h-fit lg:h-[85vh] mx-auto p-6 flex flex-col lg:flex-row gap-6 bg-cyan-50 text-black rounded-lg shadow-lg overflow-hidden">
         {/* Left Section (Poster and Title) */}
         <section className="lg:w-1/3 flex-none">
           <h1 className="text-3xl font-bold mb-4">
