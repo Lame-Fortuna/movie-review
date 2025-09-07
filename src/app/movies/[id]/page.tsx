@@ -4,9 +4,11 @@ import MovieClient from "./MovieClient"; // Make sure this exists and is correct
 
 type Params = Promise<{ id: string }>;
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+// This gets called by Next.js to populate <title> etc.
+export async function generateMetadata(props: { params: Params }) {
+  const { id } = await props.params;
   const tmdbData = await fetch(
-    `https://api.themoviedb.org/3/movie/${params.id}?api_key=${process.env.TMDB_key}`
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_key}`
   );
   const data = await tmdbData.json();
 
@@ -15,6 +17,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     description: data.overview || "Movie details and reviews",
   };
 }
+
 
 async function fetchTMDBInfo(tmdbId: string): Promise<any> {
   const res = await fetch(
