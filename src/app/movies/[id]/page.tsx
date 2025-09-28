@@ -1,10 +1,9 @@
 import { getCollection } from "../../../lib/mongodb";
 import MovieStream from "./MovieStream";
-import MovieClient from "./MovieClient"; // Make sure this exists and is correctly imported
+import MovieClient from "./MovieClient";
 
 type Params = Promise<{ id: string }>;
 
-// This gets called by Next.js to populate <title> etc.
 export async function generateMetadata(props: { params: Params }) {
   const { id } = await props.params;
   const tmdbData = await fetch(
@@ -15,6 +14,9 @@ export async function generateMetadata(props: { params: Params }) {
   return {
     title: data.title || "Movie Page",
     description: data.overview || "Movie details and reviews",
+    icons: {
+      icon: "/filmAtlas.ico",
+    },
   };
 }
 

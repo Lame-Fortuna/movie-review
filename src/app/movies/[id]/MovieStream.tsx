@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Navbar from "../../components/nav";
 import Link from "next/link";
-import Head from "next/head";
 
 type Review = {
   usr: string;
@@ -31,7 +30,6 @@ function calculateStats(reviews: Review[]) {
   });
 
   const avg = total ? sum / total : 0;
-
   return { avg, total, stars, reviews };
 }
 
@@ -42,6 +40,8 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
   const [showForm, setShowForm] = useState(false);
   const [posterSrc, setPosterSrc] = useState<string>(movie.Poster || movie.Poster2);
   const [generatedUser, setGeneratedUser] = useState("");
+  const [rec, setRec] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const genres = movie.Genres || [];
 
@@ -49,9 +49,6 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
     const shortId = Date.now().toString(36);
     setGeneratedUser(`user ${shortId}`);
   }, []);
-
-  const [rec, setRec] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const requestBody = {
@@ -65,91 +62,93 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
     setLoading(true);
     fetch("https://l0w1-movie-reco.hf.space/2", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestBody),
     })
       .then((r) => r.json())
-      .then((json) => {
-        setRec(json.recommended.slice(0, 5));
-      })
+      .then((json) => setRec(json.recommended.slice(0, 5)))
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [id, movie]);
 
   return (
-    <div className="h-fit bg-base-200">
-
+    <div className="min-h-screen bg-base-200">
       <Navbar />
 
-      <main className="w-[90%] min-h-fit lg:h-[90vh] mx-auto mt-3 p-6 flex flex-col bg-cyan-50 text-black rounded-lg shadow-lg overflow-hidden">
+      <main className="w-[90%] mx-auto mt-5 p-6 flex flex-col bg-cyan-50 text-black rounded-lg shadow-xl">
 
-        <h1 className="text-5xl font-bold mb-4">{movie.Title}</h1>  
-        <h1 className="text-4xl font-bold mb-4">{movie.Year}</h1>
+        {/* Title + Year */}
+        <header className="text-center mb-6">
+          <h1 className="text-5xl font-extrabold">{movie.Title}</h1>
+          <p className="text-2xl text-gray-700">{movie.Year}</p>
+        </header>
 
         {/* Embedded Movie */}
-        <iframe className="aspect-video w-[90%] mx-auto" src={movie.src}></iframe>
+        <section className="mb-10">
+          <iframe
+            className="aspect-video w-[90%] mx-auto rounded-lg shadow-md"
+            src={movie.src}
+          />
+        </section>
 
-        {/* Overview */}
-        <section className="w-[80%] mx-auto">
-          <h2 className="text-2xl font-semibold my-3">Overview</h2>
-          <hr />
+        {/* Overview Section */}
+        <section className="w-[85%] mx-auto mb-12">
+          <h2 className="text-3xl font-bold mb-3">Overview</h2>
+          <hr className="mb-6" />
 
-          <div className="flex mx-auto p-5 m-5 ">
-            <div className="m-4">
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Poster */}
+            <div className="flex-shrink-0 mx-auto lg:mx-0">
               <img
                 src={posterSrc}
                 alt="Poster"
                 onError={() => setPosterSrc("/images/poster.jpg")}
-                className="max-w-[250px] object-cover rounded-lg"
+                className="max-w-[250px] object-cover rounded-lg shadow-lg"
               />
             </div>
-            
-            <div className="m-3">
-              <h1 className="text-3xl font-bold mb-4">{movie.Title} {movie.Year}</h1>
 
-              <div className="flex flex-wrap gap-2 mb-4">
+            {/* Movie Info */}
+            <div className="flex flex-col gap-4">
+              <h1 className="text-3xl font-bold">{movie.Title} ({movie.Year})</h1>
+
+              <div className="flex flex-wrap gap-2">
                 <p className="font-extrabold text-orange-500">{movie.Rated}</p>
                 {genres.map((genre: any) => (
                   <Link
                     href={`/search/genre-${genre.id}/1`}
                     key={genre.id}
-                    className="badge badge-primary hover:underline cursor-pointer"
+                    className="badge badge-primary hover:underline"
                   >
                     {genre.name}
                   </Link>
                 ))}
               </div>
 
-              <div className="space-y-4">
-                <p><strong>Director:</strong> {movie.Director}</p>
-                <p><strong>Cast:</strong> {movie.Actors}</p>
-                <p><strong>Released On:</strong> {movie.Released}</p>
-                <div className="p-2 text-black-content rounded-lg border">{movie.Plot}</div>
-                <p>{movie.Runtime}</p>
+              <p><strong>Director:</strong> {movie.Director}</p>
+              <p><strong>Cast:</strong> {movie.Actors}</p>
+              <p><strong>Released:</strong> {movie.Released}</p>
+              <p><strong>Runtime:</strong> {movie.Runtime}</p>
+              <p className="p-3 bg-white border rounded-lg shadow-sm">{movie.Plot}</p>
 
-                <div className="space-y-2 flex flex-wrap">
-                  {movie.Ratings?.map((rating: any, idx: number) => (
-                    <div key={idx} className="text-sm ml-3">
-                      <strong>{rating.Source === "Internet Movie Database" ? "IMDB" : rating.Source}</strong> {rating.Value}
-                    </div>
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-3">
+                {movie.Ratings?.map((rating: any, idx: number) => (
+                  <div key={idx} className="text-sm">
+                    <strong>{rating.Source === "Internet Movie Database" ? "IMDB" : rating.Source}:</strong> {rating.Value}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-          
         </section>
 
         {/* Reviews */}
-        <div className="space-y-4 w-[80%] mx-auto">
-          <h2 className="text-2xl font-semibold">Reviews</h2>
-          <hr />
+        <section className="w-[85%] mx-auto mb-12">
+          <h2 className="text-3xl font-bold mb-3">Reviews</h2>
+          <hr className="mb-6" />
 
-          {/* Statistics */}
-          <div className="flex flex-col lg:flex-row justify-center items-center gap-4 w-full">
-            <div className="flex flex-col items-center text-center">
+          {/* Stats */}
+          <div className="flex flex-col lg:flex-row justify-around items-center gap-6 mb-6">
+            <div className="flex flex-col items-center">
               <div className="rating rating-xl rating-half mb-2">
                 {Array.from({ length: 10 }, (_, i) => {
                   const value = (i + 1) / 2;
@@ -159,29 +158,21 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
                       type="radio"
                       name="avg-rating"
                       className={`mask mask-star-2 ${i % 2 === 0 ? "mask-half-1" : "mask-half-2"} bg-amber-400`}
-                      aria-label={`${value} stars`}
                       checked={Math.abs(avg - value) < 0.26}
                       readOnly
                     />
                   );
                 })}
               </div>
-              <div className="text-sm text-gray-700">
-                <p>
-                  <strong>{total}</strong> reviews
-                </p>
-                <p>
-                  Avg: <strong>{avg.toFixed(1)}</strong> / 5
-                </p>
-              </div>
+              <p className="text-gray-700 text-sm">
+                <strong>{total}</strong> reviews | Avg: <strong>{avg.toFixed(1)}</strong>/5
+              </p>
             </div>
 
-            <div className="bars flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
               {[5, 4, 3, 2, 1].map((rating) => (
                 <div key={rating} className="flex items-center gap-2">
-                  <span className="w-6 text-right text-sm font-semibold">
-                    {rating}
-                  </span>
+                  <span className="w-6 text-right text-sm font-semibold">{rating}</span>
                   <progress
                     className="progress progress-info w-56"
                     value={total ? (100 * stars[rating - 1]) / total : 0}
@@ -191,32 +182,25 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
               ))}
             </div>
           </div>
-          <hr />
 
-          {/* Form Controls */}
-          <div className="flex gap-2">
-            <button
-              className="btn btn-accent"
-              onClick={() => setShowForm(true)}
-            >
+          {/* Buttons */}
+          <div className="flex gap-2 mb-6">
+            <button className="btn btn-accent" onClick={() => setShowForm(true)}>
               Add Review
             </button>
             {showForm && (
-              <button className="btn" onClick={() => setShowForm(false)}>
-                Close
-              </button>
+              <button className="btn" onClick={() => setShowForm(false)}>Close</button>
             )}
           </div>
 
-          {/* Review Form */}
+          {/* Form */}
           {showForm && (
             <form
-              className="form-control flex flex-col bg-orange-100 p-6 rounded-box shadow-xl w-full max-w-2xl"
+              className="form-control flex flex-col bg-orange-100 p-6 rounded-lg shadow-lg w-full max-w-2xl mx-auto"
               onSubmit={async (e) => {
                 e.preventDefault();
                 const form = e.currentTarget;
                 const formData = new FormData(form);
-
                 formData.append("usr", generatedUser);
 
                 const newReview = {
@@ -236,22 +220,20 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
 
                   if (res.ok) {
                     setLocalReviews((prev) => [newReview, ...prev]);
-                  } else if (!res.ok) {
+                  } else {
                     const text = await res.text();
                     alert(`Failed to submit: ${text}`);
                   }
-                } catch (err) {
-                  console.error(err);
+                } catch {
                   alert("Something went wrong while submitting the review.");
                 }
               }}
             >
               <input
-                className="input input-bordered input-sm bg-gray-100 text-sm text-black cursor-not-allowed"
+                className="input input-bordered bg-gray-100 text-sm cursor-not-allowed"
                 value={generatedUser}
                 readOnly
               />
-              <br />
               <div className="rating rating-lg m-4">
                 {[1, 2, 3, 4, 5].map((value) => (
                   <input
@@ -259,49 +241,38 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
                     type="radio"
                     name="rating"
                     value={value}
-                    className="mask mask-star-2 bg-amber-600 ml-2 mr-2"
-                    aria-label={`${value} star`}
+                    className="mask mask-star-2 bg-amber-600 mx-2"
                     required
                   />
                 ))}
               </div>
-
               <textarea
                 name="review"
                 className="textarea textarea-lg h-24 mb-4 bg-white"
                 placeholder="Tell us about your experience..."
                 required
               />
-              <br />
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
+              <button type="submit" className="btn btn-primary">Submit</button>
             </form>
           )}
-          <hr />
 
-          {/* Display Reviews */}
-          <div className="h-full space-y-4 pr-2">
-            {reviews.length === 0 ? (
-              <p>No reviews yet</p>
+          {/* Review List */}
+          <div className="mt-8 space-y-4">
+            {localReviews.length === 0 ? (
+              <p className="text-center">No reviews yet</p>
             ) : (
               localReviews.map((item, i) => (
-                <div
-                  key={i}
-                  className="flex w-[80%] mx-auto gap-2 p-3 bg-orange-100 shadow rounded-lg"
-                >
-                  <div className="w-[20%] text-center border-r pr-2 flex flex-col items-center gap-2">
+                <div key={i} className="flex gap-4 p-4 bg-orange-100 shadow rounded-lg">
+                  <div className="w-[20%] text-center flex flex-col items-center gap-2 border-r">
                     <img
                       className="rounded-full w-16 h-16 object-cover"
                       src="/images/Screenshot 2025-01-19 004453.png"
                       alt="profile pic"
                     />
-                    <p className="font-bold text-sm break-words">
-                      {item.usr}
-                    </p>
+                    <p className="font-bold text-sm">{item.usr}</p>
                   </div>
                   <div className="w-[80%]">
-                    <div className="rating rating-sm">
+                    <div className="rating rating-sm mb-2">
                       {[1, 2, 3, 4, 5].map((val) => (
                         <input
                           key={val}
@@ -319,29 +290,29 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
               ))
             )}
           </div>
-        </div>
+        </section>
 
-        {/* Recommendations Section */}
-        <div className="space-y-4 w-[80%] mx-auto">
-          <h2 className="text-2xl font-semibold m-5">Recommendations</h2>
-          <hr />
+        {/* Recommendations */}
+        <section className="w-[85%] mx-auto mb-12">
+          <h2 className="text-3xl font-bold mb-3">Recommendations</h2>
+          <hr className="mb-6" />
           {loading ? (
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="skeleton h-40 w-full rounded-lg"></div>
               ))}
             </div>
           ) : rec.length === 0 ? (
-            <p>No recommendations yet.</p>
+            <p className="text-center">No recommendations yet.</p>
           ) : (
-            <div className="flex flex-wrap justify-center">
+            <div className="flex flex-wrap justify-center gap-4">
               {rec.map((m) => (
                 <Link href={`/movies/${m.id}`} key={m.id}>
-                  <div className="card bg-[#38435b] shadow h-90 w-45 overflow-hidden m-2">
+                  <div className="card bg-[#38435b] shadow-lg w-40 hover:scale-105 transition">
                     <img
                       src={m.poster}
                       alt={m.title}
-                      className="h-70 w-full object-cover rounded-t"
+                      className="h-56 w-full object-cover rounded-t"
                     />
                     <div className="p-2">
                       <h3 className="font-bold text-center text-sm text-white">
@@ -353,7 +324,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
               ))}
             </div>
           )}
-        </div>
+        </section>
       </main>
     </div>
   );

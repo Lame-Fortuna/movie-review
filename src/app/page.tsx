@@ -20,15 +20,26 @@ type Movie = {
 const API_KEY = process.env.TMDB_key;
 const BASE_URL = "https://api.themoviedb.org/3";
 
+// Tab title and icon
+export async function generateMetadata() {
+  return {
+    title: "Film Atlas",
+    description: "Explore movies and TV Shows",
+    icons: {
+      icon: "/filmAtlas.ico",
+    },
+  };
+}
+
 // Fallback dummy movie
 const fallbackMovie: Movie = {
   id: 0,
   title: "Unavailable",
-  poster_path: "/poster.jpg", // This should be in your public/ folder
-  backdrop_path: "/poster.jpg",
+  poster_path: "/image/poster.jpg", // This should be in your public/ folder
+  backdrop_path: "/image/poster.jpg",
 };
 
-// Static fallback data
+// Static data
 const horror = {
   page: 1,
   results: [

@@ -12,6 +12,18 @@ type Movie = {
   Poster: string;
 };
 
+// Tab title and icon
+export async function generateMetadata(props: { params: Params }) {
+  const { query } = await props.params;
+  return {
+    title: `Search Results for ${query}`,
+    description: "Explore movies and TV Shows",
+    icons: {
+      icon: "/filmAtlas.ico",
+    },
+  };
+}
+
 // Fetch movies based on query, page, and sortBy
 async function fetchMovies(
   query: string,
