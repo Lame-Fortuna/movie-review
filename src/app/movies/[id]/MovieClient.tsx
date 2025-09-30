@@ -299,7 +299,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
                     key={i}
                     className="flex gap-2 p-3 bg-orange-100 shadow rounded-lg"
                   >
-                    <div className="w-[20%] text-center border-r pr-2 flex flex-col items-center gap-2">
+                    <div className="w-[33%] lg:w-[20%] text-center border-r pr-2 flex flex-col items-center gap-2">
                       <img
                         className="rounded-full w-16 h-16 object-cover"
                         src="/images/Screenshot 2025-01-19 004453.png"

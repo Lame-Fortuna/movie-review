@@ -75,7 +75,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
     <div className="min-h-screen bg-base-200">
       <Navbar />
 
-      <main className="w-[90%] mx-auto mt-5 p-6 flex flex-col bg-cyan-50 text-black rounded-lg shadow-xl">
+      <main className="w-[90%] mx-auto mt-5 p-3 flex flex-col bg-cyan-50 text-black rounded-lg shadow-xl">
 
         {/* Title + Year */}
         <header className="text-center mb-6">
@@ -96,7 +96,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
           <h2 className="text-3xl font-bold mb-3">Overview</h2>
           <hr className="mb-6" />
 
-          <div className="flex gap-6">
+          <div className="flex flex-col md:flex-row gap-6">
             {/* Poster */}
             <div className="flex-shrink-0 mx-auto lg:mx-0">
               <img
@@ -263,7 +263,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
             ) : (
               localReviews.map((item, i) => (
                 <div key={i} className="flex gap-4 p-4 bg-orange-100 shadow rounded-lg">
-                  <div className="w-[20%] text-center flex flex-col items-center gap-2 border-r">
+                  <div className="w-[33%] lg:w-[20%] text-center flex flex-col items-center gap-2 border-r">
                     <img
                       className="rounded-full w-16 h-16 object-cover"
                       src="/images/Screenshot 2025-01-19 004453.png"
@@ -308,7 +308,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
             <div className="flex flex-wrap justify-center gap-4">
               {rec.map((m) => (
                 <Link href={`/movies/${m.id}`} key={m.id}>
-                  <div className="card bg-[#38435b] shadow-lg w-40 hover:scale-105 transition">
+                  <div className="card bg-[#38435b] shadow-lg w-35">
                     <img
                       src={m.poster}
                       alt={m.title}
