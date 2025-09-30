@@ -29,23 +29,16 @@ const genreMap: Record<string, number> = {
 };
 
 type Movie = {
-  adult?: boolean;
   backdrop_path?: string;
-  genre_ids?: number[];
   id?: number;
-  original_language?: string;
-  original_title?: string;
-  popularity?: number;
+  year?: number;
   poster_path?: string;
-  release_date?: string;
   title?: string;
-  video?: boolean;
-  vote_average?: number;
-  vote_count?: number;
 };
 
 type Props = {
   movies: {
+    vintage: Movie[];
     trending: Movie[];
     popular: Movie[];
     horror: Movie[];
@@ -55,14 +48,13 @@ type Props = {
 };
 
 function MovieCard({ movie }: { movie: Movie }) {
-  const year = movie.release_date ? movie.release_date.split("-")[0] : "";
   const [src, setSrc] = useState(
     `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
   );
   return (
     <a
       href={`/movies/${movie.id}`}
-      className="carousel-item flex flex-col text-center justify-between pb-5 w-50 h-80 bg-[#38435b] rounded overflow-hidden shadow-md "
+      className="carousel-item flex flex-col text-center justify-between pb-5 w-50 h-85 bg-[#38435b] rounded overflow-hidden shadow-md "
     >
       <img
         src={src}
@@ -70,8 +62,8 @@ function MovieCard({ movie }: { movie: Movie }) {
         className="w-full max-h-65 object-fill"
         onError={() => setSrc("/images/poster.jpg")}
       />
-      <p className="text-lg ">{movie.title}</p>
-      <p>{year}</p>
+      <p className="text-md mx-1">{movie.title}</p>
+      <p>{movie.year}</p>
     </a>
   );
 }
@@ -127,12 +119,9 @@ export default function Home({ movies }: Props) {
       <Navbar />
 
       {/* Trending Carousel */}
-      <div className="px-0 lg:px-32">
+      <div className="px-0 lg:px-32 relative">
         <div className="carousel w-full h-fit">
           {movies.trending.map((movie, index) => {
-            const year = movie.release_date
-              ? movie.release_date.split("-")[0]
-              : ""; // Move the year calculation here
             return (
               <div
                 key={movie.id}
@@ -145,10 +134,9 @@ export default function Home({ movies }: Props) {
                 }}
               >
                 <div className="absolute w-1/2 inset-0 flex items-center px-8">
-                  {/* Title link added here */}
                   <a href={`/movies/${movie.id}`}>
                     <h2 className="text-white text-3xl ml-6 md:text-5xl font-bold drop-shadow-xl">
-                      {movie.title} {year}
+                      {movie.title} {movie.year}
                     </h2>
                   </a>
                 </div>
@@ -156,13 +144,42 @@ export default function Home({ movies }: Props) {
             );
           })}
         </div>
+
+        {/* Arrows for Trending */}
+        <button
+          className="absolute left-5 top-1/2 -translate-y-1/2 z-10 bg-black/40 hover:bg-black/60 text-white rounded-full w-10 h-10 flex items-center justify-center"
+          onClick={() => {
+            const container = document.querySelector(
+              ".carousel",
+            ) as HTMLElement;
+            container.scrollBy({
+              left: -window.innerWidth,
+              behavior: "smooth",
+            });
+          }}
+        >
+          ❮
+        </button>
+        <button
+          className="absolute right-5 top-1/2 -translate-y-1/2 z-10 bg-black/40 hover:bg-black/60 text-white rounded-full w-10 h-10 flex items-center justify-center"
+          onClick={() => {
+            const container = document.querySelector(
+              ".carousel",
+            ) as HTMLElement;
+            container.scrollBy({ left: window.innerWidth, behavior: "smooth" });
+          }}
+        >
+          ❯
+        </button>
       </div>
 
+
       {/* Other Sections */}
+      <CarouselSection title="Vintage" movies={movies.vintage} />
       <CarouselSection title="Popular" movies={movies.popular} />
-      <CarouselSection title="Horror" movies={movies.horror} />
       <CarouselSection title="Comedy" movies={movies.comedy} />
       <CarouselSection title="Action" movies={movies.action} />
+      <CarouselSection title="Horror" movies={movies.horror} />
     </div>
   );
 }

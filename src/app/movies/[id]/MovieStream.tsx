@@ -96,7 +96,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
           <h2 className="text-3xl font-bold mb-3">Overview</h2>
           <hr className="mb-6" />
 
-          <div className="flex flex-col lg:flex-row gap-6">
+          <div className="flex gap-6">
             {/* Poster */}
             <div className="flex-shrink-0 mx-auto lg:mx-0">
               <img
@@ -128,7 +128,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
               <p><strong>Cast:</strong> {movie.Actors}</p>
               <p><strong>Released:</strong> {movie.Released}</p>
               <p><strong>Runtime:</strong> {movie.Runtime}</p>
-              <p className="p-3 bg-white border rounded-lg shadow-sm">{movie.Plot}</p>
+              <p className="p-2 border rounded-lg shadow-sm">{movie.Plot}</p>
 
               <div className="flex flex-wrap gap-3">
                 {movie.Ratings?.map((rating: any, idx: number) => (

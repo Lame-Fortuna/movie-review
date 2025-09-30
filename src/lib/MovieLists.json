@@ -1,0 +1,91 @@
+{
+  "Vintage":[
+    { "id": 653, "year": 1922, "title": "Nosferatu", "poster_path": "/zv7J85D8CC9qYagAEhPM63CIG6j.jpg"},
+    { "id": 15, "year": 1941, "title": "Citizen Kane", "poster_path": "/sav0jxhqiH0bPr2vZFU0Kjt2nZL.jpg"},
+    { "id": 1939, "year": 1944, "title": "Laura", "poster_path": "/j0zEiFFrdbZnMXqD3piOtZBJeNB.jpg"},
+    { "id": 1480, "year": 1958, "title": "Touch of Evil", "poster_path": "/1pvRgmfBaoMczIJBOi9gCOZ4FMC.jpg"},
+    { "id": 3035, "year": 1931, "title": "Frankenstein", "poster_path": "/mu6wHwH0IwCCaEYtpqujuPJYat1.jpg"},
+    { "id": 138, "year": 1931, "title": "Dracula", "poster_path": "/ueVSPt7vAba0XScHWTDWS5tNxYX.jpg"},
+    { "id": 964, "year": 1925, "title": "The Phantom of the Opera", "poster_path": "/mvaYpAYj957C2tlq3vVJPSzGJXK.jpg"},
+    { "id": 18987, "year": 1923, "title": "The Hunchback of Notre Dame", "poster_path": "/3oheTQrTuqS1jPUW6GOc65ZbM5u.jpg"},
+    { "id": 19, "year": 1927, "title": "Metropolis", "poster_path": "/vZIJxGnjcswPCAa52jhbl01FQkV.jpg"},
+    { "id": 234, "year": 1920, "title": "The Cabinet of Dr. Caligari", "poster_path": "/myK9DeIsXWGKgUTZyGXg2IfFk0W.jpg"},
+    { "id": 30982, "year": 1915, "title": "The Tramp", "poster_path": "/v36MPfeBlhUBgVXu7jBofZorrbM.jpg"},
+    { "id": 10098, "year": 1921, "title": "The Kid", "poster_path": "/A9NWYyn7eX0H9XIjaOvfWJ9mCGA.jpg"},
+    { "id": 828, "year": 1951, "title": "The Day the Earth Stood Still", "poster_path": "/eslDNzf0LF1m9GsgUXlmyfTcC6Y.jpg"},
+    { "id": 548, "year": 1950, "title": "Rashomon", "poster_path": "/vL7Xw04nFMHwnvXRFCmYYAzMUvY.jpg"},
+    { "id": 11878, "year": 1961, "title": "Yojimbo", "poster_path": "/tN7kYPjRhDolpui9sc9Eq9n5b2O.jpg"},
+    { "id": 961, "year": 1926, "title": "The General", "poster_path": "/nIp4gIXogCjfB1QABNsWwa9gSca.jpg"},
+    { "id": 962, "year": 1925, "title": "The Gold Rush", "poster_path": "/eQRFo1qwRREYwj47Yoe1PisgOle.jpg"},
+    { "id": 27517, "year": 1928, "title": "The Man Who Laughs", "poster_path": "/iQXBMr4NzQst4X0rDU6MII6ZUOM.jpg"},
+    { "id": 2760, "year": 1927, "title": "The Lodger", "poster_path": "/tD84zwFeFRf3zG98x558N3PBMV.jpg"},
+    { "id": 289, "year": 1943, "title": "Casablanca", "poster_path": "/oyGRZVIthHJjc98ekKpeWpDh8Ws.jpg"},
+    { "id": 770, "year": 1939, "title": "Gone with the Wind", "poster_path": "/lNz2Ow0wGCAvzckW7EOjE03KcYv.jpg"}
+  ],
+
+  "Comedy": [
+    { "id": 1035259, "year": 2025, "title": "Naked Gun", "poster_path": "/rmwQ8GsdQ1M3LtemNWLErle2nBU.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 680, "year": 1994, "title": "Pulp Fiction", "poster_path": "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 816, "year": 1997, "title": "Austin Powers: International Man of Mystery", "poster_path": "/5uD4dxNX8JKFjWKYMHyOsqhi5pN.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 9486, "year": 2003, "title": "Johnny English", "poster_path": "/mmzW88tnkB2MnOV3Un2F9IUxSnZ.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 9470, "year": 2004, "title": "Kung Fu Hustle", "poster_path": "/exbyTbrvRUDKN2mcNEuVor4VFQW.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 2109, "year": 1998, "title": "Rush Hour", "poster_path": "/we7wOLVFgxhzLzUt0qNe50xdIQZ.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 9502, "year": 2008, "title": "Kung Fu Panda", "poster_path": "/wWt4JYXTg5Wr3xBW2phBrMKgp3x.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 76493, "year": 2012, "title": "The Dictator", "poster_path": "/n0W7kajF4GFMRk2c0wWwMQqTaDM.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 935, "year": 1964, "title": "Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb", "poster_path": "/7SixLzxcqezkZEYU8pcHZgbkmjp.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 914, "year": 1940, "title": "The Great Dictator", "poster_path": "/nhMXB8GTdswYMCL9nepDZymJCOr.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 18610, "year": 2008, "title": "One Two Three", "poster_path": "/8NZvA9tT1eHAL3fSM10cnWFX9JL.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 19670, "year": 2006, "title": "Golmaal: Fun Unlimited", "poster_path": "/3ubefqLk26Gy0lXCfGIu8hQrBak.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 194, "year": 2001, "title": "Amelie", "poster_path": "/nSxDa3M9aMvGVLoItzWTepQ5h5d.jpg", "backdrop_path": "/images/poster.jpg" }
+  ],
+
+  "Action": [
+    { "id": 1134055, "year": 2023, "title": "Kill Shot", "poster_path": "/5kCEHZnUeAZFJvE3l8K5OYjIwjj.jpg", "backdrop_path": "/gTydwZInr9ncMVFdYUzTcXtiTiT.jpg" },
+    { "id": 803796, "year": 2025, "title": "KPop Demon Hunters", "poster_path": "/jfS5KEfiwsS35ieZvdUdJKkwLlZ.jpg", "backdrop_path": "/l3ycQYwWmbz7p8otwbomFDXIEhn.jpg" },
+    { "id": 155, "year": 2008, "title": "The Dark Knight", "poster_path": "/qJ2tW6WMUDux911r6m7haRef0WH.jpg", "backdrop_path": "/enNubozHn9pXi0ycTVYUWfpHZm.jpg" },
+    { "id": 122, "year": 2003, "title": "The Lord of the Rings: The Return of the King", "poster_path": "/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg", "backdrop_path": "/2u7zbn8EudG6kLlBzUYqP8RyFU4.jpg" },
+    { "id": 346, "year": 1954, "title": "Seven Samurai", "poster_path": "/8OKmBV5BUFzmozIC3pPWKHy17kx.jpg", "backdrop_path": "/sJNNMCc6B7KZIY3LH3JMYJJNH5j.jpg" },
+    { "id": 14537, "year": 1962, "title": "Harakiri", "poster_path": "/5konZnIbcAxZjP616Cz5o9bKEfW.jpg", "backdrop_path": "/nC3IjYhUgZWgfKfFX0ygMigFwgc.jpg" },
+    { "id": 120, "year": 2001, "title": "The Lord of the Rings: The Fellowship of the Ring", "poster_path": "/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg", "backdrop_path": "/x2RS3uTcsJJ9IfjNPcgDmukoEcQ.jpg" },
+    { "id": 121, "year": 2002, "title": "The Lord of the Rings: The Two Towers", "poster_path": "/5VTN0pR8gcqV3EPUHHfMGnJYN9L.jpg", "backdrop_path": "/jfEOzpsjc6JDlKhUHb4toWQPt.jpg" },
+    { "id": 324857, "year": 2018, "title": "Spider-Man: Into the Spider-Verse", "poster_path": "/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg", "backdrop_path": "/8mnXR9rey5uQ08rZAvzojKWbDQS.jpg" },
+    { "id": 1891, "year": 1980, "title": "The Empire Strikes Back", "poster_path": "/nNAeTmF4CtdSgMDplXTDPOpYzsX.jpg", "backdrop_path": "/kgjvZgs6cV2v5bigzzzWqJ9EMGs.jpg" }
+  ],
+
+  "Popular": [
+    { "id": 617126, "year": 2025, "title": "The Fantastic 4: First Steps", "poster_path": "/cm8TNGBGG0aBfWj0LgrESHv8tir.jpg", "backdrop_path": "/s94NjfKkcSczZ1FembwmQZwsuwY.jpg" },
+    { "id": 1267319, "year": 2025, "title": "Mantis", "poster_path": "/xS9bbciDC5lHPgl79SrPyzxKAXL.jpg", "backdrop_path": "/ckT96Sn8r1IDNyIBJ1mDZ1Jh2kR.jpg" },
+    { "id": 1311031, "year": 2025, "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle", "poster_path": "/sUsVimPdA1l162FvdBIlmKBlWHx.jpg", "backdrop_path": "/1RgPyOhN4DRs225BGTlHJqCudII.jpg" },
+    { "id": 1328803, "year": 2025, "title": "Prisoner of War", "poster_path": "/1XET89sjRm9mUuHXhGIlKTNd5uD.jpg", "backdrop_path": "/iUy1LdIX74krb0ZEhq8IImIneFk.jpg" },
+    { "id": 755898, "year": 2025, "title": "War of the Worlds", "poster_path": "/yvirUYrva23IudARHn3mMGVxWqM.jpg", "backdrop_path": "/iZLqwEwUViJdSkGVjePGhxYzbDb.jpg" },
+    { "id": 1009640, "year": 2025, "title": "Valiant One", "poster_path": "/sT8Z14RDCAd6szzxzWFAU4xcMwg.jpg", "backdrop_path": "/aIsjCdfiAS89cMjdDWEpKmUTHsZ.jpg" },
+    { "id": 1038392, "year": 2025, "title": "The Conjuring: Last Rites", "poster_path": "/7JzOmJ1fIU43I3gLHYsY8UzNzjG.jpg", "backdrop_path": "/fq8gLtrz1ByW3KQ2IM3RMZEIjsQ.jpg" },
+    { "id": 1450529, "year": 2025, "title": "Gunman", "poster_path": "/eBw5Vso0K3r8Dzycxz0E0lgC40z.jpg", "backdrop_path": "/bwP4UJZjjfAVOuTAWT8W8J2AKtG.jpg" },
+    { "id": 1054867, "year": 2025, "title": "One Battle After Another", "poster_path": "/rA3d4NDeTUVIVCfQtnxGzZ672N8.jpg", "backdrop_path": "/nIX9kqNNe4ERx3wg3TuzRa2deAM.jpg" },
+    { "id": 987400, "year": 2025, "title": "Aztec Batman: Clash of Empires", "poster_path": "/s0Mlo5w4INp3bUdsJo3RaSSMXWz.jpg", "backdrop_path": "/9KSboWOt09J72aMY4x8SS1IaOHK.jpg" },
+    { "id": 1078605, "year": 2025, "title": "Weapons", "poster_path": "/cpf7vsRZ0MYRQcnLWteD5jK9ymT.jpg", "backdrop_path": "/Q2OajDi2kcO6yErb1IAyVDTKMs.jpg" },
+    { "id": 1061474, "year": 2025, "title": "Superman", "poster_path": "/wPLysNDLffQLOVebZQCbXJEv6E6.jpg", "backdrop_path": "/eU7IfdWq8KQy0oNd4kKXS0QUR08.jpg" },
+    { "id": 1447287, "year": 2025, "title": "Donde tú quieras", "poster_path": "/32kwv7gWBcIcI9mi5h5CwwLxZVw.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 803796, "year": 2025, "title": "KPop Demon Hunters", "poster_path": "/22AouvwlhlXbe3nrFcjzL24bvWH.jpg", "backdrop_path": "/w3Bi0wygeFQctn6AqFTwhGNXRwL.jpg" },
+    { "id": 1007734, "year": 2025, "title": "Nobody 2", "poster_path": "/xGLoqM9peusKQeuwlSw2Qlhx740.jpg", "backdrop_path": "/mEW9XMgYDO6U0MJcIRqRuSwjzN5.jpg" },
+    { "id": 575265, "year": 2025, "title": "Mission: Impossible - The Final Reckoning", "poster_path": "/z53D72EAOxGRqdr7KXXWp9dJiDe.jpg", "backdrop_path": "/538U9snNc2fpnOmYXAPUh3zn31H.jpg" },
+    { "id": 1035259, "year": 2025, "title": "The Naked Gun", "poster_path": "/rmwQ8GsdQ1M3LtemNWLErle2nBU.jpg", "backdrop_path": "/kzeBfhXMRWiykBsqoL3UbfaM0S.jpg" },
+    { "id": 1087192, "year": 2025, "title": "How to Train Your Dragon", "poster_path": "/53dsJ3oEnBhTBVMigWJ9tkA5bzJ.jpg", "backdrop_path": "/79PNOxNXSe5e0bhEj11QJPlsdCN.jpg" },
+    { "id": 13494, "year": 2025, "title": "Red Sonja", "poster_path": "/aE3yh4y0h96CZZpLo0UDFMWZAA9.jpg", "backdrop_path": "/xSD0q1FiuZkvHuy7uscOLbmd1hR.jpg" },
+    { "id": 911430, "year": 2025, "title": "F1", "poster_path": "/9PXZIUsSDh4alB80jheWX4fhZmy.jpg", "backdrop_path": "/ZtcGMc204JsNqfjS9lU6udRgpo.jpg" }
+  ],
+
+  "Horror": [
+    { "id": 1130276, "year": 2024, "title": "Succubus", "poster_path": "/nyGKQrctWNmhSvto8h60AhZ3iLz.jpg", "backdrop_path": "/9uP5noKg56O6OgwecxWfv152FNG.jpg" },
+    { "id": 539, "year": 1960, "title": "Psycho", "poster_path": "/yz4QVqPx3h1hD1DfqqQkCq3rmxW.jpg", "backdrop_path": "/uif5fUshJrXyyDzfpzp1DLw3N0S.jpg" },
+    { "id": 1150394, "year": 2023, "title": "La Leyenda de los Chaneques", "poster_path": "/4f9ghI3utknpeBZSAzNuIKKATOA.jpg", "backdrop_path": "/jSFbnXR2vDQ0K8v0qYHt5aPCSyl.jpg" },
+    { "id": 667276, "year": 2021, "title": "Las Leyendas: El Origen", "poster_path": "/fR49hZdFJ6ZtRS23JW79VYmZgI7.jpg", "backdrop_path": "/qpemGrOsri13KmvkYIeU8oJ1FQD.jpg" },
+    { "id": 694, "year": 1980, "title": "The Shining", "poster_path": "/xazWoLealQwEgqZ89MLZklLZD3k.jpg", "backdrop_path": "/mmd1HnuvAzFc4iuVJcnBrhDNEKr.jpg" },
+    { "id": 92060, "year": 1983, "title": "Michael Jackson's Thriller", "poster_path": "/dYHGoPMkZMVuBA4EydmDQMo1EEv.jpg", "backdrop_path": "/aVefEnQsfNPUrgsuMszTDt165P0.jpg" },
+    { "id": 348, "year": 1979, "title": "Alien", "poster_path": "/vfrQk5IPloGg1v9Rzbh2Eg3VGyM.jpg", "backdrop_path": "/hdHIjZxq3SWFqpAz4NFhdbud0iz.jpg" },
+    { "id": 297610, "year": 2012, "title": "Abraham Lincoln Vampire Hunter: The Great Calamity", "poster_path": "/9kD8bohNKE1truudhmeOtOjfNeH.jpg", "backdrop_path": "/images/poster.jpg" },
+    { "id": 494656, "year": 2018, "title": "The Legend of the Black Charro", "poster_path": "/fDLJ5vIeRL68cIHlob11w2pBzH0.jpg", "backdrop_path": "/ceErqYZbHNvHjpwu4EnJna7gnCF.jpg" },
+    { "id": 1091, "year": 1982, "title": "The Thing", "poster_path": "/a9RjXOIIB56k2rGoL3Fk3nRHHHQ.jpg", "backdrop_path": "/jaO8WurWoUBE55nskqtFqPZFFaO.jpg" }
+  ]
+
+}
