@@ -18,7 +18,7 @@ const BASE_URL = "https://api.themoviedb.org/3";
 export async function generateMetadata() {
   return {
     title: "Film Atlas",
-    description: "Explore movies and TV Shows",
+    description: "Explore movies and TV Shows across various genres for free. Discover trending, vintage, horror, comedy, action, and popular titles all in one place. Stream vintage classics for free!",
     icons: {
       icon: "/filmAtlas.ico",
     },

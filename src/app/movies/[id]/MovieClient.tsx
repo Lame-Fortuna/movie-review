@@ -88,7 +88,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
 
       <main className="w-[97%] min-h-fit lg:h-[85vh] mx-auto p-6 flex flex-col lg:flex-row gap-6 bg-cyan-50 text-black rounded-lg shadow-lg overflow-hidden">
         {/* Left Section (Poster and Title) */}
-        <section className="lg:w-1/3 flex-none">
+        <section className="lg:w-1/4 flex-none">
           <h1 className="text-3xl font-bold mb-4">
             {movie.Title}
           </h1>
@@ -118,7 +118,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
         </section>
 
         {/* Right Section (Movie Info, Reviews, Recommendations) */}
-        <section className="lg:w-2/3 flex-1 space-y-4 overflow-y-auto">
+        <section className="lg:w-3/4 flex-1 space-y-4 overflow-y-auto">
           {/* Movie Info */}
           <div className="space-y-4">
             <p>
@@ -299,7 +299,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
                     key={i}
                     className="flex gap-2 p-3 bg-orange-100 shadow rounded-lg"
                   >
-                    <div className="w-[33%] lg:w-[20%] text-center border-r pr-2 flex flex-col items-center gap-2">
+                    <div className="w-[40%] lg:w-[20%] text-center border-r pr-2 flex flex-col items-center gap-2">
                       <img
                         className="rounded-full w-16 h-16 object-cover"
                         src="/images/Screenshot 2025-01-19 004453.png"

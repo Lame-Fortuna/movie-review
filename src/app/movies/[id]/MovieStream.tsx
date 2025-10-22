@@ -75,7 +75,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
     <div className="min-h-screen bg-base-200">
       <Navbar />
 
-      <main className="w-[90%] mx-auto mt-5 p-3 flex flex-col bg-cyan-50 text-black rounded-lg shadow-xl">
+      <main className="w-[97%] mx-auto mt-5 p-6 flex flex-col bg-cyan-50 text-black rounded-lg shadow-xl">
 
         {/* Title + Year */}
         <header className="text-center mb-6">
@@ -299,7 +299,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
           {loading ? (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="skeleton h-40 w-full rounded-lg"></div>
+                <div key={i} className="skeleton h-30 w-full rounded-lg"></div>
               ))}
             </div>
           ) : rec.length === 0 ? (
@@ -308,7 +308,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
             <div className="flex flex-wrap justify-center gap-4">
               {rec.map((m) => (
                 <Link href={`/movies/${m.id}`} key={m.id}>
-                  <div className="card bg-[#38435b] shadow-lg w-35">
+                  <div className="card bg-[#38435b] shadow-lg w-30">
                     <img
                       src={m.poster}
                       alt={m.title}
