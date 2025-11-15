@@ -4,6 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
 
+type Params = Promise<{ name: string }>;
+
 type Genre = { id: string; name: string };
 function GenreBadge({ genre }: { genre: Genre }) {
   return (
@@ -32,12 +34,9 @@ type Movie = {
   Ratings: Rating[];
 };
 
-interface PageProps {
-  params: { name: string };
-}
 
-export default async function CataloguePage({ params }: PageProps) {
-  const { name } = await params;
+export default async function CataloguePage(props: { params: Params }) {
+  const { name } = await props.params;
 
   let tables: Record<string, Movie[]> = {};
 
