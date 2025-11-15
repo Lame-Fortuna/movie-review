@@ -1,16 +1,22 @@
 // components/Navbar.tsx
+"use client";
+
 import React, { useState } from "react";
 import Link from "next/link";
 import Overlay from "./Overlay";
 
+import { useRouter } from "next/navigation";
+
+
 export default function Navbar() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
-  const [overlayOpen, setOverlayOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (query.trim().length >= 2) {
-      window.location.href = `/search/${encodeURIComponent(query.trim())}/1`;
+      router.push(`/search/${encodeURIComponent(query.trim())}/1`);
     }
   };
 
@@ -21,7 +27,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2 flex-1">
           {/* Hamburger */}
           <button
-            onClick={() => setOverlayOpen(true)}
+            onClick={() => setIsOpen(true)}
             className="btn btn-ghost btn-circle"
           >
             <svg
@@ -75,7 +81,7 @@ export default function Navbar() {
       </nav>
 
       {/* Overlay */}
-      <Overlay isOpen={overlayOpen} onClose={() => setOverlayOpen(false)} />
+      <Overlay isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   );
 }

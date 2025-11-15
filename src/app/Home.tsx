@@ -4,6 +4,44 @@ import { useState } from "react";
 import Navbar from "./components/nav";
 import Head from 'next/head';
 
+
+/* 1. Make sure you import Link
+import Link from 'next/link';
+
+// 2. Add the slugify function (or import it)
+const slugify = (title) => {
+  return title
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+};
+
+// 3. Inside your component's render/return:
+/ ...
+{movies.map((movie) => {
+  // 4. Create the slug from the movie title
+  const slug = slugify(movie.title);
+
+  // 5. Render the Link component with the NEW href
+  return (
+    <Link
+      key={movie.id} // Add the key to the Link component
+      href={`/movies/${movie.id}/${slug}`} // <-- THIS IS THE CHANGE
+      className="carousel-item flex flex-col text-center justify-between pb-5 w-50 h-85 bg-[#38435b] rounded overflow-hidden shadow-md "
+    >
+      <img
+        src={src}
+        alt={movie.title}
+        className="w-full max-h-65 object-fill"
+        onError={() => setSrc("/images/poster.jpg")}
+      />
+      <p className="text-md mx-1">{movie.title}</p>
+      <p>{movie.year}</p>
+    </Link>
+  );
+})}
+*/
+
 const genreMap: Record<string, number> = {
   action: 28,
   adventure: 12,
@@ -59,6 +97,7 @@ function MovieCard({ movie }: { movie: Movie }) {
       <img
         src={src}
         alt={movie.title}
+        title={`Poster for ${movie.title}`}
         className="w-full max-h-65 object-fill"
         onError={() => setSrc("/images/poster.jpg")}
       />

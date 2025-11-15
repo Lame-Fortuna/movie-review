@@ -78,6 +78,7 @@ export default function MovieList({
                   <img
                     src={src}
                     alt={movie.Title}
+                    title={`Poster for ${movie.Title}`}
                     className="w-full h-80 object-top"
                     onError={() => setSrc("/images/poster.jpg")}
                   />

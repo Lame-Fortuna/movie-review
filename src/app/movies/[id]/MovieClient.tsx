@@ -86,7 +86,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
 
       <Navbar />
 
-      <main className="w-[97%] min-h-fit lg:h-[85vh] mx-auto p-6 flex flex-col lg:flex-row gap-6 bg-cyan-50 text-black rounded-lg shadow-lg overflow-hidden">
+      <main className="w-[97%] min-h-fit lg:h-[85dvh] mx-auto p-6 flex flex-col lg:flex-row gap-6 bg-cyan-50 text-black rounded-lg shadow-lg overflow-hidden">
         {/* Left Section (Poster and Title) */}
         <section className="lg:w-1/4 flex-none">
           <h1 className="text-3xl font-bold mb-4">
@@ -111,6 +111,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
             <img
               src={posterSrc}
               alt="Poster"
+              title={`Poster for ${movie.Title}`}
               onError={() => setPosterSrc("/images/poster.jpg")}
               className="max-w-[200px] object-cover rounded-lg"
             />

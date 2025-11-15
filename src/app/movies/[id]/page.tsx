@@ -57,24 +57,32 @@ export default async function MoviePage(props: { params: Params }) {
     // Use OMDb as primary data source (to match MovieClient format)
     movie = {
       ...omdbData,
+      Backdrop: `https://image.tmdb.org/t/p/w500${tmdbData.backdrop_path}`,
       Poster: `https://image.tmdb.org/t/p/w500${tmdbData.poster_path}`,
       Poster2: `public/images/poster.jpg`,
       Title: omdbData.Title || tmdbData.title,
+      OriginalTitle: tmdbData.original_title,
+      OriginalLanguage: tmdbData.original_language,
+      OriginalCountry: tmdbData.origin_country,
       Year: omdbData.Year || tmdbData.release_date?.split("-")[0],
       Released: omdbData.Released || tmdbData.release_date,
       Genres: tmdbData.genres ?? [],
       Runtime: omdbData.Runtime || `${tmdbData.runtime} min`,
       Rated: omdbData.Rated || "N/A",
-      Plot: omdbData.Plot || tmdbData.overview,
+      Plot: tmdbData.overview,
       imdbID: imdbID,
     };
   } else {
     movie = {
       Title: tmdbData.title,
+      OriginalTitle: tmdbData.original_title,
+      OriginalLanguage: tmdbData.original_language,
+      OriginalCountry: tmdbData.origin_country,
       Year: tmdbData.release_date?.split("-")[0],
       Released: tmdbData.release_date,
       Genres: tmdbData.genres ?? [],
       Runtime: `${tmdbData.runtime} min`,
+      Backdrop: `https://image.tmdb.org/t/p/w500${tmdbData.backdrop_path}`,
       Poster: `https://image.tmdb.org/t/p/w500${tmdbData.poster_path}`,
       Poster2: `public/images/poster.jpg`,
       Rated: "N/A",
@@ -82,13 +90,15 @@ export default async function MoviePage(props: { params: Params }) {
       Director: "N/A",
       Actors: "N/A",
       Ratings: [],
-      imdbID: "",
+      imdbID: imdbID || "",
     };
   }
 
   // ⬇️ Check if the DB document has a `src` field to determine which component to render
   const hasStream = Boolean(dbDoc?.src);
   const src = dbDoc?.src;
+
+  console.log("Movie Data:", movie);
 
   return hasStream
     ? <MovieStream id={id} movie={{ ...movie, src }} reviews={reviews} />
