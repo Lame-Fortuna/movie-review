@@ -1,32 +1,38 @@
 import fs from "fs";
 import path from "path";
 import CatalogueClient from "./CatalogueClient";
+import { getCollection } from "@/lib/mongodb";
 
 type PageProps = {
-  params: {
+  params: Promise<{
     name: string;
-  };
+  }>;
 };
 
+async function getCatalogue(name:string): Promise<any> {
+  try{
+    const collection = await getCollection("catalogues");
+    const catalogue = await collection.findOne({id: name});
+    return catalogue;
+  }
+  catch(error){
+    console.error("MongoDB error:", error);
+    return null;
+  }
+}
+
 export default async function Page({ params }: PageProps) {
+  
   const { name } = await params;
 
-  const filePath = path.join(
-    process.cwd(),
-    "src",
-    "lib",
-    "catalogues",
-    `${name}.json`
-  );
+  // Fetch from MongoDB
+  const catalogue = await getCatalogue(name);
 
-  if (!fs.existsSync(filePath)) {
-    return <div>no such catalgue</div>;
-  }
+  if (!catalogue) {
+    return(
+      <div>no such catalgue</div>
+    )
+    }
 
-  const catalogue = JSON.parse(
-    fs.readFileSync(filePath, "utf8")
-  );
-  
-  //console.log(catalogue);
   return <CatalogueClient catalogue={catalogue} />;
 }

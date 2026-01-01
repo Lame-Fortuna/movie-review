@@ -23,27 +23,18 @@
   ],
 
   "Trending": [
-    { "id": 66732, "year": 2016, "title": "Stranger Things", "poster_path": "/uOOtwVbSr4QDjAGIifLDwpb2Pdl.jpg", "backdrop_path": "/8zbAoryWbtH0DKdev8abFAjdufy.jpg" },
-    { "id": 1311031, "year": 2025, "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle", "poster_path": "/fWVSwgjpT2D78VUh6X8UBd2rorW.jpg", "backdrop_path": "/1RgPyOhN4DRs225BGTlHJqCudII.jpg" },
     { "id": 83533, "year": 2025, "title": "Avatar: Fire and Ash", "poster_path": "/g96wHxU7EnoIFwemb2RgohIXrgW.jpg", "backdrop_path": "/iN41Ccw4DctL8npfmYg1j5Tr1eb.jpg" },
-    { "id": 37854, "year": 1999, "title": "One Piece", "poster_path": "/cMD9Ygz11zjJzAovURpO75Qg7rT.jpg", "backdrop_path": "/oVfucXvhutTpYExG9k06NJqnpT9.jpg" },
-    { "id": 628847, "year": 2025, "title": "Trap House", "poster_path": "/ctU9S47MoJDN9CB7SCaitcfyyIu.jpg", "backdrop_path": "/oIJjO1CvEdTMFNkWfHaV0RB584G.jpg" },
     { "id": 967941, "year": 2025, "title": "Wicked: For Good", "poster_path": "/u7x3I5V9aP4tMZACmM8ClY8lK6K.jpg", "backdrop_path": "/l8pwO23MCvqYumzozpxynCNfck1.jpg" },
-    { "id": 1084242, "year": 2025, "title": "Zootopia 2", "poster_path": "/bjUWGw0Ao0qVWxagN3VCwBJHVo6.jpg", "backdrop_path": "/7nfpkR9XsQ1lBNCXSSHxGV7Dkxe.jpg" },
     { "id": 7451, "year": 2002, "title": "xXx", "poster_path": "/xeEw3eLeSFmJgXZzmF2Efww0q3s.jpg", "backdrop_path": "/2OHa6ukEq3Hce7Pc2kvu8wkmMFY.jpg" },
     { "id": 425274, "year": 2025, "title": "Now You See Me: Now You Don't", "poster_path": "/oD3Eey4e4Z259XLm3eD3WGcoJAh.jpg", "backdrop_path": "/dHSz0tSFuO2CsXJ1CApSauP9Ncl.jpg" },
     { "id": 106379, "year": 2024, "title": "Fallout", "poster_path": "/c15BtJxCXMrISLVmysdsnZUPQft.jpg", "backdrop_path": "/cIgHBLTMbcIkS0yvIrUUVVKLdOz.jpg" },
     { "id": 1234731, "year": 2025, "title": "Anaconda", "poster_path": "/5MDnvvkOqthhE5gQebzkcOhD1p5.jpg", "backdrop_path": "/yo41R39airbREp0PYfG30Ofxtgt.jpg" },
     { "id": 225171, "year": 2025, "title": "Pluribus", "poster_path": "/nrM2xFUfKJJEmZzd5d7kohT2G0C.jpg", "backdrop_path": "/vNCNUxNHHgP0WsA19hxztUsG3yG.jpg" },
-    { "id": 301507, "year": 2025, "title": "Heated Rivalry", "poster_path": "/epgr7n61vVIniyAghz2GYj22DkC.jpg", "backdrop_path": "/QbRbCULZVBcrN2uydpmIOQLV5O.jpg" },
-    { "id": 120089, "year": 2022, "title": "SPY x FAMILY", "poster_path": "/7NAvPYPAu7MeHwP8E9sn81PqsRh.jpg", "backdrop_path": "/lysUnU6V0VfcthDbviuVlIqgHOR.jpg" },
     { "id": 200875, "year": 2025, "title": "IT: Welcome to Derry", "poster_path": "/nyy3BITeIjviv6PFIXtqvc8i6xi.jpg", "backdrop_path": "/2fOKVDoc2O3eZmBZesWPuE5kgPN.jpg" },
     { "id": 1214931, "year": 2025, "title": "Nuremberg", "poster_path": "/sxu8TsG7k06ymWL98ELEIE1EMZV.jpg", "backdrop_path": "/ajzEWXl1z75Mx6lOj9lToHt5t6Z.jpg" },
     { "id": 1259102, "year": 2025, "title": "Eternity", "poster_path": "/o8pg20G67BGmQvRkXwstNre062J.jpg", "backdrop_path": "/fuacZLpnohQtLD0AhtCErcPVL98.jpg" },
-    { "id": 812583, "year": 2025, "title": "Wake Up Dead Man: A Knives Out Mystery", "poster_path": "/eDKPKlMtHjRQimYQz4eOgKYW5q6.jpg", "backdrop_path": "/fiRDzpcJe7qz3yIR43hdXIE3NHv.jpg" },
-    { "id": 1317288, "year": 2025, "title": "Marty Supreme", "poster_path": "/firAhZA0uQvRL2slp7v3AnOj0ZX.jpg", "backdrop_path": "/qKWDHofjMHPSEOTLaixkC9ZmjTT.jpg" },
-    { "id": 272418, "year": 2025, "title": "Robin Hood", "poster_path": "/3teWChNzKJdbfen46IdeKTygdZa.jpg", "backdrop_path": "/uoIOfRNmu47P2fET2KnrYHt3TH.jpg" }
-  ],
+    { "id": 812583, "year": 2025, "title": "Wake Up Dead Man: A Knives Out Mystery", "poster_path": "/eDKPKlMtHjRQimYQz4eOgKYW5q6.jpg", "backdrop_path": "/fiRDzpcJe7qz3yIR43hdXIE3NHv.jpg" }
+ ],
 
   "Horror": [
     { "id": 1091, "year": 1982, "title": "The Thing", "poster_path": "/a9RjXOIIB56k2rGoL3Fk3nRHHHQ.jpg", "backdrop_path": "/jaO8WurWoUBE55nskqtFqPZFFaO.jpg" },
@@ -65,8 +56,8 @@
     { "id": 76617, "year": 1974, "title": "Texas Chainsaw 3D", "poster_path": "/qaPvvHP1kKlQaUAXQZQAWitqBOT.jpg", "backdrop_path": "" },
     { "id": 2671, "year": 1998, "title": "Ring", "poster_path": "/1YINof6kN5yRdePEbcU5360ejoq.jpg", "backdrop_path": "" },
     { "id": 713704, "year": 2023, "title": "Evil Dead Rise", "poster_path": "/5ik4ATKmNtmJU6AYD0bLm56BCVM.jpg", "backdrop_path": "" },
-    { "id": 2004, "year": 1973, "title": "Saw", "poster_path": "/rLNSOudrayDBo1uqXjrhxcjODIC.jpg", "backdrop_path": "" },
-    { "id": 9552, "year": 2004, "title": "The Exorcist", "poster_path": "/5x0CeVHJI8tcDx8tUUwYHQSNILq.jpg", "backdrop_path": "" }
+    { "id": 2004, "year": 2004, "title": "Saw", "poster_path": "/rLNSOudrayDBo1uqXjrhxcjODIC.jpg", "backdrop_path": "" },
+    { "id": 9552, "year": 1973, "title": "The Exorcist", "poster_path": "/5x0CeVHJI8tcDx8tUUwYHQSNILq.jpg", "backdrop_path": "" }
   ],
  
   "Vintage":[

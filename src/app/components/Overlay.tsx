@@ -85,7 +85,7 @@ export default function Overlay({ isOpen, onClose }: SidebarProps) {
 
         {/* Genres Section */}
         <div tabIndex={0} className=" max-h-[80dvh] collapse collapse-arrow">
-          
+          <input type="checkbox" />
           <div className="collapse-title font-semibold">
             <h2 className="text-lg">Genres</h2>
           </div>
@@ -110,25 +110,25 @@ export default function Overlay({ isOpen, onClose }: SidebarProps) {
 
         {/* Catalogues */}
         <div tabIndex={0} className="collapse collapse-arrow">
-          
+          <input type="checkbox" />
           <div className="collapse-title font-semibold">
             <h2 className="text-lg font-semibold">Catalogues</h2>
           </div>
           
-          <div className="collapse-content text-sm">
+          <div className="collapse-content text-md">
             <Link
-              href="/catalogue/classics"
+              href="/catalogue/noir"
               onClick={onClose}
               className="mt-2 block"
             >
-              Classics
+              Classic Noir
             </Link>
             <Link
-              href="/catalogue/classics"
+              href="/catalogue/vintage"
               onClick={onClose}
               className="mt-2 block"
             >
-              Classics
+              Vintage
             </Link>
           </div>
         </div>

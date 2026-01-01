@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import Navbar from "../../components/nav";
+import Navbar from "@/app/components/nav";
+import Footer from "@/app/components/footer";
 import Link from "next/link";
 
 type Genre = { id: string; name: string };
@@ -99,22 +100,26 @@ export default function CatalogueClient({ catalogue }: Props) {
                 return (
                   <li key={movie.id}>
                     <div className="p-2 bg-amber-50 rounded-lg shadow hover:shadow-lg transition-shadow cursor-pointer">
-                      <div className="flex items-center gap-2 mx-2 px-2">
-                        <span className="text-lg font-semibold text-gray-500">
+                      {/* HEADER */}
+                      <div className="flex items-start gap-2 mx-2 px-2 min-w-0">
+                        <span className="text-lg font-semibold text-gray-500 flex-shrink-0">
                           {index + 1}.
                         </span>
 
-                        <Link href={`/movies/${movie.id}`} className="group">
-                          <h3 className="text-lg font-bold text-blue-950 group-hover:underline truncate">
-                            {movie.Title}
-                          </h3>
-                        </Link>
+                        <div className="min-w-0">
+                          <Link href={`/movies/${movie.id}`} className="group">
+                            <h3 className="text-lg font-bold text-blue-950 group-hover:underline break-words">
+                              {movie.Title}
+                            </h3>
+                          </Link>
 
-                        <span className="text-md text-gray-700">
-                          {movie.Year}
-                        </span>
+                          <span className="text-sm text-gray-700">
+                            {movie.Year}
+                          </span>
+                        </div>
                       </div>
 
+                      {/* BODY */}
                       <div className="flex gap-4 p-4">
                         <div className="flex-shrink-0">
                           <img
@@ -128,6 +133,7 @@ export default function CatalogueClient({ catalogue }: Props) {
                         </div>
 
                         <div className="flex-1 min-w-0">
+                          {/* metadata */}
                           <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mb-2">
                             <span>{movie.Runtime}</span>
                             <span>•</span>
@@ -152,6 +158,7 @@ export default function CatalogueClient({ catalogue }: Props) {
                             )}
                           </div>
 
+                          {/* genres */}
                           <div className="flex flex-wrap gap-1 mb-2">
                             {movie.Genres?.slice(0, 4).map((genre) => (
                               <GenreBadge key={genre.id} genre={genre} />
@@ -175,6 +182,8 @@ export default function CatalogueClient({ catalogue }: Props) {
         ))}
 
       </main>
+
+      <Footer />
     </div>
   );
 }

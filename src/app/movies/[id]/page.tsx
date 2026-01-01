@@ -1,4 +1,4 @@
-import { getCollection } from "../../../lib/mongodb";
+import { getCollection } from "@/lib/mongodb";
 import MovieStream from "./MovieStream";
 import MovieClient from "./MovieClient";
 
@@ -121,7 +121,7 @@ export default async function MoviePage(props: { params: Params }) {
   let dbDoc: any = null;
 
   try {
-    const collection = await getCollection();
+    const collection = await getCollection('reviews');
     dbDoc = await collection.findOne({ movieId: id });
     reviews = dbDoc?.revs ?? [];
   } catch (error) {

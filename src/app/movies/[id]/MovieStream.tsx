@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Navbar from "../../components/nav";
+import Navbar from "@/app/components/nav";
+import Footer from "@/app/components/footer";
 import Link from "next/link";
 
 type Review = {
@@ -75,7 +76,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
     <div className="min-h-screen bg-base-200">
       <Navbar />
 
-      <main className="w-[97%] mx-auto mt-5 p-6 flex flex-col bg-cyan-50 text-black rounded-lg shadow-lg">
+      <main className="w-[97%] mx-auto mt-5 p-6 flex flex-col bg-cyan-50 text-black shadow-lg">
         {/* Title + Year */}
         <header className="text-center mb-6">
           <h1 className="text-3xl font-extrabold">{movie.Title}</h1>
@@ -375,6 +376,8 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
           )}
         </section>
       </main>
+
+      <Footer />
     </div>
   );
 }

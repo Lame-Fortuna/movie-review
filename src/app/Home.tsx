@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Navbar from "./components/nav";
 import Head from 'next/head';
+import Link from "next/link";
 import Footer from "./components/footer";
 
 
@@ -75,7 +76,7 @@ function MovieCard({ movie }: { movie: Movie }) {
   const [src, setSrc] = useState(`https://image.tmdb.org/t/p/w500${movie.poster_path}`,);
 
   return (
-    <a
+    <Link
       href={`/movies/${movie.id}`}
       className="carousel-item flex flex-col text-center justify-between pb-5 w-50 h-85 bg-[#38435b] rounded overflow-hidden shadow-md "
     >
@@ -88,7 +89,7 @@ function MovieCard({ movie }: { movie: Movie }) {
       />
       <p className="text-md mx-1">{movie.title}</p>
       <p>{movie.year}</p>
-    </a>
+    </Link>
   );
 }
 
@@ -106,7 +107,7 @@ function CarouselSection({title, movies, exploreMore}: {title: string; movies: M
         ))}
 
         {/* More Card */}
-        <a
+        <Link
           href={morelink}
           className="carousel-item min-w-[150px] bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center rounded shadow-lg hover:opacity-90 transition"
         >
@@ -114,7 +115,7 @@ function CarouselSection({title, movies, exploreMore}: {title: string; movies: M
             <p className="text-lg font-semibold">More</p>
             <p className="text-sm">Explore more {title}</p>
           </div>
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -122,13 +123,13 @@ function CarouselSection({title, movies, exploreMore}: {title: string; movies: M
 
 function CatalogueItem({name, bg, link}:{name:string, bg:string, link:string}) {
   return (
-    <a href={link}
+    <Link href={link}
       className="h-80 flex items-center justify-center bg-cover bg-top text-white text-2xl font-bold rounded-lg shadow-lg"
       style={{ backgroundImage: bg }}>
       <div className="backdrop-blur-sm bg-black/40 px-4 py-2 rounded-md">
-        <span className="text-white text-xl font-semibold">Noir Thrillers</span>
+        <span className="text-white text-xl font-semibold">{name}</span>
       </div>
-    </a>
+    </Link>
   );
 }
 
@@ -156,11 +157,11 @@ export default function Home({ movies }: Props) {
                 }}
               >
                 <div className="absolute w-1/2 inset-0 flex items-center px-8">
-                  <a href={`/movies/${movie.id}`}>
+                  <Link href={`/movies/${movie.id}`}>
                     <h2 className="text-white text-3xl ml-6 md:text-5xl font-bold drop-shadow-xl">
                       {movie.title} {movie.year}
                     </h2>
-                  </a>
+                  </Link>
                 </div>
               </div>
             );
