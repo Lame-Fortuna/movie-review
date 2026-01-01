@@ -6,14 +6,90 @@ type Params = Promise<{ id: string }>;
 
 export async function generateMetadata(props: { params: Params }) {
   const { id } = await props.params;
-  const tmdbData = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_key}`
+
+  const res = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_key}&append_to_response=alternative_titles`
   );
-  const data = await tmdbData.json();
+
+  if (!res.ok) {
+    // fallback metadata if TMDB is down or ID invalid
+    return {
+      title: "Movie Page | Film-Atlas",
+      description: "Movie details, reviews and streaming information on Film-Atlas.",
+      icons: { icon: "/filmAtlas.ico" },
+    };
+  }
+
+  const data = await res.json();
+
+  const primaryTitle =
+    data.title || data.original_title || "Movie";
+  const year = data.release_date?.split("-")[0];
+  const genresArr: string[] = (data.genres ?? []).map((g: any) => g.name);
+  const genresString = genresArr.join(", ");
+
+  // Collect alternate titles (plus original_title) and dedupe
+  const altTitlesRaw: string[] =
+    (data.alternative_titles?.titles ?? []).map(
+      (t: any) => t.title
+    ) || [];
+
+  const altTitles = Array.from(
+    new Set(
+      [
+        ...altTitlesRaw,
+        data.original_title,
+      ].filter(Boolean)
+    )
+  );
+
+  const altTitlesSnippet = altTitles.slice(0, 5).join(" · ");
+
+  const baseOverview =
+    data.overview ||
+    `Details, cast, ratings and reviews for ${primaryTitle}.`;
+
+  const description = [
+    baseOverview,
+    altTitlesSnippet && `Also known as: ${altTitlesSnippet}.`,
+    year &&
+      `Released in ${year}${
+        genresString ? ` • Genres: ${genresString}` : ""
+      }.`,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const fullTitle = year
+    ? `${primaryTitle} (${year}) | Watch Online, Cast, Reviews & More`
+    : `${primaryTitle} | Watch Online, Cast, Reviews & More`;
 
   return {
-    title: data.title || "Movie Page",
-    description: data.overview || "Movie details and reviews",
+    title: fullTitle,
+    description,
+    keywords: [
+      primaryTitle,
+      ...altTitles,
+      ...genresArr,
+      "full movie",
+      "streaming",
+      "movie reviews",
+      "cast and crew",
+      "Film-Atlas",
+    ].filter(Boolean),
+    openGraph: {
+      title: `${primaryTitle}${year ? ` (${year})` : ""} – Film-Atlas`,
+      description,
+      type: "video.movie",
+      images: data.backdrop_path
+        ? [
+            {
+              url: `https://image.tmdb.org/t/p/w780${data.backdrop_path}`,
+              alt: primaryTitle,
+            },
+          ]
+        : undefined,
+    },
     icons: {
       icon: "/filmAtlas.ico",
     },
@@ -40,10 +116,21 @@ async function fetchOMDBInfo(imdbID: string): Promise<any> {
 export default async function MoviePage(props: { params: Params }) {
   const { id } = await props.params;
 
-  // Get reviews from MongoDB
-  const collection = await getCollection();
-  const dbDoc = await collection.findOne({ movieId: id });
-  const reviews = dbDoc?.revs || [];
+  // Getting Reviews
+  let reviews: any[] = [];
+  let dbDoc: any = null;
+
+  try {
+    const collection = await getCollection();
+    dbDoc = await collection.findOne({ movieId: id });
+    reviews = dbDoc?.revs ?? [];
+  } catch (error) {
+    console.error("MongoDB error:", error);
+    reviews = [];
+    dbDoc = null;
+  }
+
+  
 
   // Fetch TMDB data
   const tmdbData = await fetchTMDBInfo(id);

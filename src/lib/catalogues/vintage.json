@@ -1,0 +1,235 @@
+{
+  "title": "Vintage Cinema Collection",
+  "desc": "A complete collection of 20 essential films from early silent cinema through classics",
+
+  "table1": {
+    "title": "Early Silent Cinema (1915–1924)",
+    "desc": "The birth of cinematic language and visual storytelling.",
+    "movies": [
+      {
+        "id": "30982",
+        "Title": "The Tramp",
+        "Year": "1915",
+        "Runtime": "26m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/v36MPfeBlhUBgVXu7jBofZorrbM.jpg",
+        "Plot": "Charlie Chaplin’s iconic Tramp character falls in love while trying to survive on the margins of society.",
+        "Genres": [{ "id": "35", "name": "Comedy" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "7.6/10" }]
+      },
+      {
+        "id": "10098",
+        "Title": "The Kid",
+        "Year": "1921",
+        "Runtime": "1h 8m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/A9NWYyn7eX0H9XIjaOvfWJ9mCGA.jpg",
+        "Plot": "The Tramp discovers an abandoned child and raises him with love and hardship.",
+        "Genres": [{ "id": "35", "name": "Comedy" }, { "id": "18", "name": "Drama" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "8.2/10" }]
+      },
+      {
+        "id": "234",
+        "Title": "The Cabinet of Dr. Caligari",
+        "Year": "1920",
+        "Runtime": "1h 17m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/myK9DeIsXWGKgUTZyGXg2IfFk0W.jpg",
+        "Plot": "A hypnotist uses a somnambulist to commit murders in a distorted expressionist world.",
+        "Genres": [{ "id": "27", "name": "Horror" }, { "id": "9648", "name": "Mystery" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "8.0/10" }]
+      },
+      {
+        "id": "653",
+        "Title": "Nosferatu",
+        "Year": "1922",
+        "Runtime": "1h 34m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/zv7J85D8CC9qYagAEhPM63CIG6j.jpg",
+        "Plot": "An eerie, unauthorized adaptation of Bram Stoker’s Dracula, in which a vampire brings death and plague to a small German town.",
+        "Genres": [
+          { "id": "27", "name": "Horror" },
+          { "id": "14", "name": "Fantasy" }
+        ],
+        "Ratings": [
+          { "Source": "Internet Movie Database", "Value": "7.8/10" }
+        ]
+      },
+      {
+        "id": "18987",
+        "Title": "The Hunchback of Notre Dame",
+        "Year": "1923",
+        "Runtime": "2h 13m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/3oheTQrTuqS1jPUW6GOc65ZbM5u.jpg",
+        "Plot": "A deformed bell-ringer protects a persecuted gypsy woman in medieval Paris.",
+        "Genres": [{ "id": "18", "name": "Drama" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "7.8/10" }]
+      }
+    ]
+  },
+
+  "table2": {
+    "title": "Late Silent & Expressionism (1925–1929)",
+    "desc": "The visual peak of silent cinema and early genre experimentation.",
+    "movies": [
+      {
+        "id": "964",
+        "Title": "The Phantom of the Opera",
+        "Year": "1925",
+        "Runtime": "1h 33m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/mvaYpAYj957C2tlq3vVJPSzGJXK.jpg",
+        "Plot": "A masked figure haunts the Paris Opera House while obsessing over a young singer.",
+        "Genres": [{ "id": "27", "name": "Horror" }, { "id": "18", "name": "Drama" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "7.5/10" }]
+      },
+      {
+        "id": "962",
+        "Title": "The Gold Rush",
+        "Year": "1925",
+        "Runtime": "1h 35m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/eQRFo1qwRREYwj47Yoe1PisgOle.jpg",
+        "Plot": "The Tramp ventures into the Klondike in search of fortune and love.",
+        "Genres": [{ "id": "35", "name": "Comedy" }, { "id": "12", "name": "Adventure" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "8.2/10" }]
+      },
+      {
+        "id": "19",
+        "Title": "Metropolis",
+        "Year": "1927",
+        "Runtime": "2h 33m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/vZIJxGnjcswPCAa52jhbl01FQkV.jpg",
+        "Plot": "In a futuristic city divided by class, a visionary uprising takes shape.",
+        "Genres": [{ "id": "878", "name": "Sci-Fi" }, { "id": "18", "name": "Drama" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "8.3/10" }]
+      },
+      {
+        "id": "2760",
+        "Title": "The Lodger",
+        "Year": "1927",
+        "Runtime": "1h 31m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/tD84zwFeFRf3zG98x558N3PBMV.jpg",
+        "Plot": "A mysterious tenant may be a serial killer stalking London.",
+        "Genres": [{ "id": "9648", "name": "Mystery" }, { "id": "53", "name": "Thriller" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "7.3/10" }]
+      },
+      {
+        "id": "27517",
+        "Title": "The Man Who Laughs",
+        "Year": "1928",
+        "Runtime": "1h 50m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/iQXBMr4NzQst4X0rDU6MII6ZUOM.jpg",
+        "Plot": "A disfigured man with a permanent smile becomes a tragic figure of love and revenge.",
+        "Genres": [{ "id": "18", "name": "Drama" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "7.8/10" }]
+      }
+    ]
+  },
+
+  "table3": {
+    "title": "Early Sound & Golden Age Hollywood (1931–1949)",
+    "desc": "The rise of sound cinema, iconic monsters, and classic studio-era storytelling.",
+    "movies": [
+      {
+        "id": "3035",
+        "Title": "Frankenstein",
+        "Year": "1931",
+        "Runtime": "1h 10m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/mu6wHwH0IwCCaEYtpqujuPJYat1.jpg",
+        "Plot": "A scientist brings a creature to life with horrific consequences.",
+        "Genres": [{ "id": "27", "name": "Horror" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "7.8/10" }]
+      },
+      {
+        "id": "138",
+        "Title": "Dracula",
+        "Year": "1931",
+        "Runtime": "1h 15m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/ueVSPt7vAba0XScHWTDWS5tNxYX.jpg",
+        "Plot": "Count Dracula relocates from Transylvania to prey upon the living.",
+        "Genres": [{ "id": "27", "name": "Horror" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "7.4/10" }]
+      },
+      {
+        "id": "770",
+        "Title": "Gone with the Wind",
+        "Year": "1939",
+        "Runtime": "3h 58m",
+        "Rated": "G",
+        "Poster": "https://image.tmdb.org/t/p/w500/lNz2Ow0wGCAvzckW7EOjE03KcYv.jpg",
+        "Plot": "A Southern belle survives love and war during the American Civil War.",
+        "Genres": [{ "id": "18", "name": "Drama" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "8.2/10" }]
+      },
+      {
+        "id": "15",
+        "Title": "Citizen Kane",
+        "Year": "1941",
+        "Runtime": "1h 59m",
+        "Rated": "PG",
+        "Poster": "https://image.tmdb.org/t/p/w500/sav0jxhqiH0bPr2vZFU0Kjt2nZL.jpg",
+        "Plot": "A journalist investigates the life of a powerful publishing magnate.",
+        "Genres": [{ "id": "18", "name": "Drama" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "8.3/10" }]
+      },
+      {
+        "id": "1939",
+        "Title": "Laura",
+        "Year": "1944",
+        "Runtime": "1h 28m",
+        "Rated": "Not Rated",
+        "Poster": "https://image.tmdb.org/t/p/w500/j0zEiFFrdbZnMXqD3piOtZBJeNB.jpg",
+        "Plot": "A detective falls in love with the woman he believes was murdered.",
+        "Genres": [{ "id": "9648", "name": "Film Noir" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "7.9/10" }]
+      },
+      {
+        "id": "289",
+        "Title": "Casablanca",
+        "Year": "1943",
+        "Runtime": "1h 42m",
+        "Rated": "PG",
+        "Poster": "https://image.tmdb.org/t/p/w500/oyGRZVIthHJjc98ekKpeWpDh8Ws.jpg",
+        "Plot": "A nightclub owner must choose between love and resistance during WWII.",
+        "Genres": [{ "id": "18", "name": "Drama" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "8.5/10" }]
+      }
+    ]
+  },
+
+  "table4": {
+    "title": "Postwar Cinema & Akira Kurosawa (1950–1961)",
+    "desc": "Moral complexity, genre reinvention.",
+    "movies": [
+      {
+        "id": "1480",
+        "Title": "Touch of Evil",
+        "Year": "1958",
+        "Runtime": "1h 35m",
+        "Rated": "PG-13",
+        "Poster": "https://image.tmdb.org/t/p/w500/1pvRgmfBaoMczIJBOi9gCOZ4FMC.jpg",
+        "Plot": "Corruption and murder collide on the U.S.–Mexico border.",
+        "Genres": [{ "id": "80", "name": "Crime" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "8.0/10" }]
+      },
+      {
+        "id": "828",
+        "Title": "The Day the Earth Stood Still",
+        "Year": "1951",
+        "Runtime": "1h 32m",
+        "Rated": "G",
+        "Poster": "https://image.tmdb.org/t/p/w500/eslDNzf0LF1m9GsgUXlmyfTcC6Y.jpg",
+        "Plot": "An alien visitor warns humanity about its violent path.",
+        "Genres": [{ "id": "878", "name": "Sci-Fi" }],
+        "Ratings": [{ "Source": "Internet Movie Database", "Value": "7.7/10" }]
+      }
+    ]
+  }
+}

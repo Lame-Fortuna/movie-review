@@ -59,49 +59,80 @@ interface SidebarProps {
 }
 
 export default function Overlay({ isOpen, onClose }: SidebarProps) {
-  const [size, setSize] = useState(5);
+  const defaultSize = 5;
+  const [size, setSize] = useState(defaultSize);
+
+  const isExpanded = size > defaultSize;
+  const toggleSize = () => {
+    setSize(isExpanded ? defaultSize : genreList.length);
+  };
+
   return (
     <div
-      className={`fixed top-0 left-0 h-full w-[350px] md:w-[600px] bg-gray-600 text-white z-50 transition-transform duration-300 ease-in-out ${
-        isOpen ? "translate-x-0" : "-translate-x-full"
-      }`}
+      className={`fixed flex py-2 px-5 top-0 left-0 h-full w-[350px] md:w-[600px] bg-gray-600 text-white 
+        z-50 transition-transform duration-300 ease-in-out 
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
       {/* Close Button */}
-      <div className="flex justify-start p-2">
+      <div className="w-[10%]">
         <button onClick={onClose} className="text-5xl hover:text-gray-400">
           &times;
         </button>
       </div>
+
       {/* Content */}
-      <div className="px-6 space-y-6">
-        <div>
-          <h2 className="text-lg font-semibold mb-2">Genres</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 border border-gray-700 p-3 rounded-md">
-           
-            {genreList.slice(0, size).map((genre) => {
+      <div className="px-6 w-[90%]">
+
+        {/* Genres Section */}
+        <div tabIndex={0} className=" max-h-[80dvh] collapse collapse-arrow">
+          
+          <div className="collapse-title font-semibold">
+            <h2 className="text-lg">Genres</h2>
+          </div>
+
+          <div className="collapse-content grid grid-cols-2 md:grid-cols-3 gap-3 max-h-[80dvh] rounded-md pr-1">
+            {genreList.map((genre) => {
               const genreId = genreMap[genre.key];
-   
               const href = `/search/genre-${genreId}/1`;
+
               return (
-                <Link
-                  key={genre.key}
-                  href={href}
-                  onClick={onClose}
-                  className="bg-gray-800 hover:bg-gray-700 text-md py-2 px-3 rounded text-center"
+                <Link key={genre.key} href={href} onClick={onClose}
+                  className="flex items-center justify-center h-9 px-3 bg-gray-800 text-sm text-center
+                    rounded truncate whitespace-nowrap"
+                  title={genre.displayName}
                 >
                   {genre.displayName}
                 </Link>
               );
             })}
-            <button
-              onClick={() => setSize(genreList.length)}
-              className="bg-gray-800 hover:bg-gray-700 text-md py-2 px-3 rounded"
+          </div>
+        </div>
+
+        {/* Catalogues */}
+        <div tabIndex={0} className="collapse collapse-arrow">
+          
+          <div className="collapse-title font-semibold">
+            <h2 className="text-lg font-semibold">Catalogues</h2>
+          </div>
+          
+          <div className="collapse-content text-sm">
+            <Link
+              href="/catalogue/classics"
+              onClick={onClose}
+              className="mt-2 block"
             >
-              More
-            </button>
+              Classics
+            </Link>
+            <Link
+              href="/catalogue/classics"
+              onClick={onClose}
+              className="mt-2 block"
+            >
+              Classics
+            </Link>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}

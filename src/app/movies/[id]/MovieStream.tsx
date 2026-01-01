@@ -221,12 +221,42 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
             )}
           </div>
 
-          {/* New Review*/}
+          {/* Review Form */}
           {showForm && (
             <form
-              className="form-control flex flex-col bg-orange-100 p-6 rounded-box shadow-xl w-full max-w-2xl mx-auto"
+              className="form-control flex flex-col bg-orange-100 p-6 rounded-box shadow-xl w-full max-w-2xl"
               onSubmit={async (e) => {
                 e.preventDefault();
+                const form = e.currentTarget;
+                const formData = new FormData(form);
+
+                formData.append("usr", generatedUser);
+
+                const newReview = {
+                  usr: generatedUser,
+                  rating: Number(formData.get("rating")),
+                  review: formData.get("review") as string,
+                };
+
+                setShowForm(false);
+                form.reset();
+
+                try {
+                  const res = await fetch(`/api/insert/${id}`, {
+                    method: "POST",
+                    body: formData,
+                  });
+
+                  if (res.ok) {
+                    setLocalReviews((prev) => [newReview, ...prev]);
+                  } else if (!res.ok) {
+                    const text = await res.text();
+                    alert(`Failed to submit: ${text}`);
+                  }
+                } catch (err) {
+                  console.error(err);
+                  alert("Something went wrong while submitting the review.");
+                }
               }}
             >
               <input
@@ -261,6 +291,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
               </button>
             </form>
           )}
+          <hr />
 
           {/* Reviews */}
           <hr />

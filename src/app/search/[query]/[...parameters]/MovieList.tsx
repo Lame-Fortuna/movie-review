@@ -80,7 +80,7 @@ export default function MovieList({
                     alt={movie.Title}
                     title={`Poster for ${movie.Title}`}
                     className="w-full h-80 object-top"
-                    onError={() => setSrc("/images/poster.jpg")}
+                    onError={() => setSrc("/images/poster.webp")}
                   />
                 </figure>
                 <div className="card-body">

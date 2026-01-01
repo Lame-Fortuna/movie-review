@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../../components/nav";
 import Link from "next/link";
 import Head from "next/head";
+import Footer from "@/app/components/footer";
 
 type Review = {
   usr: string;
@@ -86,9 +87,9 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
 
       <Navbar />
 
-      <main className="w-[97%] min-h-fit lg:h-[85dvh] mx-auto p-6 flex flex-col lg:flex-row gap-6 bg-cyan-50 text-black rounded-lg shadow-lg overflow-hidden">
+      <main className="min-h-fit lg:h-[90dvh] mx-auto p-6 flex flex-col lg:flex-row gap-6 bg-cyan-50 text-black shadow-lg overflow-hidden">
         {/* Left Section (Poster and Title) */}
-        <section className="lg:w-1/4 flex-none">
+        <section className="lg:w-1/4">
           <h1 className="text-3xl font-bold mb-4">
             {movie.Title}
           </h1>
@@ -107,12 +108,12 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
             ))}
           </div>
 
-          <div className="flex gap-4 mt-4">
+          <div className="flex justify-center gap-4 mt-4 lg:pr-25">
             <img
               src={posterSrc}
               alt="Poster"
               title={`Poster for ${movie.Title}`}
-              onError={() => setPosterSrc("/images/poster.jpg")}
+              onError={() => setPosterSrc("/images/poster.webp")}
               className="max-w-[200px] object-cover rounded-lg"
             />
           </div>
@@ -303,7 +304,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
                     <div className="w-[40%] lg:w-[20%] text-center border-r pr-2 flex flex-col items-center gap-2">
                       <img
                         className="rounded-full w-16 h-16 object-cover"
-                        src="/images/Screenshot 2025-01-19 004453.png"
+                        src="/images/avatar.webp"
                         alt="profile pic"
                       />
                       <p className="font-bold text-sm break-words">
@@ -331,7 +332,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
             </div>
           </div>
 
-          {/* Recommendations Section*/}
+          {/* Recommendations */}
           <div className="space-y-4">
             <h2 className="text-2xl font-semibold">Recommendations</h2>
             <hr />
@@ -350,11 +351,11 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
               <div className="flex flex-wrap justify-center">
                 {rec.map((m) => (
                   <Link href={`/movies/${m.id}`} key={m.id}>
-                    <div className="card bg-[#38435b] shadow h-60 w-30 overflow-hidden m-2">
+                    <div className="card bg-[#38435b] shadow h-60 w-30 lg:h-80 lg:w-40 overflow-hidden m-2 lg:m-5">
                       <img
                         src={m.poster}
                         alt={m.title}
-                        className="h-40 w-full object-cover rounded-t"
+                        className="h-40 lg:h-60 w-full object-cover rounded-t"
                       />
                       <div className="p-2">
                         <h3 className="font-bold text-center text-sm text-white">
@@ -369,6 +370,8 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
           </div>
         </section>
       </main>
+
+      <Footer></Footer>
     </div>
   );
 }
