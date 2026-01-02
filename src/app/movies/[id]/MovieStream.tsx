@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Navbar from "@/app/components/nav";
 import Footer from "@/app/components/footer";
 import Link from "next/link";
+import Image from "next/image";
 
 type Review = {
   usr: string;
@@ -99,7 +100,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
           <div className="flex flex-col md:flex-row gap-6">
             {/* Poster */}
             <div className="flex-shrink-0 mx-auto lg:mx-0">
-              <img
+              <Image
                 src={posterSrc}
                 alt="Poster"
                 title={`Poster for ${movie.Title}`}
@@ -307,7 +308,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
                   className="flex gap-2 p-3 bg-orange-100 shadow rounded-lg"
                 >
                   <div className="w-[40%] lg:w-[20%] text-center border-r pr-2 flex flex-col items-center gap-2">
-                    <img
+                    <Image
                       className="rounded-full w-16 h-16 object-cover"
                       src="/images/Screenshot 2025-01-19 004453.png"
                       alt="profile pic"
@@ -359,7 +360,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
                 <Link href={`/movies/${m.id}`} key={m.id}>
                   {/* Rec card: Matched File 1 (shadow, h-60, w-30, m-2) */}
                   <div className="card bg-[#38435b] shadow h-70 w-40 sm:(h-60 w-30) overflow-hidden m-2">
-                    <img
+                    <Image
                       src={m.poster}
                       alt={m.title}
                       className="h-50 w-full object-cover rounded-t" // Matched File 1

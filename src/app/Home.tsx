@@ -4,6 +4,7 @@ import { useState } from "react";
 import Navbar from "./components/nav";
 import Head from 'next/head';
 import Link from "next/link";
+import Image from "next/image";
 import Footer from "./components/footer";
 
 
@@ -31,7 +32,7 @@ const slugify = (title) => {
       href={`/movies/${movie.id}/${slug}`} // <-- THIS IS THE CHANGE
       className="carousel-item flex flex-col text-center justify-between pb-5 w-50 h-85 bg-[#38435b] rounded overflow-hidden shadow-md "
     >
-      <img
+      <Image
         src={src}
         alt={movie.title}
         className="w-full max-h-65 object-fill"
@@ -80,9 +81,9 @@ function MovieCard({ movie }: { movie: Movie }) {
       href={`/movies/${movie.id}`}
       className="carousel-item flex flex-col text-center justify-between pb-5 w-50 h-85 bg-[#38435b] rounded overflow-hidden shadow-md "
     >
-      <img
+      <Image
         src={src}
-        alt={movie.title}
+        alt={movie.title || "Poster"}
         title={`Poster for ${movie.title}`}
         className="w-full max-h-65 object-fill"
         onError={() => setSrc("/images/poster.webp")}

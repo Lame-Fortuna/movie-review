@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../../components/nav";
 import Link from "next/link";
 import Head from "next/head";
+import Image from "next/image";
 import Footer from "@/app/components/footer";
 
 type Review = {
@@ -109,7 +110,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
           </div>
 
           <div className="flex justify-center gap-4 mt-4 lg:pr-25">
-            <img
+            <Image
               src={posterSrc}
               alt="Poster"
               title={`Poster for ${movie.Title}`}
@@ -302,7 +303,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
                     className="flex gap-2 p-3 bg-orange-100 shadow rounded-lg"
                   >
                     <div className="w-[40%] lg:w-[20%] text-center border-r pr-2 flex flex-col items-center gap-2">
-                      <img
+                      <Image
                         className="rounded-full w-16 h-16 object-cover"
                         src="/images/avatar.webp"
                         alt="profile pic"
@@ -352,7 +353,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
                 {rec.map((m) => (
                   <Link href={`/movies/${m.id}`} key={m.id}>
                     <div className="card bg-[#38435b] shadow h-60 w-30 lg:h-80 lg:w-40 overflow-hidden m-2 lg:m-5">
-                      <img
+                      <Image
                         src={m.poster}
                         alt={m.title}
                         className="h-40 lg:h-60 w-full object-cover rounded-t"

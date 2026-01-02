@@ -3,14 +3,15 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/app/components/nav";
 import Footer from "@/app/components/footer";
 
 type Movie = {
-  imdbID: string;
-  Title: string;
-  Year: number;
-  Poster: string;
+  id: string;
+  title: string;
+  year: number;
+  poster: string;
 };
 
 type Props = {
@@ -22,27 +23,31 @@ type Props = {
 };
 
 function MovieCard({ movie }: { movie: Movie }) {
-  const [src, setSrc] = useState(movie.Poster);
+  const [src, setSrc] = useState(movie.poster);
 
   return (
     <Link
-      href={`/movies/${movie.imdbID}`}
-      className="card w-30 md:w-60 m-3 bg-[#38435b] shadow-xl text-center overflow-hidden"
+      href={`/movies/${movie.id}`}
+      className="group block w-40 md:w-48 lg:w-52 m-3 cursor-pointer"
     >
-      <figure>
-        <img
+      <div className="relative w-full h-[270px] bg-gray-800 rounded-xl overflow-hidden shadow-lg">
+        <Image
           src={src}
-          alt={movie.Title}
-          title={`Poster for ${movie.Title}`}
-          className="w-full h-40 md:h-40 object-cover"
+          alt={`Poster of ${movie.title}`}
+          title={`Poster for ${movie.title}`}
+          fill
+          className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
           onError={() => setSrc("/images/poster.webp")}
         />
-      </figure>
+      </div>
 
-      <div className="card-body p-4">
-        <h2 className="card-title text-sm">
-          {movie.Title} ({movie.Year})
+      <div className="mt-2 text-center">
+        <h2 className="text-sm font-semibold text-white truncate">
+          {movie.title}
         </h2>
+        <p className="text-xs text-gray-300">
+          {movie.year}
+        </p>
       </div>
     </Link>
   );
@@ -95,7 +100,7 @@ export default function MovieList({movies, query, page, sortBy, showSort, }: Pro
             <p className="text-lg opacity-70">No results found.</p>
           ) : (
             movies.map((movie) => (
-              <MovieCard key={movie.imdbID} movie={movie} />
+              <MovieCard key={movie.id} movie={movie} />
             ))
           )}
         </section>
