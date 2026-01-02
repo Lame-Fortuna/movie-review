@@ -110,7 +110,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
           </div>
 
           <div className="flex justify-center gap-4 mt-4 lg:pr-25">
-            <Image
+            <img
               src={posterSrc}
               alt="Poster"
               title={`Poster for ${movie.Title}`}
@@ -353,7 +353,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
                 {rec.map((m) => (
                   <Link href={`/movies/${m.id}`} key={m.id}>
                     <div className="card bg-[#38435b] shadow h-60 w-30 lg:h-80 lg:w-40 overflow-hidden m-2 lg:m-5">
-                      <Image
+                      <img
                         src={m.poster}
                         alt={m.title}
                         className="h-40 lg:h-60 w-full object-cover rounded-t"

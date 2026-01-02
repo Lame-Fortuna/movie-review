@@ -31,11 +31,10 @@ function MovieCard({ movie }: { movie: Movie }) {
       className="group block w-40 md:w-48 lg:w-52 m-3 cursor-pointer"
     >
       <div className="relative w-full h-[270px] bg-gray-800 rounded-xl overflow-hidden shadow-lg">
-        <Image
+        <img
           src={src}
           alt={`Poster of ${movie.title}`}
           title={`Poster for ${movie.title}`}
-          fill
           className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
           onError={() => setSrc("/images/poster.webp")}
         />

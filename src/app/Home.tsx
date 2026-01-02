@@ -32,7 +32,7 @@ const slugify = (title) => {
       href={`/movies/${movie.id}/${slug}`} // <-- THIS IS THE CHANGE
       className="carousel-item flex flex-col text-center justify-between pb-5 w-50 h-85 bg-[#38435b] rounded overflow-hidden shadow-md "
     >
-      <Image
+      <img
         src={src}
         alt={movie.title}
         className="w-full max-h-65 object-fill"
@@ -81,7 +81,7 @@ function MovieCard({ movie }: { movie: Movie }) {
       href={`/movies/${movie.id}`}
       className="carousel-item flex flex-col text-center justify-between pb-5 w-50 h-85 bg-[#38435b] rounded overflow-hidden shadow-md "
     >
-      <Image
+      <img
         src={src}
         alt={movie.title || "Poster"}
         title={`Poster for ${movie.title}`}
