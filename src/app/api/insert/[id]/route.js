@@ -13,7 +13,7 @@ export async function POST(req, { params }) {
       review: form.get('review'),
     };
 
-    const collection = await getCollection();
+    const collection = await getCollection("reviews");
 
     const existing = await collection.findOne({ movieId });
 
@@ -51,6 +51,6 @@ export async function POST(req, { params }) {
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('Error inserting review:', err);
-    return NextResponse.json({ success: false, error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

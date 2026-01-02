@@ -76,7 +76,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
     <div className="min-h-screen bg-base-200">
       <Navbar />
 
-      <main className="w-[97%] mx-auto mt-5 p-6 flex flex-col bg-cyan-50 text-black shadow-lg">
+      <main className="p-6 flex flex-col bg-cyan-50 text-black shadow-lg">
         {/* Title + Year */}
         <header className="text-center mb-6">
           <h1 className="text-3xl font-extrabold">{movie.Title}</h1>

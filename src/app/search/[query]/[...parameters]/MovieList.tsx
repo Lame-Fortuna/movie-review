@@ -27,14 +27,14 @@ function MovieCard({ movie }: { movie: Movie }) {
   return (
     <Link
       href={`/movies/${movie.imdbID}`}
-      className="card w-60 sm:w-30 m-3 bg-[#38435b] shadow-xl text-center overflow-hidden"
+      className="card w-30 md:w-60 m-3 bg-[#38435b] shadow-xl text-center overflow-hidden"
     >
       <figure>
         <img
           src={src}
           alt={movie.Title}
           title={`Poster for ${movie.Title}`}
-          className="w-full h-80 sm:h-40 object-cover"
+          className="w-full h-40 md:h-40 object-cover"
           onError={() => setSrc("/images/poster.webp")}
         />
       </figure>
@@ -72,7 +72,7 @@ export default function MovieList({movies, query, page, sortBy, showSort, }: Pro
 
         {/* Sort Filter */}
         {showSort && (
-          <div className="max-w-6xl mx-auto my-4 flex items-center justify-end px-4">
+          <div className="w-40 mx-auto my-4 flex items-center justify-end px-4">
             <label htmlFor="sort" className="text-lg pr-3">
               Sort By
             </label>
