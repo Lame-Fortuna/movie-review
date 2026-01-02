@@ -70,10 +70,7 @@ export default function MovieList({movies, query, page, sortBy, showSort, }: Pro
       <Navbar />
 
       <main className="flex-1">
-        <Head>
-          <title><h1>{pageTitle}</h1></title>
-        </Head>
-
+        
         {/* Sort Filter */}
         {showSort && (
           <div className="w-40 mx-auto my-4 flex items-center justify-end px-4">

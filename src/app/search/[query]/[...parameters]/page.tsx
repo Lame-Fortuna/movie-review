@@ -76,10 +76,10 @@ async function fetchMovies(
   if (!res.ok || !data.results) return { movies: [], isDiscovery };
 
   const movies: Movie[] = data.results.map((m: any) => ({
-    imdbID: m.id.toString(),
-    Title: m.title,
-    Year: m.release_date?.split("-")[0] || "N/A",
-    Poster: m.poster_path
+    id: m.id.toString(),
+    title: m.title,
+    year: m.release_date?.split("-")[0] || "N/A",
+    poster: m.poster_path
       ? `https://image.tmdb.org/t/p/w500${m.poster_path}`
       : "/images/poster.jpg",
   }));
