@@ -6,10 +6,10 @@ type Params = Promise<{
 }>;
 
 type Movie = {
-  imdbID: string;
-  Title: string;
-  Year: number;
-  Poster: string;
+  id: string;
+  title: string;
+  year: number;
+  poster: string;
 };
 
 // Tab title and icon
