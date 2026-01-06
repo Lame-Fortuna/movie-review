@@ -8,7 +8,7 @@ export default function ContactPage() {
         at:
       </p>
 
-      <p className="font-medium">support@filmatlas.online</p>
+      <a href="mailto:dmca@filmatlas.online" className="font-medium text-orange-400">support@filmatlas.online</a>
 
       <p>
         For copyright-related concerns, please refer to our DMCA Notice page for

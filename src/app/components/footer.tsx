@@ -7,13 +7,13 @@ export default function Footer() {
     return (
       <footer className="footer sm:footer-horizontal bg-black text-base-content p-10">
         <nav>
-          <h6 className="footer-title">Company</h6>
+          <h3 className="footer-title">Company</h3>
           <Link href="/about" className="link link-hover">About Us</Link>
           <Link href="/contact" className="link link-hover">Contact Us</Link>
         </nav>
 
         <nav>
-          <h6 className="footer-title">Legal</h6>
+          <h3 className="footer-title">Legal</h3>
           <Link href="/dmca" className="link link-hover">DMCA Notice</Link>
           <Link href="/disclaimer" className="link link-hover">Disclaimer</Link>
           <Link href="/privacy-policy" className="link link-hover">Privacy Policy</Link>
@@ -21,7 +21,7 @@ export default function Footer() {
         </nav>
 
         <nav>
-          <h6 className="footer-title">Social</h6>
+          <h3 className="footer-title">Social</h3>
 
           <div className="grid grid-flow-col gap-4">
             {/* X (Twitter) */}
@@ -69,7 +69,7 @@ export default function Footer() {
 
         {/* Newsletter subscription - currently not implemented}
         <form>
-          <h6 className="footer-title">Newsletter</h6>
+          <h3 className="footer-title">Newsletter</h3>
           <fieldset className="w-80">
             <label>Enter your email address</label>
             <div className="join">

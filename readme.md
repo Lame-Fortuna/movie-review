@@ -1,6 +1,6 @@
-# Film Atlas | [Live](https://movie-review-lilac.vercel.app/)
+# Film Atlas | [Live](https://filmatlas.online/)
 
-**Film Atlas** is a full-stack movie streaming, discovery and review platform built with **Next.js**. It integrates the **TMDB API** for real-time movie metadata, featuring a comprehensive catalog of over **130,000** titles. The platform includes advanced functionality such as a **Clustering-based Recommendation System**, an embedded streaming feature via **archive.org**, a **keyword and genre search**, and a **user review system**.
+**Film Atlas** is a full-stack movie streaming, discovery and review platform built with **Next.js**. It integrates the **TMDB API** for real-time movie metadata, featuring a comprehensive catalog of over **130,000** titles. The platform includes advanced functionality such as a **Clustering-based Recommendation System**, an embedded streaming feature via **archive.org**, a **keyword and genre search**, a **user review system** and **curated catalogue pages**.
 
 The system handles real-time searches and large-scale data efficiently using **Next.js**. User-generated reviews are stored and managed with **MongoDB** for scalability and reliability.
 

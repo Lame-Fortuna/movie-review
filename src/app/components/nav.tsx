@@ -63,7 +63,7 @@ export default function Navbar() {
             placeholder="Search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="input input-bordered h-10 w-full md:w-64 text-white placeholder-gray-300"
+            className="input input-bordered h-10 w-full md:w-64 text-white bg-slate-900 placeholder:text-slate-300"
           />
 
           <button type="submit" className="btn btn-ghost hidden md:block h-10">

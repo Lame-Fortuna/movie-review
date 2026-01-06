@@ -8,3 +8,29 @@
   75% { transform: translateX(-300%); }
   100% { transform: translateX(0); }
 }
+
+.carousel {
+  scrollbar-width: thin;
+  scrollbar-color: #6b7280 transparent;
+}
+
+.carousel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 4px;
+}
+
+/* Hide scrollbar but keep scroll functionality */
+.hide-scrollbar {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE / Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;                /* Chrome / Safari */
+}
+
+

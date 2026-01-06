@@ -89,6 +89,8 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
           <iframe
             className="aspect-video w-[90%] mx-auto rounded-lg shadow-md"
             src={movie.src}
+            loading="lazy"
+            title="Movie player"
           />
         </section>
 
@@ -99,7 +101,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
 
           <div className="flex flex-col md:flex-row gap-6">
             {/* Poster */}
-            <div className="flex-shrink-0 mx-auto lg:mx-0">
+            <div className="shrink-0 mx-auto lg:mx-0">
               <img
                 src={posterSrc}
                 alt="Poster"
@@ -111,9 +113,9 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
 
             {/* Movie Info */}
             <div className="flex flex-col gap-4">
-              <h1 className="text-3xl font-bold">
+              <h2 className="text-3xl font-bold">
                 {movie.Title} ({movie.Year})
-              </h1>
+              </h2>
 
               {/* Genres */}
               <div className="flex flex-wrap gap-2 mb-4">

@@ -4,98 +4,48 @@ import MovieClient from "./MovieClient";
 
 type Params = Promise<{ id: string }>;
 
-export async function generateMetadata(props: { params: Params }) {
-  const { id } = await props.params;
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  try {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/${params.id}?api_key=${process.env.TMDB_key}`
+    );
 
-  const res = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_key}&append_to_response=alternative_titles`
-  );
+    if (!res.ok) throw new Error("TMDB error");
 
-  if (!res.ok) {
-    // fallback metadata if TMDB is down or ID invalid
+    const data = await res.json();
+
+    const title = data.title || data.original_title || "Movie";
+    const year = data.release_date?.split("-")[0];
+    const fullTitle = year
+      ? `${title} (${year}) | Film-Atlas`
+      : `${title} | Film-Atlas`;
+
+    const description =
+      data.overview ||
+      `Watch ${title}${year ? ` (${year})` : ""}. Cast, reviews, and streaming info on Film-Atlas.`;
+
     return {
-      title: "Movie Page | Film-Atlas",
-      description: "Movie details, reviews and streaming information on Film-Atlas.",
+      title: fullTitle,
+      description,
+      openGraph: {
+        title: fullTitle,
+        description,
+        images: data.backdrop_path
+          ? [`https://image.tmdb.org/t/p/w780${data.backdrop_path}`]
+          : undefined,
+        type: "video.movie",
+      },
+      icons: { icon: "/filmAtlas.ico" },
+    };
+  } catch {
+    return {
+      title: "Movie | Film-Atlas",
+      description:
+        "Movie details, cast, reviews and streaming information on Film-Atlas.",
       icons: { icon: "/filmAtlas.ico" },
     };
   }
-
-  const data = await res.json();
-
-  const primaryTitle =
-    data.title || data.original_title || "Movie";
-  const year = data.release_date?.split("-")[0];
-  const genresArr: string[] = (data.genres ?? []).map((g: any) => g.name);
-  const genresString = genresArr.join(", ");
-
-  // Collect alternate titles (plus original_title) and dedupe
-  const altTitlesRaw: string[] =
-    (data.alternative_titles?.titles ?? []).map(
-      (t: any) => t.title
-    ) || [];
-
-  const altTitles = Array.from(
-    new Set(
-      [
-        ...altTitlesRaw,
-        data.original_title,
-      ].filter(Boolean)
-    )
-  );
-
-  const altTitlesSnippet = altTitles.slice(0, 5).join(" · ");
-
-  const baseOverview =
-    data.overview ||
-    `Details, cast, ratings and reviews for ${primaryTitle}.`;
-
-  const description = [
-    baseOverview,
-    altTitlesSnippet && `Also known as: ${altTitlesSnippet}.`,
-    year &&
-      `Released in ${year}${
-        genresString ? ` • Genres: ${genresString}` : ""
-      }.`,
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  const fullTitle = year
-    ? `${primaryTitle} (${year}) | Watch Online, Cast, Reviews & More`
-    : `${primaryTitle} | Watch Online, Cast, Reviews & More`;
-
-  return {
-    title: fullTitle,
-    description,
-    keywords: [
-      primaryTitle,
-      ...altTitles,
-      ...genresArr,
-      "full movie",
-      "streaming",
-      "movie reviews",
-      "cast and crew",
-      "Film-Atlas",
-    ].filter(Boolean),
-    openGraph: {
-      title: `${primaryTitle}${year ? ` (${year})` : ""} – Film-Atlas`,
-      description,
-      type: "video.movie",
-      images: data.backdrop_path
-        ? [
-            {
-              url: `https://image.tmdb.org/t/p/w780${data.backdrop_path}`,
-              alt: primaryTitle,
-            },
-          ]
-        : undefined,
-    },
-    icons: {
-      icon: "/filmAtlas.ico",
-    },
-  };
 }
-
 
 async function fetchTMDBInfo(tmdbId: string): Promise<any> {
   const res = await fetch(

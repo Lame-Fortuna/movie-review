@@ -94,7 +94,7 @@ export default function MovieClient({ id, movie, reviews }: MovieClientProps) {
           <h1 className="text-3xl font-bold mb-4">
             {movie.Title}
           </h1>
-          <h1 className="text-2xl font-bold mb-4">{movie.Year}</h1>
+          <h2 className="text-2xl font-bold mb-4">{movie.Year}</h2>
 
           <div className="flex flex-wrap gap-2 mb-4">
             <p className="font-extrabold text-orange-500">{movie.Rated}</p>

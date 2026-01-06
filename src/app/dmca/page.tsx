@@ -18,7 +18,9 @@ export default function DMCAPage() {
         copyright, you may submit a DMCA takedown notice to:
       </p>
 
-      <p className="font-medium">dmca@filmatlas.online</p>
+      <a href="mailto:dmca@filmatlas.online" className="font-medium text-orange-400">
+        dmca@filmatlas.online
+      </a>
 
       <p>
         Please include sufficient information to identify the copyrighted work,

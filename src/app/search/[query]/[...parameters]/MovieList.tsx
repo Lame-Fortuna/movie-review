@@ -4,8 +4,10 @@ import React, { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
+
 import Navbar from "@/app/components/nav";
 import Footer from "@/app/components/footer";
+import MovieCard from "@/app/components/home/MovieCards";
 
 type Movie = {
   id: string;
@@ -21,36 +23,6 @@ type Props = {
   sortBy: string;
   showSort: boolean;
 };
-
-function MovieCard({ movie }: { movie: Movie }) {
-  const [src, setSrc] = useState(movie.poster);
-
-  return (
-    <Link
-      href={`/movies/${movie.id}`}
-      className="group block w-40 md:w-48 lg:w-52 m-3 cursor-pointer"
-    >
-      <div className="relative w-full h-[270px] bg-gray-800 rounded-xl overflow-hidden shadow-lg">
-        <img
-          src={src}
-          alt={`Poster of ${movie.title}`}
-          title={`Poster for ${movie.title}`}
-          className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
-          onError={() => setSrc("/images/poster.webp")}
-        />
-      </div>
-
-      <div className="mt-2 text-center">
-        <h2 className="text-sm font-semibold text-white truncate">
-          {movie.title}
-        </h2>
-        <p className="text-xs text-gray-300">
-          {movie.year}
-        </p>
-      </div>
-    </Link>
-  );
-}
 
 export default function MovieList({movies, query, page, sortBy, showSort, }: Props) {
   const [currentSortBy, setCurrentSortBy] = useState(sortBy);
@@ -70,6 +42,8 @@ export default function MovieList({movies, query, page, sortBy, showSort, }: Pro
       <Navbar />
 
       <main className="flex-1">
+
+        <h1 className="text-shadow-white text-3xl text-center">{pageTitle}</h1>
         
         {/* Sort Filter */}
         {showSort && (

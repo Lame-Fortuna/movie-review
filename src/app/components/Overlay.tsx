@@ -75,7 +75,7 @@ export default function Overlay({ isOpen, onClose }: SidebarProps) {
     >
       {/* Close Button */}
       <div className="w-[10%]">
-        <button onClick={onClose} className="text-5xl hover:text-gray-400">
+        <button onClick={onClose} className="text-5xl">
           &times;
         </button>
       </div>
