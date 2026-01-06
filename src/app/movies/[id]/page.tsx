@@ -13,36 +13,30 @@ export async function generateMetadata({ params }: PageProps) {
     const res = await fetch(
       `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_key}`
     );
+
     if (!res.ok) throw new Error("TMDB error");
 
     const data = await res.json();
 
     const title = data.title || data.original_title || "Movie";
     const year = data.release_date?.split("-")[0];
-    const fullTitle = year ? `${title} (${year}) | Film-Atlas` : `${title} | Film-Atlas`;
-
-    const description =
-      data.overview ||
-      `Watch ${title}${year ? ` (${year})` : ""}. Cast, reviews, and streaming info on Film-Atlas.`;
+    const fullTitle = year
+      ? `${title} (${year}) | Film-Atlas`
+      : `${title} | Film-Atlas`;
 
     return {
       title: fullTitle,
-      description,
+      description: data.overview,
       openGraph: {
         title: fullTitle,
-        description,
         images: data.backdrop_path
           ? [`https://image.tmdb.org/t/p/w780${data.backdrop_path}`]
           : undefined,
-        type: "video.movie",
       },
-      icons: { icon: "/filmAtlas.ico" },
     };
   } catch {
     return {
       title: "Movie | Film-Atlas",
-      description: "Movie details, cast, reviews and streaming information on Film-Atlas.",
-      icons: { icon: "/filmAtlas.ico" },
     };
   }
 }
