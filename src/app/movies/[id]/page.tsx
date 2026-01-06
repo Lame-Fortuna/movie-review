@@ -2,23 +2,24 @@ import { getCollection } from "@/lib/mongodb";
 import MovieStream from "./MovieStream";
 import MovieClient from "./MovieClient";
 
-type Params = Promise<{ id: string }>;
+type PageProps = {
+  params: Promise<{ id: string }>;
+};
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({ params }: PageProps) {
+  const { id } = await params;
+
   try {
     const res = await fetch(
-      `https://api.themoviedb.org/3/movie/${params.id}?api_key=${process.env.TMDB_key}`
+      `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_key}`
     );
-
     if (!res.ok) throw new Error("TMDB error");
 
     const data = await res.json();
 
     const title = data.title || data.original_title || "Movie";
     const year = data.release_date?.split("-")[0];
-    const fullTitle = year
-      ? `${title} (${year}) | Film-Atlas`
-      : `${title} | Film-Atlas`;
+    const fullTitle = year ? `${title} (${year}) | Film-Atlas` : `${title} | Film-Atlas`;
 
     const description =
       data.overview ||
@@ -40,8 +41,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   } catch {
     return {
       title: "Movie | Film-Atlas",
-      description:
-        "Movie details, cast, reviews and streaming information on Film-Atlas.",
+      description: "Movie details, cast, reviews and streaming information on Film-Atlas.",
       icons: { icon: "/filmAtlas.ico" },
     };
   }
@@ -63,15 +63,15 @@ async function fetchOMDBInfo(imdbID: string): Promise<any> {
   return await res.json();
 }
 
-export default async function MoviePage(props: { params: Params }) {
-  const { id } = await props.params;
+export default async function MoviePage({ params }: PageProps) {
+  const { id } = await params;
 
   // Getting Reviews
   let reviews: any[] = [];
   let dbDoc: any = null;
 
   try {
-    const collection = await getCollection('reviews');
+    const collection = await getCollection("reviews");
     dbDoc = await collection.findOne({ movieId: id });
     reviews = dbDoc?.revs ?? [];
   } catch (error) {
@@ -80,9 +80,6 @@ export default async function MoviePage(props: { params: Params }) {
     dbDoc = null;
   }
 
-  
-
-  // Fetch TMDB data
   const tmdbData = await fetchTMDBInfo(id);
   const imdbID = tmdbData.imdb_id;
 
@@ -90,8 +87,6 @@ export default async function MoviePage(props: { params: Params }) {
 
   if (imdbID) {
     const omdbData = await fetchOMDBInfo(imdbID);
-
-    // Use OMDb as primary data source (to match MovieClient format)
     movie = {
       ...omdbData,
       Backdrop: `https://image.tmdb.org/t/p/w500${tmdbData.backdrop_path}`,
@@ -107,7 +102,7 @@ export default async function MoviePage(props: { params: Params }) {
       Runtime: omdbData.Runtime || `${tmdbData.runtime} min`,
       Rated: omdbData.Rated || "N/A",
       Plot: tmdbData.overview,
-      imdbID: imdbID,
+      imdbID,
     };
   } else {
     movie = {
@@ -131,13 +126,12 @@ export default async function MoviePage(props: { params: Params }) {
     };
   }
 
-  // ⬇️ Check if the DB document has a `src` field to determine which component to render
   const hasStream = Boolean(dbDoc?.src);
   const src = dbDoc?.src;
 
-  console.log("Movie Data:", movie);
-
-  return hasStream
-    ? <MovieStream id={id} movie={{ ...movie, src }} reviews={reviews} />
-    : <MovieClient id={id} movie={movie} reviews={reviews} />;
+  return hasStream ? (
+    <MovieStream id={id} movie={{ ...movie, src }} reviews={reviews} />
+  ) : (
+    <MovieClient id={id} movie={movie} reviews={reviews} />
+  );
 }
