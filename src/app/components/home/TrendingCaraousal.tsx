@@ -11,11 +11,11 @@ export default function TrendingCarousel({ movies }: any) {
             <div
               key={movie.id}
               id={`slide${index + 1}`}
-              className="carousel-item relative w-full h-40 xl:h-80 overflow-hidden rounded"
+              className="carousel-item relative w-full h-40 lg:h-80 overflow-hidden rounded"
               style={{
                 backgroundImage: `url(https://image.tmdb.org/t/p/w1280${movie.backdrop_path})`,
                 backgroundSize: "cover",
-                backgroundPosition: "center top",
+                backgroundPosition: "center",
               }}
             >
               {/* Dark overlay to guarantee text contrast */}

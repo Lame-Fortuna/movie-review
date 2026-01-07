@@ -1,11 +1,39 @@
 import { MetadataRoute } from "next";
-import movieLists from "@/lib/MovieLists.json";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export const dynamic = "force-static";
+export const revalidate = 86400; // 24 hours
+
+const MOVIE_IDS = [
+  13,62,239,278,335,346,389,408,429,433,457,539,597,630,646,658,660,665,667,670,
+  770,772,807,808,935,966,1585,1622,2757,3170,4772,5227,6620,6844,7451,8316,
+  9325,10340,10437,10693,10882,10895,11163,11224,11324,11360,11706,12092,
+  12208,12230,13531,14320,15121,19995,24428,37292,39507,47763,76600,83533,
+  130150,157336,198663,210577,269149,284536,346364,372058,402431,414906,
+  425274,474350,507089,533533,533535,546554,552524,574475,575265,604079,
+  615173,617126,628847,639988,661374,701387,718838,755898,772462,798645,
+  803796,812583,829557,870028,911430,937941,950387,950396,957119,967941,
+  980477,982843,986097,1010581,1010756,1023922,1033148,1035259,1038392,
+  1054867,1061474,1062722,1078605,1084242,1100988,1116465,1131759,1137179,
+  1156594,1180831,1195518,1197137,1214931,1218925,1223601,1228246,1233413,
+  1234731,1234821,1241982,1242011,1242898,1246049,1247002,1248226,1252037,
+  1259102,1284120,1294203,1311031,1327862,1363123,1368166,1387382,1419406,
+  1422096,1439112,1472638,1491902,1511417,1512623,
+
+  // Horror / Vintage / Comedy / Action extras
+  1091,6114,348,420634,609,493922,138843,2654,170,396535,14836,694,948,242224,
+  419430,76617,2671,713704,2004,9552,653,15,1939,1480,3035,138,964,18987,19,
+  234,30982,10098,828,548,11878,962,27517,2760,289,680,816,9486,9470,2109,
+  9502,194,76493,18785,284053,4247,44896,207703,19908,607,170657,914,18610,
+  19670,155,122,76341,9495,24,187,39254,98,1368,1271,245891,100402,14711,
+  106,9387,603,218,11230,9461,1891
+];
+
+export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://filmatlas.online";
-  const now = new Date();
 
-  // STATIC CORE PAGES
+  // Prevent future dates due to clock skew
+  const lastMod = new Date(Date.now() - 5 * 60 * 1000);
+
   const staticPages = [
     "",
     "/catalogue/vintage",
@@ -15,73 +43,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/catalogue/oldjapanese",
   ].map((path) => ({
     url: `${baseUrl}${path}`,
-    lastModified: now,
+    lastModified: lastMod,
     changeFrequency: "weekly" as const,
     priority: path === "" ? 1 : 0.8,
   }));
 
-  // ALL TMDB GENRES
-  const genres = [
-    { id: 28, slug: "action" },
-    { id: 12, slug: "adventure" },
-    { id: 16, slug: "animation" },
-    { id: 35, slug: "comedy" },
-    { id: 80, slug: "crime" },
-    { id: 99, slug: "documentary" },
-    { id: 18, slug: "drama" },
-    { id: 10751, slug: "family" },
-    { id: 14, slug: "fantasy" },
-    { id: 36, slug: "history" },
-    { id: 27, slug: "horror" },
-    { id: 10402, slug: "music" },
-    { id: 9648, slug: "mystery" },
-    { id: 10749, slug: "romance" },
-    { id: 878, slug: "science-fiction" },
-    { id: 10770, slug: "tv-movie" },
-    { id: 53, slug: "thriller" },
-    { id: 10752, slug: "war" },
-    { id: 37, slug: "western" },
-  ];
-
-  const GENRE_PAGES = 10;
-
-  const genrePages = genres.flatMap((genre) =>
-    Array.from({ length: GENRE_PAGES }, (_, i) => ({
-      url: `${baseUrl}/search/genre-${genre.id}/${i + 1}`,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: i === 0 ? 0.9 : 0.6,
-    }))
-  );
-
-  // PAGINATED COLLECTIONS
-  const collections = ["popular", "trending"];
-  const COLLECTION_PAGES = 10;
-
-  const collectionPages = collections.flatMap((type) =>
-    Array.from({ length: COLLECTION_PAGES }, (_, i) => ({
-      url: `${baseUrl}/search/${type}/${i + 1}`,
-      lastModified: now,
-      changeFrequency: "daily" as const,
-      priority: i === 0 ? 0.9 : 0.6,
-    }))
-  );
-
-  //ALL MOVIE DETAIL PAGES
-  const movieArrays = Object.values(movieLists);
-
-  const moviePages = movieArrays.flat().map((movie: any) => ({
-    url: `${baseUrl}/movies/${movie.id}`,
-    lastModified: now,
+  const moviePages = MOVIE_IDS.map((id) => ({
+    url: `${baseUrl}/movies/${id}`,
+    lastModified: lastMod,
     changeFrequency: "monthly" as const,
-    priority: 0.8,
+    priority: 0.9,
   }));
 
-  // FINAL SITEMAP
-  return [
-    ...staticPages,
-    ...genrePages,
-    ...collectionPages,
-    ...moviePages,
-  ];
+  return [...staticPages, ...moviePages];
 }
+
+
+
+

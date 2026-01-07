@@ -15,12 +15,13 @@ export default function DMCAPage() {
 
       <p>
         If you believe that content available through Film Atlas infringes your
-        copyright, you may submit a DMCA takedown notice to:
+        copyright, you may submit a DMCA takedown notice to: 
+        <a href="mailto:dmca@filmatlas.online" className="ml-2 font-medium text-orange-400">
+         dmca@filmatlas.online
+        </a>
       </p>
 
-      <a href="mailto:dmca@filmatlas.online" className="font-medium text-orange-400">
-        dmca@filmatlas.online
-      </a>
+      
 
       <p>
         Please include sufficient information to identify the copyrighted work,

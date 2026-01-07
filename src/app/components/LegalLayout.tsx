@@ -1,13 +1,7 @@
 import Link from "next/link";
 import Navbar from "./nav";
 
-export default function LegalLayout({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+export default function LegalLayout({title, children,}: {title: string; children: React.ReactNode;}) {
   return (
   <div className="min-h-screen flex flex-col">
     <Navbar />

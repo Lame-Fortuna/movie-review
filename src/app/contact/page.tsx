@@ -5,10 +5,8 @@ export default function ContactPage() {
     <LegalLayout title="Contact Us">
       <p>
         For general questions, feedback, or support inquiries, please contact us
-        at:
+        at: <a href="mailto:support@filmatlas.online" className="ml-2 font-medium text-orange-400">support@filmatlas.online</a>
       </p>
-
-      <a href="mailto:dmca@filmatlas.online" className="font-medium text-orange-400">support@filmatlas.online</a>
 
       <p>
         For copyright-related concerns, please refer to our DMCA Notice page for

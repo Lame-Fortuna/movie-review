@@ -7,7 +7,6 @@ import Image from "next/image";
 
 import Navbar from "@/app/components/nav";
 import Footer from "@/app/components/footer";
-import MovieCard from "@/app/components/home/MovieCards";
 
 type Movie = {
   id: string;
@@ -23,6 +22,42 @@ type Props = {
   sortBy: string;
   showSort: boolean;
 };
+
+function MovieCard({ movie }: { movie: Movie }) {
+  const [src, setSrc] = useState(movie.poster);
+  return (
+    <Link href={`/movies/${movie.id}`}className="group block w-[90px] sm:w-[120px] md:w-[150px] m-3 cursor-pointer">
+      {/* Poster */}
+      <div className="w-full aspect-[2/3] overflow-hidden">
+        <img
+          src={
+            movie.poster
+              ? `https://image.tmdb.org/t/p/w300${movie.poster}`
+              : "/images/poster.webp"
+          }
+          alt={movie.title || "Poster"}
+          loading="lazy"
+          decoding="async"
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src = "/images/poster.webp";
+          }}
+        />
+      </div>
+
+      {/* Text */}
+      <div className="text-slate-100 flex-1 flex flex-col justify-center px-2 py-2">
+        <p className="text-sm sm:text-base font-medium leading-tight line-clamp-2">
+          {movie.title}
+        </p>
+        <p className="text-xs sm:text-sm opacity-80 mt-1">
+          {movie.year}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
 
 export default function MovieList({movies, query, page, sortBy, showSort, }: Props) {
   const [currentSortBy, setCurrentSortBy] = useState(sortBy);
