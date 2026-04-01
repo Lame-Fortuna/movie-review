@@ -44,8 +44,17 @@ next-env.d.ts
 You're essentially migrating a Node.txt
 
 # future feature
-route.js
+src/app/api/crew/
+src/app/api/genre/
+src/app/api/movie/
+src/app/api/search/
+src/app/api/catalogue/
+src/app/api/auth/
 
 # others
 tmdb requests.txt
 movies.json
+vintage_movies_dataset.csv
+poster.js
+posters.html
+design.md
