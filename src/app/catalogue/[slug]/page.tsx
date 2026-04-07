@@ -24,7 +24,7 @@ async function fetchCatalogueFromDB(slug: string): Promise<any> {
 } 
 
 // Cache wrapper
-export const getCachedCatalogue = async (slug: string): Promise<any> => {
+const getCachedCatalogue = async (slug: string): Promise<any> => {
   const fetchCached = unstable_cache(
     async () => {
       return await fetchCatalogueFromDB(slug);

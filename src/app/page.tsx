@@ -26,7 +26,7 @@ async function fetchAllMovies(): Promise<any> {
 }
 
 // Fetch homepage data from MongoDB
-export const fetchHomepageData = unstable_cache(
+const fetchHomepageData = unstable_cache(
   async (): Promise<HomepageData | null> => {
     try {
       const collection = await getCollection("homepage");

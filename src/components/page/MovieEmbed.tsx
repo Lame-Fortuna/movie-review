@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Bookmark, Heart, Film, MonitorPlay, PenLine, X, Clapperboard, AlertCircle } from "lucide-react";
+import Image from "next/image";
 
 type ActionButtonProps = {
   icon: React.ReactNode;
@@ -146,9 +147,11 @@ export default function MovieEmbed({source, title, backdrop, trailerKey, onOpenR
               onClick={handlePlayMain}
             >
               {backdrop && (
-                <img 
+                <Image
                   src={backdrop} 
                   alt={`${title} backdrop`}
+                  width={400}
+                  height={300}
                   className="absolute inset-0 h-full w-full object-cover opacity-40"
                   loading="lazy"
                   decoding="async"
