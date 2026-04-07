@@ -1,4 +1,11 @@
 import LegalLayout from "@/components/LegalLayout";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata = createMetadata({
+  title: "Contact",
+  description: "Contact Film Atlas for support, feedback, or general questions.",
+  path: "/legal/contact",
+});
 
 export default function ContactPage() {
   return (

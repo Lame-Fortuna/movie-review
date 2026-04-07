@@ -13,11 +13,15 @@ export function normalizeMoviePayload(payload: any): Movie {
     tmdb_id: payload?.tmdb_id || 0,
     title: payload?.title || "Unknown Title",
     imdb_id: payload?.imdb_id,
+    original_title: payload?.original_title,
+    original_language: payload?.original_language,
+    status: payload?.status,
     release_date: payload?.release_date,
     year: payload?.release_year || payload?.year,
     
     // Images are nested inside the "images" object
     poster: payload?.images?.poster,
+    poster_original: payload?.images?.poster_original ?? payload?.images?.poster,
     poster2: payload?.images?.poster2,
     backdrop: payload?.images?.backdrop,
     
@@ -26,10 +30,14 @@ export function normalizeMoviePayload(payload: any): Movie {
     rated: payload?.age_certification,
     tagline: payload?.tagline,
     plot_summary: payload?.plot_summary,
+    imdb_rating: payload?.ratings?.imdb_rating ?? payload?.imdb_rating ?? null,
     
     // Arrays that map directly
     genres: payload?.genres || [],
     keywords: payload?.keywords || [],
+    alternative_titles: Array.isArray(payload?.alternative_titles)
+      ? payload.alternative_titles.filter(Boolean)
+      : [],
     
     // Extract the first trailer key from the nested videos object
     trailerKey: payload?.videos?.youtube_trailer_keys?.[0] || undefined,
@@ -62,7 +70,7 @@ export async function fetchMovieById(id: string): Promise<Movie | null> {
         "x-api-key": process.env.MOVIE_API_KEY || "", 
         "Content-Type": "application/json",
       },
-      next: { revalidate: 3600 },
+      next: { revalidate: 6 * 60 * 60 },
     } as any);
 
     if (!response.ok) return null;

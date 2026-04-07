@@ -55,7 +55,7 @@ export default function Overlay({ isOpen, onClose }: OverlayProps) {
                 
                 {/* Static Genres Grid */}
                 <div>
-                  <h2 className="font-label text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6">
+                  <h2 className="font-label text-xs uppercase tracking-[0.2em] text-neutral-300 mb-6">
                     Popular Genres
                   </h2>
                   <div className="grid grid-cols-2 gap-3 mb-5">
@@ -74,14 +74,14 @@ export default function Overlay({ isOpen, onClose }: OverlayProps) {
                   <Link 
                     href="/genre" 
                     onClick={onClose}
-                    className="group flex items-center gap-2 font-label text-[10px] uppercase tracking-widest text-neutral-400 hover:text-white transition-colors"
+                    className="group flex items-center gap-2 font-label text-[10px] uppercase tracking-widest text-neutral-200 hover:text-white transition-colors"
                   >
                     Explore All Genres <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
 
                 {/* Static Catalogues List */}
-                <Link href="/cataloue" className="font-label text-xs uppercase tracking-[0.2em] text-neutral-500 hover:text-white mb-6">
+                <Link href="/catalogue" className="font-label text-xs uppercase tracking-[0.2em] text-neutral-300 hover:text-white mb-6">
                   Curated Catalogues
                 </Link>
                 {/*}
@@ -93,7 +93,7 @@ export default function Overlay({ isOpen, onClose }: OverlayProps) {
 
               {/* Footer Info */}
               <div className="mt-auto pt-12">
-                <p className="font-label text-[9px] uppercase tracking-[0.3em] text-neutral-600">
+                <p className="font-label text-[9px] uppercase tracking-[0.3em] text-neutral-400">
                   Film Archive System
                 </p>
               </div>

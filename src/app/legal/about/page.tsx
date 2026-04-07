@@ -1,4 +1,11 @@
 import LegalLayout from "@/components/LegalLayout";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata = createMetadata({
+  title: "About",
+  description: "Learn about the Film Atlas project, its goals, and how the site curates film discovery.",
+  path: "/legal/about",
+});
 
 export default function AboutPage() {
   return (

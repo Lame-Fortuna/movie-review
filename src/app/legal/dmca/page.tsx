@@ -1,4 +1,11 @@
 import LegalLayout from "@/components/LegalLayout";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata = createMetadata({
+  title: "DMCA Notice",
+  description: "Review the Film Atlas DMCA notice and copyright contact details.",
+  path: "/legal/dmca",
+});
 
 export default function DMCAPage() {
   return (

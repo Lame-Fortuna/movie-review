@@ -11,7 +11,7 @@ export async function GET(request: Request) {
         headers: {
           "x-api-key": process.env.MOVIE_API_KEY || "",
         },
-        next: { revalidate: 36000 },
+        next: { revalidate: 6 * 60 * 60 }, // Revalidate every 6 hours
       }
     ).then((res) => res.json());
 

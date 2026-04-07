@@ -1,5 +1,5 @@
 import { notFound, permanentRedirect } from "next/navigation";
-import { fetchMovieById } from "@/lib/movie-utils";
+import { fetchMovieById } from "@/lib/moviePage";
 import { movieHref } from "@/lib/href";
 
 type PageProps = {

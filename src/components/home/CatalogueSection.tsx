@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 type Props = {
   name: string;
@@ -12,9 +13,11 @@ export default function CatalogueItem({ name, bg, link }: Props) {
       href={link}
       className="relative h-50 flex items-center justify-center overflow-hidden text-white rounded-lg shadow-lg"
     >
-      <img
+      <Image
         src={bg}
-        alt=""
+        alt={name}
+        width={200}
+        height={100}
         aria-hidden="true"
         className="absolute inset-0 h-full w-full object-cover object-top"
         loading="lazy"

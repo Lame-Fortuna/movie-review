@@ -1,8 +1,21 @@
 import MovieList from "@/components/MovieList";
-import { movieApi } from "@/lib/movieAPI";
+import { createMetadata } from "@/lib/metadata";
+import { movieApi } from "@/lib/movieSearch";
 
 type Params = Promise<{ id: string }>;
 type SearchParams = Promise<{ [key: string]: string | undefined }>;
+
+export async function generateMetadata(props: { params: Params; searchParams: SearchParams }) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
+  const role = searchParams.role || "cast";
+
+  return createMetadata({
+    title: `Filmography (${role})`,
+    description: `Browse Film Atlas filmography results for crew member ${params.id}.`,
+    path: `/crew/${params.id}`,
+  });
+}
 
 export default async function CrewPage(props: { params: Params; searchParams: SearchParams }) {
   const params = await props.params;

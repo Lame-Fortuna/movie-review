@@ -1,4 +1,11 @@
 import LegalLayout from "@/components/LegalLayout";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata = createMetadata({
+  title: "Disclaimer",
+  description: "Read the Film Atlas disclaimer covering embedded content, third-party data, and liability.",
+  path: "/legal/disclaimer",
+});
 
 export default function DisclaimerPage() {
   return (

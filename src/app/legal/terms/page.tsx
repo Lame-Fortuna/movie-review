@@ -1,4 +1,11 @@
 import LegalLayout from "@/components/LegalLayout";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata = createMetadata({
+  title: "Terms of Service",
+  description: "Review the Film Atlas terms of service and usage conditions.",
+  path: "/legal/terms",
+});
 
 export default function TermsPage() {
   return (

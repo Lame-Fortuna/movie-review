@@ -1,7 +1,21 @@
 import MovieList from "@/components/MovieList"; 
-import { movieApi } from "@/lib/movieAPI";
+import { createMetadata } from "@/lib/metadata";
+import { movieApi } from "@/lib/movieSearch";
 
 type SearchParams = Promise<{ [key: string]: string | undefined }>;
+
+export async function generateMetadata(props: { searchParams: SearchParams }) {
+  const searchParams = await props.searchParams;
+  const q = searchParams.q?.trim();
+
+  return createMetadata({
+    title: q ? `Search Results for "${q}"` : "Search Movies",
+    description: q
+      ? `Browse Film Atlas search results for ${q}.`
+      : "Search the Film Atlas archive by title, keyword, or collection.",
+    path: "/search",
+  });
+}
 
 export default async function SearchPage(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;

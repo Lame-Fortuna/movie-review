@@ -1,6 +1,13 @@
 import Link from "next/link";
+import { createMetadata } from "@/lib/metadata";
 
 const Genres = ["action","adventure","animation","comedy","crime","documentary","drama","family","fantasy","history","horror","music","mystery","romance","science fiction","thriller","tv movie","war","western"]
+
+export const metadata = createMetadata({
+  title: "Genres",
+  description: "Browse movie genres on Film Atlas and explore curated collections by style and mood.",
+  path: "/genre",
+});
 
 export default function GenrePage() {
   
@@ -11,8 +18,8 @@ export default function GenrePage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {Genres.map((genre) => (
                 <Link key={genre} href={`/genre/${genre}`} className="text-white group hover:text-gray-400">
-                    <div className="p-4 border border-gray-700 rounded-lg transition-colors duration-300 group-hover:bg-gray-700">
-                        <h2 className="text-lg font-semibold text-center uppercase">{genre}</h2>
+                    <div className="p-4 border border-gray-700 rounded-lg transition-colors duration-300 group-hover:bg-gray-700 overflow-clip">
+                        <h2 className="text-sm md:text-lg font-semibold text-center uppercase">{genre}</h2>
                     </div>
                 </Link>
             ))}

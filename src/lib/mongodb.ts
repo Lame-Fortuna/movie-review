@@ -23,3 +23,17 @@ export async function getCollection(collectionName: string) {
   const client = await getClient();
   return client.db(dbName).collection(collectionName);
 }
+
+// Get all available catalogues
+export async function getAllCatalogues() {
+  try {
+    const collection = await getCollection("catalogues");
+    
+    const catalogues = await collection.find({}).toArray();
+    
+    return catalogues;
+  } catch (error) {
+    console.error("Failed to fetch all catalogues:", error);
+    return [];
+  }
+}

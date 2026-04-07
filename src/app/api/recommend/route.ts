@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import movieLists from "@/lib/MovieLists.json";
+import next from "next";
 
 function getRandomFallbacks(count = 5) {
   const shuffled = movieLists.IMDB35.sort(() => 0.5 - Math.random());
@@ -16,6 +17,7 @@ export async function POST(request: Request) {
   //   const response = await fetch("https://l0w1-movie-reco.hf.space/2", {
   //     method: "POST",
   //     headers: { "Content-Type": "application/json" },
+  //     next: { revalidate: 6 * 60 * 60 }, // Revalidate every 6 hours
   //     body: JSON.stringify(body),
   //   });
 

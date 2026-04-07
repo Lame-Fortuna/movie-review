@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Bookmark, Heart, Film, MonitorPlay, PenLine, X, Clapperboard } from "lucide-react";
+import { Bookmark, Heart, Film, MonitorPlay, PenLine, X, Clapperboard, AlertCircle } from "lucide-react";
 
 type ActionButtonProps = {
   icon: React.ReactNode;
@@ -9,26 +9,33 @@ type ActionButtonProps = {
   active?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  className?: string;
 };
 
-function ActionButton({ icon, label, active = false, disabled = false, onClick }: ActionButtonProps) {
+function ActionButton({ icon, label, active = false, disabled = false, onClick, className = "" }: ActionButtonProps) {
   return (
     <button
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
-      className={`group relative flex min-w-0 flex-1 items-center gap-3 overflow-hidden border px-3 py-3 text-left transition-all duration-500 ${
+      title={label}
+      className={`group relative flex min-w-0 flex-1 items-center justify-center lg:justify-start gap-0 lg:gap-3 overflow-visible lg:overflow-hidden border p-2 lg:px-3 lg:py-3 text-left transition-all duration-500 ${
         disabled
           ? "cursor-not-allowed border-white/8 bg-white/[0.02] text-neutral-600"
           : active
             ? "border-white/30 bg-white/[0.08] text-white shadow-[0_0_30px_rgba(255,255,255,0.08)]"
             : "border-white/10 bg-white/[0.03] text-neutral-300 hover:border-white/25 hover:bg-white/[0.06] hover:text-white"
-      }`}
+      } ${className}`}
       aria-label={label}
     >
       <div className={`absolute inset-0 bg-linear-to-r from-transparent via-white/[0.04] to-transparent opacity-0 transition-opacity duration-500 ${
         disabled ? "" : active ? "opacity-100" : "group-hover:opacity-100"
       }`} />
-      <div className={`relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-all duration-500 ${
+
+      <div className="absolute -top-10 left-1/2 -translate-x-1/2 scale-75 opacity-0 bg-neutral-900 text-white font-label text-[9px] uppercase tracking-[0.3em] px-3 py-1.5 rounded border border-white/10 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100 group-active:scale-100 group-active:opacity-100 lg:hidden z-50 pointer-events-none whitespace-nowrap shadow-xl">
+        {label}
+      </div>
+
+      <div className={`relative flex h-9 w-9 lg:h-11 lg:w-11 shrink-0 items-center justify-center rounded-full border transition-all duration-500 ${
         disabled
           ? "border-white/8 bg-black/30 text-neutral-600"
           : active
@@ -37,7 +44,8 @@ function ActionButton({ icon, label, active = false, disabled = false, onClick }
       }`}>
         {icon}
       </div>
-      <div className="relative min-w-0">
+      
+      <div className="hidden lg:block relative min-w-0">
         <span className={`block font-label text-[9px] uppercase tracking-[0.34em] transition-colors duration-500 ${
           disabled ? "text-neutral-600" : active ? "text-neutral-100" : "text-neutral-500 group-hover:text-neutral-200"
         }`}>
@@ -67,26 +75,40 @@ export default function MovieEmbed({source, title, backdrop, trailerKey, onOpenR
   const [currentSource, setCurrentSource] = useState(mainSource);
   const [isPlayingTrailer, setIsPlayingTrailer] = useState(false);
   const [showWhereToWatch, setShowWhereToWatch] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+  
   const movieButtonDisabled = isPlayingTrailer && !hasMainSource;
+
+  const showToast = (msg: string) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(""), 4500); // Gives them plenty of time to read it
+  };
 
   const handlePlayMain = () => {
     if (hasMainSource) {
+      // 1. Movie exists: Play it normally
       setCurrentSource(mainSource);
       setIsPlayingTrailer(false);
-    } else if (trailerSource) {
-      setCurrentSource(trailerSource);
-      setIsPlayingTrailer(true);
+      setShowIframe(true);
+      setIsIframeLoading(true);
     } else {
-      alert("Video not available");
-      return;
+      // 2. Movie is missing
+      if (trailerSource) {
+        // Trigger toast AND load trailer immediately
+        showToast("Movie unavailable. Loading trailer instead.");
+        setCurrentSource(trailerSource);
+        setIsPlayingTrailer(true);
+        setShowIframe(true);
+        setIsIframeLoading(true);
+      } else {
+        // 3. Neither exists
+        showToast("Movie and trailer are currently unavailable.");
+      }
     }
-
-    setShowIframe(true);
-    setIsIframeLoading(true);
   };
 
   const handleToggleTrailer = () => {
-    if (!trailerKey) return alert("Trailer not available");
+    if (!trailerKey) return showToast("Trailer is currently unavailable.");
     
     if (isPlayingTrailer) {
       if (!hasMainSource) return;
@@ -102,11 +124,22 @@ export default function MovieEmbed({source, title, backdrop, trailerKey, onOpenR
   };
 
   return (
-    <section className="w-full h-full overflow-y-auto no-scrollbar flex flex-col px-2 sm:px-4">
-      <div className="w-full max-w-215 mx-auto my-auto flex flex-col gap-6">
+    <section className="w-full h-full md:overflow-y-auto no-scrollbar flex flex-col px-0 sm:px-4">
+      <div className="w-full max-w-215 mx-auto my-0 md:my-auto flex flex-col gap-4 md:gap-6">
         
-        {/* The Video Player */}
-        <div className="relative aspect-video w-full shrink-0 overflow-hidden border border-white/10 bg-black group">
+        {/* The Video Player Container */}
+        <div className="relative aspect-video w-full shrink-0 overflow-hidden md:border border-white/10 bg-black group">
+          
+          {/* CHANGED: Toast pinned absolutely to the top-left of the player */}
+          {toastMsg && (
+            <div className="absolute top-4 left-4 z-[100] animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="bg-neutral-900/95 backdrop-blur-sm border border-amber-500/30 text-white shadow-2xl rounded-sm py-2 px-4 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-amber-500" />
+                <span className="font-label text-[10px] sm:text-xs tracking-widest uppercase text-amber-50">{toastMsg}</span>
+              </div>
+            </div>
+          )}
+
           {!showIframe ? (
             <div 
               className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black"
@@ -132,7 +165,7 @@ export default function MovieEmbed({source, title, backdrop, trailerKey, onOpenR
             <>
               {isIframeLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black">
-                  <span className="loading loading-ring loading-xl"></span>
+                  <span className="animate-spin h-8 w-8 border-4 border-white border-t-transparent rounded-full"></span>
                 </div>
               )}
               
@@ -150,9 +183,9 @@ export default function MovieEmbed({source, title, backdrop, trailerKey, onOpenR
         </div>
 
         {/* The Action Bar Underneath */}
-        <div className="grid w-full shrink-0 grid-cols-2 gap-2 px-1 sm:grid-cols-5">
-          <ActionButton icon={<Bookmark className="h-5 w-5" />} label="Watchlist" />
-          <ActionButton icon={<Heart className="h-5 w-5" />} label="Favorite" />
+        <div className="grid w-full shrink-0 grid-cols-5 gap-1 px-1 sm:gap-2 sm:px-1">
+          <ActionButton icon={<Bookmark className="h-5 w-5 sm:h-5 sm:w-5" />} label="Watchlist" />
+          <ActionButton icon={<Heart className="h-5 w-5 sm:h-5 sm:w-5" />} label="Favorite" />
           
           <ActionButton
             active={isPlayingTrailer && hasMainSource}
@@ -167,6 +200,7 @@ export default function MovieEmbed({source, title, backdrop, trailerKey, onOpenR
             label="Screening"
             onClick={() => setShowWhereToWatch(true)}
           />
+          
           <ActionButton
             icon={<PenLine className="h-5 w-5" />}
             label="Review"
@@ -179,7 +213,7 @@ export default function MovieEmbed({source, title, backdrop, trailerKey, onOpenR
 
       {/* Where To Watch Popup */}
       {showWhereToWatch && (
-        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/95 p-6">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 p-6">
           <div className="bg-neutral-950 w-full max-w-md p-10 space-y-6 relative border border-white/10 shadow-2xl">
             <button 
               onClick={() => setShowWhereToWatch(false)}

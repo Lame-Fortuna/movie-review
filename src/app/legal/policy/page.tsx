@@ -1,4 +1,11 @@
 import LegalLayout from "@/components/LegalLayout";
+import { createMetadata } from "@/lib/metadata";
+
+export const metadata = createMetadata({
+  title: "Privacy Policy",
+  description: "Read the Film Atlas privacy policy and learn how the site handles reviews and limited analytics.",
+  path: "/legal/policy",
+});
 
 export default function PrivacyPolicyPage() {
   return (

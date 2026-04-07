@@ -1,8 +1,28 @@
 import MovieList from "@/components/MovieList";
-import { movieApi } from "@/lib/movieAPI";
+import { createMetadata } from "@/lib/metadata";
+import { movieApi } from "@/lib/movieSearch";
 
 type Params = Promise<{ name: string }>;
 type SearchParams = Promise<{ [key: string]: string | undefined }>;
+
+function formatGenreName(name: string) {
+  return name
+    .split(" ")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+export async function generateMetadata(props: { params: Params }) {
+  const params = await props.params;
+  const genreName = decodeURIComponent(params.name);
+  const formattedGenre = formatGenreName(genreName);
+
+  return createMetadata({
+    title: `${formattedGenre} Movies`,
+    description: `Browse ${formattedGenre.toLowerCase()} movies on Film Atlas.`,
+    path: `/genre/${encodeURIComponent(genreName)}`,
+  });
+}
 
 export default async function GenrePage(props: { params: Params; searchParams: SearchParams }) {
   const params = await props.params;

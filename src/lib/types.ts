@@ -1,8 +1,3 @@
-
-
-
-// Movie Page Types
-
 export type CreditActor = { id: number; name: string; character: string; profile_image: string | null; };
 export type CreditDirector = { id: number; name: string; };
 export type CreditWriter = { id: number; name: string; job: string; };
@@ -59,7 +54,7 @@ export type Movie = {
   // Arrays
   genres?: string[];
   keywords?: string[];
-  // alternative_titles?: string[];
+  alternative_titles?: string[];
   // spoken_languages?: string[];
   
   // Financials

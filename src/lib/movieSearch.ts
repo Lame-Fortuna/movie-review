@@ -34,7 +34,7 @@ async function fetchFromWorker(
   };
 
   try {
-    const res = await fetch(url, { headers, cache: 'no-store' }); 
+    const res = await fetch(url, { headers, next: { revalidate: 6 * 60 * 60 } } as any); 
     
     // Improved error handling: reads the actual error message from the worker
     if (!res.ok) {

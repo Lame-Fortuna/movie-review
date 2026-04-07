@@ -58,3 +58,6 @@ vintage_movies_dataset.csv
 poster.js
 posters.html
 design.md
+available_movies.txt
+final_movies.json
+mapper.js

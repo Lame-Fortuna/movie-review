@@ -93,7 +93,7 @@ export default function MovieList({ movies, headerTitle, totalCount }: MovieList
       )}
 
       {/* Pagination Footer */}
-      <footer className="my-6 flex justify-center">
+      <footer className="pt-20 flex justify-center">
         <nav aria-label="Pagination" className="join">
           
           {/* Previous Button */}

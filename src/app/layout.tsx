@@ -3,58 +3,54 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { DEFAULT_DESCRIPTION, SITE_URL } from "@/lib/metadata";
 
-export async function generateMetadata() {
-  const title = "Film-Atlas | Discover Movies, Classics & Hidden Gems";
-  const description =
-    "Explore trending movies, vintage classics, and curated collections on Film-Atlas. Discover, browse, and enjoy cinema from around the world.";
-
-  const url = "https://filmatlas.online";
-  const image = "https://filmatlas.online/og-home.jpg";
-
-  return {
-    title,
-    description,
-    keywords: [
-      "movies",
-      "film database",
-      "classic movies",
-      "vintage cinema",
-      "movie discovery",
-      "film atlas",
-      "watch movies",
-      "public domain movies",
-      "movie recommendations",
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Film Atlas | Discover Movies, Classics & Hidden Gems",
+    template: "%s | Film Atlas",
+  },
+  description: DEFAULT_DESCRIPTION,
+  keywords: [
+    "movies",
+    "film database",
+    "classic movies",
+    "vintage cinema",
+    "movie discovery",
+    "film atlas",
+    "watch movies",
+    "public domain movies",
+    "movie recommendations",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Film Atlas | Discover Movies, Classics & Hidden Gems",
+    description: DEFAULT_DESCRIPTION,
+    url: SITE_URL,
+    siteName: "Film Atlas",
+    type: "website",
+    images: [
+      {
+        url: "https://filmatlas.online/og-home.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Film Atlas - Discover Movies",
+      },
     ],
-    alternates: {
-      canonical: url,
-    },
-    openGraph: {
-      title,
-      description,
-      url,
-      siteName: "Film-Atlas",
-      type: "website",
-      images: [
-        {
-          url: image,
-          width: 1200,
-          height: 630,
-          alt: "Film-Atlas – Discover Movies",
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [image],
-    },
-    icons: {
-      icon: "/filmAtlas.ico",
-    },
-  };
-}
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Film Atlas | Discover Movies, Classics & Hidden Gems",
+    description: DEFAULT_DESCRIPTION,
+    images: ["https://filmatlas.online/og-home.jpg"],
+  },
+  icons: {
+    icon: "/filmAtlas.ico",
+  },
+};
 
 export default function RootLayout({
   children,
