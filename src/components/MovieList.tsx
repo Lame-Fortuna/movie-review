@@ -72,8 +72,8 @@ export default function MovieList({ movies, headerTitle, totalCount }: MovieList
           >
             <option value="popularity-DESC">Popularity</option>
             <option value="rating-DESC">Rating</option>
-            <option value="release_year-DESC">Release Year (Newest)</option>
-            <option value="release_year-ASC">Release Year (Oldest)</option>
+            <option value="year-DESC">Release Year (Newest)</option>
+            <option value="year-ASC">Release Year (Oldest)</option>
           </select>
         </div>
       </div>

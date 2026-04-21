@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import MovieCard from "../MovieCards"; 
@@ -27,8 +27,9 @@ const Map: Record<string, string> = {
   vintage: `/catalogue/vintage`,
   toprated: `/catalogue/imdb35`,
   all: `/search/`,
-  melodrama: `/catalogue/melodrama`,
-  unorthodox: `/catalogue/unorthodox`,
+  imdb35: `/catalogue/imdb35`,
+  melodrama: `/catalogue/classic-melodramas`,
+  unorthodox: `/catalogue/unorthodox-cinema`,
   fantasy : `/genre/fantasy`,
 };
 
@@ -39,10 +40,22 @@ type Props = {
 
 export default function CarouselSection({ title, movies }: Props) {
   const { ref, scrollLeft, scrollRight } = useCarousel();
+  const [isMobile, setIsMobile] = useState(false);
   
   const moreLink = Map[title.toLowerCase().replace(/\s+/g, "")] || "/";
-  
-  const displayMovies = useMemo(() => movies.slice(0, 15), [movies]);
+
+  useEffect(() => {
+    const syncViewport = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    syncViewport();
+    window.addEventListener("resize", syncViewport);
+
+    return () => window.removeEventListener("resize", syncViewport);
+  }, []);
+
+  const displayMovies = movies.slice(0, isMobile ? 6 : 15);
 
   return (
     <section className="px-4 md:px-12 py-6 bg-black">
@@ -80,10 +93,7 @@ export default function CarouselSection({ title, movies }: Props) {
           {displayMovies.map((movie, index) => {
             const uniqueKey = movie.tmdb_id ? `${movie.tmdb_id}-${index}` : `fallback-${index}`;
             return (
-              <div 
-                key={uniqueKey} 
-                className={`snap-center shrink-0 ${index > 5 ? 'hidden md:block' : ''}`}
-              >
+              <div key={uniqueKey} className="snap-center shrink-0">
                 <MovieCard movie={movie} />
               </div>
             );
@@ -91,7 +101,7 @@ export default function CarouselSection({ title, movies }: Props) {
 
           <Link
             href={moreLink}
-            className="flex-none w-24 h-48 md:w-32 md:h-72 rounded-xs bg-linear-to-br from-purple-500 to-violet-700 md:grayscale hover:grayscale-0 border-white/10 text-white flex items-center justify-center shadow-lg transition-all duration-700"
+            className="flex-none w-24 h-48 md:w-32 md:h-72 rounded-xs bg-linear-to-br from-purple-500 to-violet-700 md:grayscale hover:grayscale-0 border-white/10 text-white flex items-center justify-center shadow-lg md:transition-all md:duration-700"
           >
             <div className="p-4 text-center">
               <p className="font-headline font-semibold text-base md:text-lg uppercase tracking-widest">Explore</p>

@@ -1,31 +1,28 @@
-"use client";
-
-import React, { useState } from "react";
 import Link from "next/link";
 
 export default function Footer() {
     return (
-      <footer className="footer sm:footer-horizontal bg-black text-base-content py-10 px-20 border-t border-t-white/20">
+      <footer className="footer sm:footer-horizontal bg-black text-white/80 py-10 px-20 border-t border-t-white/20">
         <nav>
-          <h3 className="footer-title">Company</h3>
-          <Link href="/legal/about" className="link link-hover">About Us</Link>
-          <Link href="/legal/contact" className="link link-hover">Contact Us</Link>
+          <h3 className="footer-title text-white">Company</h3>
+          <Link href="/legal/about" className="link link-hover text-white/80 hover:text-white">About Us</Link>
+          <Link href="/legal/contact" className="link link-hover text-white/80 hover:text-white">Contact Us</Link>
         </nav>
 
         <nav>
-          <h3 className="footer-title">Legal</h3>
-          <Link href="/legal/dmca" className="link link-hover">DMCA Notice</Link>
-          <Link href="/legal/disclaimer" className="link link-hover">Disclaimer</Link>
-          <Link href="/legal/policy" className="link link-hover">Privacy Policy</Link>
-          <Link href="/legal/terms" className="link link-hover">Terms of Service</Link>
+          <h3 className="footer-title text-white">Legal</h3>
+          <Link href="/legal/dmca" className="link link-hover text-white/80 hover:text-white">DMCA Notice</Link>
+          <Link href="/legal/disclaimer" className="link link-hover text-white/80 hover:text-white">Disclaimer</Link>
+          <Link href="/legal/policy" className="link link-hover text-white/80 hover:text-white">Privacy Policy</Link>
+          <Link href="/legal/terms" className="link link-hover text-white/80 hover:text-white">Terms of Service</Link>
         </nav>
 
         <nav>
-          <h3 className="footer-title">Social</h3>
+          <h3 className="footer-title text-white">Social</h3>
 
-          <div className="grid grid-flow-col gap-4">
+          <div className="grid grid-flow-col gap-4 text-white/80">
             {/* X (Twitter) */}
-            <Link href="#" aria-label="X">
+            <Link href="/" aria-label="X" className="hover:text-white">
               <svg
                 viewBox="0 0 24 24"
                 className="w-6 h-6 fill-current"
@@ -36,7 +33,7 @@ export default function Footer() {
             </Link>
 
             {/* Instagram */}
-            <Link href="#" aria-label="Instagram">
+            <Link href="/" aria-label="Instagram" className="hover:text-white">
               <svg
                 viewBox="0 0 24 24"
                 className="w-6 h-6 fill-current"
@@ -49,7 +46,7 @@ export default function Footer() {
             </Link>
 
             {/* Facebook */}
-            <Link href="#" aria-label="Facebook">
+            <Link href="/" aria-label="Facebook" className="hover:text-white">
               <svg
                 viewBox="0 0 24 24"
                 className="w-6 h-6 fill-current"
@@ -60,7 +57,7 @@ export default function Footer() {
             </Link>
           </div>
 
-          <aside className="grid-flow-col items-center mt-4">
+          <aside className="grid-flow-col items-center mt-4 text-white/70">
             <p>
               Copyright © {new Date().getFullYear()} — All rights reserved
             </p>

@@ -10,7 +10,6 @@ type Props = {
   catalogue: Catalogue;
 };
 
-// Upgraded Genre Badge to match the vintage/dark aesthetic
 function GenreBadge({ genre }: { genre: string }) {
   return (
     <Link
@@ -21,6 +20,31 @@ function GenreBadge({ genre }: { genre: string }) {
     </Link>
   );
 }
+
+/**
+ CATALOGUE SCHEMA
+  interface Catalogue {
+  _id: string;
+  id: string;
+  title: string;
+  desc: string;
+  movies: Movie[];
+  }
+ 
+  interface Movie {
+  tmdb_id: number;
+  title: string;
+  year: number;
+  runtime: number;
+  rated?: string;          // e.g., "NR", "Passed"
+  poster: string;          // Image URL
+  plot_summary: string;
+  genres: string[];
+  ratings: {
+  imdb_rating: string;   // e.g., "8.1/10"
+  };
+  }
+*/
 
 export default function CatalogueClient({ catalogue }: Props) {
   const tables = Object.entries(catalogue).filter(([key]) =>
@@ -84,10 +108,10 @@ export default function CatalogueClient({ catalogue }: Props) {
                   return (
                     <div 
                       key={movie.tmdb_id}
-                      className="group relative flex flex-col sm:flex-row gap-4 sm:gap-6 p-4 sm:p-6 bg-black border border-white/10 rounded-sm overflow-hidden transition-all duration-500 hover:border-white/30 hover:bg-white/[0.02]"
+                      className="group relative flex flex-col sm:flex-row gap-4 sm:gap-6 p-4 sm:p-6 bg-black border border-white/20 rounded-sm overflow-hidden transition-all duration-500 hover:border-white/30 hover:bg-white/[0.02]"
                     >
                       {/* Watermark Index Number Background */}
-                      <span className="absolute -right-4 -top-8 text-[140px] font-headline font-black text-white/[0.02] pointer-events-none transition-colors duration-500 group-hover:text-white/[0.04]">
+                      <span className="absolute -right-4 -top-8 text-[140px] font-headline font-black text-white/[0.02] pointer-events-none transition-colors duration-500 group-hover:text-white/20">
                         {index + 1}
                       </span>
 

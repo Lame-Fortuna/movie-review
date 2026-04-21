@@ -8,35 +8,34 @@ function getRandomFallbacks(count = 5) {
 }
 
 export async function POST(request: Request) {
-  const randomClassics = getRandomFallbacks(4);
-  return NextResponse.json(randomClassics)
 
-  // try {
-  //   const body = await request.json();
+  try {
+    const body = await request.json();
 
-  //   const response = await fetch("https://l0w1-movie-reco.hf.space/2", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     next: { revalidate: 6 * 60 * 60 }, // Revalidate every 6 hours
-  //     body: JSON.stringify(body),
-  //   });
+    const response = await fetch("https://l0w1-movie-reco.hf.space/2", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      next: { revalidate: 6 * 60 * 60 }, // Revalidate every 6 hours
+      body: JSON.stringify(body),
+    });
 
-  //   if (!response.ok) {
-  //     throw new Error(`External API failed with status: ${response.status}`);
-  //   }
+    if (!response.ok) {
+      throw new Error(`External API failed with status: ${response.status}`);
+    }
 
-  //   const data = await response.json();
-  //   return NextResponse.json(data);
+    const data = await response.json();
+    //console.log("Received recommendation data:", data);
+    return NextResponse.json(data.recommended);
 
-  // } catch (error) {
-  //   console.warn("Recommendation API failed, serving 5 random fallback classics.", error);
+  } catch (error) {
+    console.warn("Recommendation API failed, serving 5 random fallback classics.", error);
     
-  //   // Randomize everytime there is an error
-  //   const randomClassics = getRandomFallbacks(4);
+    // Randomize everytime there is an error
+    const randomClassics = getRandomFallbacks(4);
 
-  //   return NextResponse.json({
-  //     recommended: randomClassics,
-  //     isFallback: true 
-  //   });
-  // }
+    return NextResponse.json({
+      recommended: randomClassics,
+      isFallback: true 
+    });
+  }
 }

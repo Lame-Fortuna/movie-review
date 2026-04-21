@@ -8,6 +8,7 @@ import Image from "next/image";
 
 export default function TrendingCarousel({ movies }: { movies: any[] }) {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   // 1. MEMOIZATION: Cache the sliced array so it doesn't recalculate on scroll
@@ -18,8 +19,11 @@ export default function TrendingCarousel({ movies }: { movies: any[] }) {
 
   // 2. MEMOIZATION: Cache the heavy DOM elements. 
   // Now, only the white dots at the bottom will re-render when swiping!
+  const firstMovie = featuredMovies[0];
+  const restMovies = featuredMovies.slice(1);
+
   const slideElements = useMemo(() => {
-    return featuredMovies.map((movie: any) => {
+    return restMovies.map((movie: any) => {
       const bgImage = `${movie.backdrop}` || '';
       const link = movieHref(movie.tmdb_id, movie.title);
 
@@ -65,7 +69,7 @@ export default function TrendingCarousel({ movies }: { movies: any[] }) {
         </Link>
       );
     });
-  }, [featuredMovies]); // Only rebuilds if the actual movies list changes
+  }, [restMovies]); // Only rebuilds if the actual movies list changes
 
   if (featuredMovies.length === 0) return null;
 
@@ -73,12 +77,18 @@ export default function TrendingCarousel({ movies }: { movies: any[] }) {
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const container = e.currentTarget;
-    const scrollPosition = container.scrollLeft;
-    const slideWidth = container.clientWidth;
-    const newIndex = Math.round(scrollPosition / slideWidth);
-    if (newIndex !== activeIndex) {
-      setActiveIndex(newIndex);
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
     }
+
+    scrollTimeoutRef.current = setTimeout(() => {
+      const scrollPosition = container.scrollLeft;
+      const slideWidth = container.clientWidth;
+      const newIndex = Math.round(scrollPosition / slideWidth);
+      setActiveIndex((currentIndex) => (
+        currentIndex === newIndex ? currentIndex : newIndex
+      ));
+    }, 80);
   };
 
   const scrollToSlide = (index: number) => {
@@ -108,6 +118,45 @@ export default function TrendingCarousel({ movies }: { movies: any[] }) {
         onScroll={handleScroll}
         className="flex w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth"
       >
+        {firstMovie && (
+          <Link
+            href={movieHref(firstMovie.tmdb_id, firstMovie.title)}
+            key={firstMovie.tmdb_id}
+            className="relative block w-full shrink-0 snap-center h-60 sm:h-75 lg:h-90 overflow-hidden bg-neutral-950 group/slide"
+          >
+            <div className="absolute inset-y-0 left-0 h-full w-full md:w-auto flex">
+              <div className="relative h-full w-full md:w-auto md:min-w-[50vw] md:max-w-[80vw]">
+                <Image
+                  src={`${firstMovie.backdrop}` || ""}
+                  alt={firstMovie.title}
+                  fill
+                  sizes="100vw"
+                  priority
+                  fetchPriority="high"
+                  loading="eager"
+                  decoding="async"
+                  className="object-cover object-left group-hover/slide:opacity-100 md:transition-all md:duration-700 md:ease-out md:grayscale md:group-hover/slide:grayscale-0 md:opacity-60"
+                />
+                <div className="hidden md:block absolute inset-y-0 right-0 w-[50%] lg:w-[45%] bg-linear-to-l from-neutral-950 via-neutral-950/70 to-transparent" />
+              </div>
+              <div className="absolute inset-0 bg-linear-to-t from-neutral-950 via-neutral-950/70 to-transparent md:hidden" />
+            </div>
+
+            <div className="absolute inset-0 md:left-auto md:right-0 md:w-[60%] flex flex-col justify-end md:justify-center md:items-end md:text-right px-6 pb-16 md:pb-0 md:px-12 lg:px-20 z-10">
+              <div className="inline-block w-fit">
+                <span className="font-label text-[10px] tracking-[0.3em] text-white/70 uppercase mb-2 block">
+                  Featured
+                </span>
+                <h2 className="font-headline text-2xl lg:text-6xl font-black uppercase tracking-tighter text-white leading-none drop-shadow-2xl">
+                  {firstMovie.title}
+                  <span className="text-xl lg:text-3xl text-white/75 font-normal block mt-2">
+                    {firstMovie.year}
+                  </span>
+                </h2>
+              </div>
+            </div>
+          </Link>
+        )}
         {slideElements}
       </div>
 

@@ -21,7 +21,7 @@ const getCachedCatalogues = unstable_cache(
   },
   ['all-catalogues'], // Cache key
   {
-    revalidate: 1800, // Revalidate every 30 minutes
+    revalidate: 5 * 60, // Revalidate every 5 minutes
     tags: ['catalogues'], 
   }
 );

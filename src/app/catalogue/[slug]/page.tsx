@@ -31,7 +31,7 @@ const getCachedCatalogue = async (slug: string): Promise<any> => {
     },
     ['catalogue', slug], // Cache key based on slug
     {
-      revalidate: 43200, // Cache for 12 hours (12 * 60 * 60)
+      revalidate: 12 * 60 * 60, // Cache for 12 hours (12 * 60 * 60)
       tags: [`catalogue-${slug}`], // Tag for manual cache invalidation
     }
   );

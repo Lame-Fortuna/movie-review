@@ -22,7 +22,7 @@ export default function MovieCard({ movie }: { movie: Movie}) {
         alt={movie.title || "Poster"}
         fill
         sizes="(max-width: 768px) 128px, 192px"
-        className="object-cover grayscale-80 md:grayscale-100 md:group-hover:grayscale-0 md:transition-all md:duration-300"
+        className="object-cover md:grayscale-100 md:group-hover:grayscale-0 md:transition-all md:duration-300"
         referrerPolicy="no-referrer"
         loading="lazy"
         decoding="async"
@@ -37,14 +37,14 @@ export default function MovieCard({ movie }: { movie: Movie}) {
         <div className="flex justify-between items-start p-2">
           {/* Top Left: IMDb Rating */}
           {rating && (
-            <div className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[12px] text-amber-300 font-extrabold bg-black/40 backdrop-blur-md border border-white/10 uppercase tracking-widest w-fit">
+            <div className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[12px] text-amber-300 font-extrabold bg-black/50 md:bg-black/40 md:backdrop-blur-md border border-white/10 uppercase tracking-widest w-fit">
               {rating}
             </div>
           )}
 
           {/* Top Right: Runtime */}
           {movie.runtime ? (
-            <div className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[12px] text-neutral-300 bg-black/40 backdrop-blur-md border border-white/10 uppercase tracking-widest w-fit">
+            <div className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[12px] text-neutral-300 bg-black/50 md:bg-black/40 md:backdrop-blur-md border border-white/10 uppercase tracking-widest w-fit">
               <Clock className="w-3 h-3" />
               {movie.runtime}{typeof movie.runtime === 'number' ? 'm' : ''}
             </div>

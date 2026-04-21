@@ -20,7 +20,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 h-16 md:h-20 w-full z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-6 md:px-12">
+      <nav className="fixed top-0 h-16 md:h-20 w-full z-50 bg-neutral-950/95 md:bg-neutral-950/80 md:backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-6 md:px-12">
         
         {/* Left Side: Menu Toggle & Logo */}
         <div className="flex items-center gap-4 md:gap-6">
