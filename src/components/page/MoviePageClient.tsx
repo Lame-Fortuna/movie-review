@@ -7,7 +7,7 @@ import { Star } from "lucide-react";
 import Image from "next/image";
 
 import Recommendations from "@/components/page/Recommendation";
-import type { CreditsData, Movie, Review } from "@/lib/types";
+import type { CreditsData, CriticReview, Movie, Review } from "@/lib/types";
 
 import MovieEmbed from "./MovieEmbed";
 
@@ -28,6 +28,70 @@ function calculateStats(reviews: Review[]) {
   return { avg, total, stars };
 }
 
+function getInitials(name: string) {
+  if (!name) {
+    return "";
+  }
+
+  const parts = name.trim().split(" ").filter(Boolean);
+
+  if (parts.length === 1) {
+    return parts[0][0]?.toUpperCase() ?? "";
+  }
+
+  return `${parts[0][0] ?? ""}${parts[parts.length - 1][0] ?? ""}`.toUpperCase();
+}
+
+function uniqueNames(items?: { name: string }[]) {
+  if (!Array.isArray(items) || items.length === 0) {
+    return "Unknown";
+  }
+
+  return Array.from(new Set(items.map((item) => item.name).filter(Boolean))).join(", ");
+}
+
+function CriticReviewCard({ review }: { review: CriticReview }) {
+  const score = typeof review.sentiment === "number" ? `${review.sentiment}/10` : null;
+
+  return (
+    <article className="space-y-4 border-y border-black/15 bg-[linear-gradient(180deg,rgba(250,248,242,0.98),rgba(244,239,228,0.98))] p-3 text-black shadow-[0_12px_30px_rgba(0,0,0,0.18)]">
+      <div className="flex items-start justify-between gap-4 border-b border-black/10 pb-3">
+        <div className="flex items-center gap-3">
+          {review.avatar ? (
+            <Image
+              src={review.avatar}
+              alt={review.source}
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-full object-cover"
+            />
+          ) : (
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-black text-xs font-black uppercase tracking-[0.2em] text-stone-100">
+              {getInitials(review.source)}
+            </div>
+          )}
+
+          <div className="space-y-0.5">
+            <p className="font-headline text-[15px] lg:text-xs font-bold uppercase tracking-[0.08em] text-black">
+              {review.source}
+            </p>
+          </div>
+        </div>
+
+        {score ? (
+          <span className="font-label text-xs uppercase tracking-[0.22em] text-neutral-500">
+            {score}
+          </span>
+        ) : null}
+      </div>
+
+      <p className="text-[15px] lg:text-xs italic leading-relaxed text-neutral-800">
+        &quot;{review.quote_summary}&quot;
+      </p>
+    </article>
+  );
+}
+
 export default function MoviePageClient({
   movie,
 }: {
@@ -41,7 +105,14 @@ export default function MoviePageClient({
   const [reviewsError, setReviewsError] = useState<string | null>(null);
 
   const stats = useMemo(() => calculateStats(reviews), [reviews]);
-  const displayDirector = movie.credits?.directors?.[0]?.name || movie.director;
+  const displayDirector = movie.credits?.directors?.[0]?.name || movie.director || "Unknown";
+  const displayWriters = uniqueNames(movie.credits?.writers);
+  const criticReviews = movie.critic_reviews ?? [];
+  const trivia = movie.trivia ?? [];
+  const keywords = movie.keywords ?? [];
+  const hasFinancialInfo = Boolean(movie.budget || movie.box_office);
+  const hasConsensus = Boolean(movie.critical_consensus?.summary);
+  const hasCriticReviews = criticReviews.length > 0;
 
   useEffect(() => {
     let cancelled = false;
@@ -87,7 +158,8 @@ export default function MoviePageClient({
 
   return (
     <main className="flex min-h-screen w-full flex-col pt-16 text-on-surface md:flex-row md:pt-20">
-      <div className="order-2 w-full space-y-20 overflow-y-auto border-white/20 px-6 pb-10 md:order-1 md:w-1/3 md:border-r no-scrollbar">
+      <div className="order-2 w-full space-y-10 overflow-y-auto border-white/20 px-6 pb-10 md:order-1 md:w-1/3 md:border-r no-scrollbar">
+        {/* Movie Details */}
         <section className="space-y-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -101,6 +173,7 @@ export default function MoviePageClient({
 
               <div className="flex flex-wrap gap-x-6 gap-y-2 font-label text-sm uppercase tracking-[0.2em] text-neutral-500">
                 <span>{movie.year}</span>
+                <span>{movie.production_countries}</span>
                 <span>{movie.runtime} min</span>
               </div>
 
@@ -120,7 +193,7 @@ export default function MoviePageClient({
             <div className="flex gap-6">
               <div className="relative h-max w-2/5 shrink-0 overflow-hidden rounded-xs">
                 <Image
-                  className="aspect-2/3 w-full border border-white/10 object-cover"
+                  className="aspect-2/3 w-full border border-white/50 object-cover"
                   src={posterSrc}
                   width={200}
                   height={300}
@@ -131,138 +204,183 @@ export default function MoviePageClient({
                 />
               </div>
 
-              <div className="w-3/5 space-y-6">
-                <p className="font-body text-base italic leading-relaxed text-on-surface">
-                  {movie.plot_summary}
-                </p>
-                <p className="font-label text-sm uppercase tracking-widest text-neutral-500">
-                  Directed by <span className="text-white">{displayDirector}</span>
-                </p>
-              </div>
+              <p className="font-body text-base italic leading-relaxed text-on-surface">
+                {movie.plot_summary}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-x-8 gap-y-3 pt-5">
+              {displayDirector && displayDirector !== "N/A" && (
+                <div className="flex items-baseline gap-2">
+                  <span className="font-label text-[11px] uppercase tracking-[0.2em] text-neutral-500">
+                    Directed by
+                  </span>
+
+                  <span className="text-sm text-neutral-100">
+                    {displayDirector}
+                  </span>
+                </div>
+              )}
+
+              {displayWriters && displayWriters !== "N/A" && (
+                <div className="flex items-baseline gap-2">
+                  <span className="font-label text-[11px] uppercase tracking-[0.2em] text-neutral-500">
+                    Written by
+                  </span>
+
+                  <span className="text-sm text-neutral-100">
+                    {displayWriters}
+                  </span>
+                </div>
+              )}
+
+              {movie.budget && movie.budget !== "N/A" && (
+                <div className="flex items-baseline gap-2">
+                  <span className="font-label text-[11px] uppercase tracking-[0.2em] text-neutral-500">
+                    Budget
+                  </span>
+
+                  <span className="text-sm text-neutral-100">
+                    {movie.budget}
+                  </span>
+                </div>
+              )}
+
+              {movie.box_office && movie.box_office !== "N/A" && (
+                <div className="flex items-baseline gap-2">
+                  <span className="font-label text-[11px] uppercase tracking-[0.2em] text-neutral-500">
+                    Box office
+                  </span>
+
+                  <span className="text-sm text-neutral-100">
+                    {movie.box_office}
+                  </span>
+                </div>
+              )}
             </div>
           </motion.div>
         </section>
-
-        {movie.ratings && Object.keys(movie.ratings).length > 0 && (
+        
+        {/* Consensus & Ratings */}
+        {(movie.ratings && Object.keys(movie.ratings).length > 0) || hasConsensus ? (
           <section className="space-y-6">
-            <h3 className="font-label text-[10px] uppercase tracking-[0.3em] text-neutral-500">
+            <h2 className="font-label text-xs  border-b border-white/50 pb-4 uppercase tracking-[0.3em] text-neutral-500">
               Critical Consensus
-            </h3>
+            </h2>
             <div className="flex flex-row flex-wrap items-center gap-x-10 gap-y-6">
-              {movie.ratings.imdb_rating && (
+              {movie.ratings?.imdb_rating && (
                 <div className="space-y-1">
                   <div className="font-headline text-lg font-semibold">
                     {movie.ratings.imdb_rating}
                   </div>
-                  <div className="font-label text-[9px] uppercase tracking-widest text-neutral-500">
+                  <div className="font-label text-[10px] uppercase tracking-widest text-neutral-500">
                     IMDb
                   </div>
                 </div>
               )}
 
-              {movie.ratings.rotten_tomatoes && (
-                <div className="space-y-1">
-                  <div className="font-headline text-lg font-semibold">
-                    {movie.ratings.rotten_tomatoes}
-                  </div>
-                  <div className="font-label text-[9px] uppercase tracking-widest text-neutral-500">
-                    Rotten Tomatoes
-                  </div>
-                </div>
-              )}
-
-              {movie.ratings.metascore && (
+              {movie.ratings?.metascore && (
                 <div className="space-y-1">
                   <div className="font-headline text-lg font-semibold">
                     {movie.ratings.metascore}
                   </div>
-                  <div className="font-label text-[9px] uppercase tracking-widest text-neutral-500">
+                  <div className="font-label text-[10px] uppercase tracking-widest text-neutral-500">
                     Metacritic
                   </div>
                 </div>
               )}
 
-              {movie.ratings.tmdb_rating && (
+              {movie.ratings?.tmdb_rating && (
                 <div className="space-y-1">
                   <div className="font-headline text-lg font-semibold">
-                    {movie.ratings.tmdb_rating}
+                    {movie.ratings.tmdb_rating.toFixed(1)}
                   </div>
-                  <div className="font-label text-[9px] uppercase tracking-widest text-neutral-500">
+                  <div className="font-label text-[10px] uppercase tracking-widest text-neutral-500">
                     TMDB
                   </div>
                 </div>
               )}
             </div>
-          </section>
-        )}
 
+            {hasConsensus ? (
+              <p className="font-body text-sm italic leading-relaxed text-neutral-400">
+                {movie.critical_consensus?.summary}
+              </p>
+            ) : null}
+          </section>
+        ) : null}
+
+        {/* Cast */}
         {movie.credits?.actors && movie.credits.actors.length > 0 && (
           <section className="space-y-8">
-            <h3 className="font-label text-[10px] uppercase tracking-[0.3em] text-neutral-500">
+            <h2 className="font-label text-xs  border-b border-white/50  pb-4 uppercase tracking-[0.3em] text-neutral-500">
               The Cast
-            </h3>
+            </h2>
             <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
-              {movie.credits.actors.map((actor) => {
-                const getInitials = (name: string) => {
-                  if (!name) {
-                    return "";
-                  }
-
-                  const parts = name.trim().split(" ");
-
-                  if (parts.length === 1) {
-                    return parts[0][0].toUpperCase();
-                  }
-
-                  return (
-                    parts[0][0] + parts[parts.length - 1][0]
-                  ).toUpperCase();
-                };
-
-                return (
-                  <div key={actor.id} className="max-w-25 min-w-25 space-y-4">
-                    <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-md border border-white/5 bg-surface-container-high">
-                      {actor.profile_image ? (
-                        <Image
-                          className="h-full w-full object-cover"
-                          width={50}
-                          height={50}
-                          src={actor.profile_image}
-                          alt={actor.name}
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      ) : (
-                        <span className="font-headline text-2xl font-bold tracking-widest text-neutral-400">
-                          {getInitials(actor.name)}
-                        </span>
-                      )}
-                    </div>
-                    <div className="space-y-1">
-                      <p className="font-headline text-xs font-semibold leading-tight">
-                        {actor.name}
-                      </p>
-                      <p
-                        className="truncate font-label text-[9px] tracking-wider text-neutral-500"
-                        title={actor.character}
-                      >
-                        {actor.character}
-                      </p>
-                    </div>
+              {movie.credits.actors.map((actor) => (
+                <div key={actor.id} className="max-w-25 min-w-25 space-y-4">
+                  <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-md border border-white/5 bg-surface-container-high">
+                    {actor.profile_image ? (
+                      <Image
+                        className="h-full w-full object-cover"
+                        width={50}
+                        height={50}
+                        src={actor.profile_image}
+                        alt={actor.name}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <span className="font-headline text-2xl font-bold tracking-widest text-neutral-400">
+                        {getInitials(actor.name)}
+                      </span>
+                    )}
                   </div>
-                );
-              })}
+                  <div className="space-y-1">
+                    <p className="font-headline text-sm font-semibold leading-tight">
+                      {actor.name}
+                    </p>
+                    <p
+                      className="truncate font-label text-[15px] tracking-wider text-neutral-500"
+                      title={actor.character}
+                    >
+                      {actor.character}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
         )}
 
+        {/* Trivia */}
+        {trivia.length > 0 && (
+          <section className="space-y-6">
+            <h2 className="font-label text-xs  border-b border-white/50  pb-4 uppercase tracking-[0.3em] text-neutral-500">
+              Trivia
+            </h2>
+            <div className="space-y-4">
+              {trivia.map((item, index) => (
+                <p
+                  key={`${item.slice(0, 20)}-${index}`}
+                  className="font-body text-sm italic leading-relaxed text-neutral-400"
+                >
+                  {item}
+                </p>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Reviews */}
         <section className="space-y-12">
-          <div className="flex items-end justify-between border-b border-white/10 pb-4">
-            <h3 className="font-label text-[10px] uppercase tracking-[0.3em] text-neutral-500">
-              Audience Consensus
-            </h3>
+          <div className="flex items-end justify-between border-b border-white/50 pb-4">
+            <h2 className="font-label text-xs uppercase tracking-[0.3em] text-neutral-500">
+              Reviews
+            </h2>
           </div>
 
+          {/* Stats */}
           <div className="flex w-full flex-col items-center justify-center gap-8 lg:flex-row">
             <div className="flex flex-col items-center space-y-2 text-center">
               <div className="rating rating-xl rating-half mb-2">
@@ -309,8 +427,32 @@ export default function MoviePageClient({
               ))}
             </div>
           </div>
+          
+          {/* Critic Reviews */}
+          {hasCriticReviews ? (
+            <div className="space-y-6">
+              <div className="space-y-1">
+                <h3 className="font-label text-xs uppercase tracking-[0.3em] text-neutral-500">
+                  Critics
+                </h3>
+              </div>
 
+              <div className="space-y-4">
+                {criticReviews.map((review, index) => (
+                  <CriticReviewCard key={`${review.source}-${index}`} review={review} />
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {/* Audience Reviews */}
           <div className="space-y-6">
+            <div className="space-y-1">
+              <h3 className="font-label text-xs uppercase tracking-[0.3em] text-neutral-500">
+                Audience
+              </h3>
+            </div>
+
             {reviewsLoading && (
               <p className="font-body text-sm italic text-neutral-500">
                 Loading reviews...
@@ -345,9 +487,7 @@ export default function MoviePageClient({
                                 ? "text-amber-500"
                                 : "text-neutral-300"
                             }`}
-                            fill={
-                              starIndex < review.rating ? "currentColor" : "none"
-                            }
+                            fill={starIndex < review.rating ? "currentColor" : "none"}
                           />
                         ))}
                       </span>
@@ -361,7 +501,21 @@ export default function MoviePageClient({
           </div>
         </section>
 
+        {/* Recommendations */}
         <Recommendations movie={movie} />
+
+        {/* Keywords */}
+        {keywords.length > 0 && (
+          <section className="space-y-3 pb-4">
+            <h3 className="font-label text-[10px] uppercase tracking-[0.3em] text-neutral-500">
+              Tags
+            </h3>
+
+            <p className="font-label text-[11px] uppercase leading-6 tracking-[0.2em] text-neutral-600">
+              {keywords.map(keyword => `#${keyword}`).join(' | ').toUpperCase()}
+            </p>
+          </section>
+        )}
       </div>
 
       <div className="order-1 mb-6 h-auto w-full md:order-2 md:mb-0 md:h-[calc(100vh-6rem)] md:w-2/3 md:sticky md:top-20 md:overflow-hidden">

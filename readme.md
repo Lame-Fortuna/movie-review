@@ -1,53 +1,60 @@
 # Film Atlas | [Live](https://filmatlas.online/)
 
-**Film Atlas** is a full-stack movie streaming, discovery and review platform built with **Next.js**. It integrates the **TMDB API** for real-time movie metadata, featuring a comprehensive catalog of over **130,000** titles. The platform includes advanced functionality such as a **Clustering-based Recommendation System**, an embedded streaming feature via **archive.org**, a **keyword and genre search**, a **user review system** and **curated catalogue pages**.
+**Film Atlas** is a full-stack platform for streaming, discovering, and reviewing public domain vintage movies, built with **Next.js**. It is powered by **Classic-MDB**, a self-built metadata API, covering 500+ titles with embedded streaming, a clustering-based recommendation system, advanced search, and a verified review system.
 
-The system handles real-time searches and large-scale data efficiently using **Next.js**. User-generated reviews are stored and managed with **MongoDB** for scalability and reliability.
+---
 
 ### Key Features
 
-* **Real-Time Movie Metadata**: Integrates the **TMDB API** to provide metadata for over **130,000** movies, including titles, descriptions, release dates, genres, and more.
+- **Custom Metadata API ([Classic-MDB](https://github.com/Lame-Fortuna/classic-mdb))**: Self-built API deployed on **Cloudflare Workers**. Serves cast, plot, posters, trivia, critic reviews, budget, and box office data. Metadata is enriched via an **[LLM-based Wikipedia scraper](https://github.com/Lame-Fortuna/wikipediaExtract)** built to extract data not available through existing public APIs. Supports search by term, genre, and cast across 500+ titles. Deployed independently from the frontend to allow metadata to be updated without redeployment.
 
-* **Clustering-based Recommendation System**: A fast, independent **FastAPI** service provides personalized movie recommendations based on content similarity. Over **18,000 titles** are available in the recommendation engine, offering accurate, high-speed suggestions.
+- **[Clustering-based Recommendation System](https://huggingface.co/spaces/L0w1/movie_reco)**: Standalone **FastAPI** microservice providing content-similarity-based recommendations across 500+ titles. Kept as a separate Python service to isolate ML dependencies from the Node.js application stack.
 
-* **Streaming via Archive.org**: Embedded video content from **archive.org** for accessible and legal movie streaming.
+- **Streaming**: Embedded playback sourced from **Archive.org** and **Wikimedia Commons**, with select titles served via CDN. 150+ public domain films available to stream directly on the platform.
 
-* **Keyword & Genre Search**: Robust search functionality enables users to find movies based on keywords and genres, powered by the **TMDB API**.
+- **Review System**: Users can submit reviews and ratings. Submissions are verified with **Cloudflare Turnstile** bot protection. Reviews are stored in **MongoDB**.
 
-* **User Review System**: Allows users to submit reviews and ratings for movies. Reviews are stored and managed in **MongoDB**, offering efficient, scalable data storage.
+- **Caching**: Uses **Next.js `unstable_cache`** and **`next revalidate`** on data fetches to reduce redundant API calls and improve response times.
 
-* **Full-Stack with Next.js**: Built using **Next.js** for high-performance, SEO-friendly applications. Next.js optimizes the user experience by enabling features like server-side rendering (SSR) and static site generation (SSG).
+- **Full-Stack with Next.js**: SSR, SSG, and API routes. Deployed on **Vercel**. Fully responsive across desktop and mobile.
 
-* **Performance Optimized**: Utilizes **Next.js**'s static optimization and API routes for server-side logic, ensuring fast load times and an efficient user experience.
-
+---
 
 ### Architecture
 
-* **Frontend**: The frontend is built with **React** using the **Next.js** framework to ensure performance and SEO optimization. The application is fully responsive for desktop and mobile users.
+**Frontend**: **React** with **Next.js (App Router)**. SSR with CSR for dynamic content. Deployed on **Vercel**..
 
-* **Backend**: The backend includes multiple components:
+**Backend**:
+- **[Classic-MDB API](https://github.com/Lame-Fortuna/classic-mdb)**: Self-built metadata API on **Cloudflare Workers**. Primary source for all movie data, search, and discovery. Independently deployed so metadata updates do not require a frontend redeployment cycle.
+- **[FastAPI Recommendation Service](https://huggingface.co/spaces/L0w1/movie_reco)**: Standalone Python microservice running the clustering-based recommendation engine. ML dependencies are kept isolated from the Node.js stack.
+- **MongoDB**: Stores user reviews and ratings.
 
-  * **FastAPI Recommendation Service**: A separate, independently running **FastAPI** service powers the movie recommendation engine, delivering high-performance clustering-based recommendations in real-time.
-  * **TMDB API**: The **TMDB API** is used for fetching movie metadata.
-  * **MongoDB**: **MongoDB** stores user reviews and other data, enabling seamless scaling.
+---
 
 ### Recommendation Engine
 
-The **Clustering-based Recommendation System** is powered by a custom **FastAPI** service. This API uses a **clustering algorithm** to recommend movies based on content similarity, analyzing over **18,000 movies**. By separating the recommendation system into its own API, we ensure that it can scale independently and perform quickly under heavy load.
+Standalone **FastAPI** service deployed on **Hugging Face Spaces**. Uses content-similarity clustering across 500+ titles to return personalized recommendations. Runs as a separate Python microservice, keeping ML dependencies out of the Node.js application stack and allowing the service to scale independently.
 
-* **FastAPI** provides fast, asynchronous responses, allowing the recommendation engine to scale efficiently as the platform grows.
-* The system ensures that movie suggestions are personalized, helping users discover movies they might enjoy based on similar content.
+---
 
 ### Tech Stack
 
-* **Next.js**: Full-stack framework for building React applications with server-side rendering, static site generation, and API routes.
-* **FastAPI**: High-performance API for the recommendation system, handling movie suggestions based on content clustering.
-* **TMDB API**: Provides comprehensive metadata for over 130,000 movies.
-* **MongoDB**: NoSQL database used for managing user reviews and other data.
-* **Archive.org**: Used to provide streaming of publicly available movies.
+| Layer | Technology |
+|---|---|
+| Framework | **Next.js** (SSR, SSG, API Routes) |
+| Deployment | **Vercel** |
+| Metadata API | **[Classic-MDB](https://github.com/Lame-Fortuna/classic-mdb)** (self-built, Cloudflare Workers) |
+| Data Enrichment | **[LLM-based Wikipedia scraper](https://github.com/Lame-Fortuna/wikipediaExtract)** (trivia, critic reviews, budget, box office) |
+| Recommendation Engine | **[FastAPI](https://huggingface.co/spaces/L0w1/movie_reco)** (clustering-based, Hugging Face Spaces) |
+| Database | **MongoDB** |
+| Bot Protection | **Cloudflare Turnstile** |
+| Caching | **Next.js `unstable_cache`** + **`next revalidate`** |
+| Streaming | **Archive.org**, **Wikimedia Commons** (select titles via CDN) |
+
+---
 
 ### Acknowledgements
 
-* **TMDB API**: For providing comprehensive movie metadata.
-* **Archive.org**: For offering free and legal streaming content.
-
+- **Archive.org** for public domain film hosting and streaming.
+- **Wikimedia Commons** for additional public domain media content.
+- **Cloudflare Workers** for edge deployment of the Classic-MDB API.

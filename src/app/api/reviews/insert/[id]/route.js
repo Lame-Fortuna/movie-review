@@ -1,10 +1,15 @@
 import { getCollection } from '@/lib/mongodb';
 import { NextResponse } from 'next/server';
 
+const secretKey = process.env.TURNSTILE_SERVER;
+
 export async function POST(req, { params }) {
   try {
     const { id: movieId } = await params;
     const form = await req.formData();
+    const forwardedFor = req.headers.get("x-forwarded-for");
+
+    const ip = forwardedFor?.split(",")[0]?.trim() || req.headers.get("x-real-ip") || "unknown";
 
     const rating = parseInt(form.get('rating'), 10);
     const doc = {
@@ -12,6 +17,23 @@ export async function POST(req, { params }) {
       rating,
       review: form.get('review'),
     };
+    const token = form.get('token');
+
+    // Verify Turnstile token
+    const verificationResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }, 
+      body: JSON.stringify({
+        secret: secretKey,
+        response: token
+      })
+    });
+
+    const verificationData = await verificationResponse.json();
+
+    if (!verificationData.success) {
+      return NextResponse.json({ error: 'Turnstile verification failed' }, { status: 400 });
+    }
 
     const collection = await getCollection("reviews");
 
@@ -48,6 +70,7 @@ export async function POST(req, { params }) {
       });
     }
 
+    console.log(`Inserted review for movie ${movieId} from IP ${ip}`);
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('Error inserting review:', err);

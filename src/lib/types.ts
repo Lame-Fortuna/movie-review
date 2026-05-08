@@ -36,6 +36,17 @@ export type Ratings = {
   rotten_tomatoes?: string;
 };
 
+export type CriticReview = {
+  source: string;
+  sentiment?: number;
+  quote_summary: string;
+  avatar?: string | null;
+};
+
+export type CriticalConsensus = {
+  summary?: string;
+};
+
 export type Movie = {
   tmdb_id: number;
   imdb_id?: string;
@@ -58,9 +69,8 @@ export type Movie = {
   // spoken_languages?: string[];
   
   // Financials
-  // budget?: number;
-  // revenue?: number;
-  // box_office?: string | number;
+  budget?: string;
+  box_office?: string;
   
   // Images & Media
   poster?: string | null;
@@ -75,10 +85,15 @@ export type Movie = {
   actors?: string | string[];      
   credits?: CreditsData; 
   ratings?: Ratings;
+  critic_reviews?: CriticReview[];
+  critical_consensus?: CriticalConsensus;
   
   // Regions & Providers
   production_countries?: string;
   // where_to_watch?: WhereToWatch;
+
+  // Enrichment
+  trivia?: string[];
   
   // Meta
   sources?: string[] | null;

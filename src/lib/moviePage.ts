@@ -8,7 +8,36 @@ function pickNameList(items: any[]): string {
     .join(", ");
 }
 
+function pickOptionalString(value: unknown): string | undefined {
+  return typeof value === "string" && value.trim() ? value.trim() : undefined;
+}
+
+function pickStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((item): item is string => typeof item === "string" && item.trim().length > 0)
+    .map((item) => item.trim());
+}
+
+function pickCriticReviews(value: unknown) {
+  if (!Array.isArray(value)) return [];
+
+  return value.filter(
+    (item): item is { source: string; sentiment?: number; quote_summary: string; avatar?: string | null } =>
+      Boolean(
+        item &&
+        typeof item === "object" &&
+        typeof item.source === "string" &&
+        item.source.trim() &&
+        typeof item.quote_summary === "string" &&
+        item.quote_summary.trim(),
+      ),
+  );
+}
+
 export function normalizeMoviePayload(payload: any): Movie {
+  const additional = payload?.additional ?? {};
+
   return {
     tmdb_id: payload?.tmdb_id || 0,
     title: payload?.title || "Unknown Title",
@@ -38,6 +67,16 @@ export function normalizeMoviePayload(payload: any): Movie {
     alternative_titles: Array.isArray(payload?.alternative_titles)
       ? payload.alternative_titles.filter(Boolean)
       : [],
+
+    budget: pickOptionalString(payload?.budget ?? additional?.budget),
+    box_office: pickOptionalString(payload?.box_office ?? additional?.box_office),
+    trivia: pickStringArray(payload?.trivia ?? additional?.trivia),
+    critic_reviews: pickCriticReviews(payload?.critic_reviews ?? additional?.critic_reviews),
+    critical_consensus: {
+      summary: pickOptionalString(
+        payload?.critical_consensus?.summary ?? additional?.critical_consensus?.summary,
+      ),
+    },
     
     // Extract the first trailer key from the nested videos object
     trailerKey: payload?.videos?.youtube_trailer_keys?.[0] || undefined,
@@ -52,7 +91,7 @@ export function normalizeMoviePayload(payload: any): Movie {
     
     // Format production countries from an array of objects into a single string
     production_countries: Array.isArray(payload?.production_countries)
-      ? payload.production_countries.map((c: any) => c.name).join(", ")
+      ? payload.production_countries.map((c: any) => c.iso_3166_1).join(", ")
       : undefined,
       
     sources: payload?.sources || payload?.source ||  null,
