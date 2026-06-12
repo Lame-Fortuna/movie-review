@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { Star } from "lucide-react";
-import Image from "next/image";
 
 import Recommendations from "@/components/page/Recommendation";
+import { tagHref } from "@/lib/href";
 import type { CreditsData, CriticReview, Movie, Review } from "@/lib/types";
 
 import MovieEmbed from "./MovieEmbed";
@@ -50,6 +50,22 @@ function uniqueNames(items?: { name: string }[]) {
   return Array.from(new Set(items.map((item) => item.name).filter(Boolean))).join(", ");
 }
 
+function uniquePeople<T extends { id: number; name: string }>(items?: T[]) {
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  const people = new Map<number, T>();
+
+  for (const item of items) {
+    if (item.id && item.name) {
+      people.set(item.id, item);
+    }
+  }
+
+  return Array.from(people.values());
+}
+
 function CriticReviewCard({ review }: { review: CriticReview }) {
   const score = typeof review.sentiment === "number" ? `${review.sentiment}/10` : null;
 
@@ -58,7 +74,7 @@ function CriticReviewCard({ review }: { review: CriticReview }) {
       <div className="flex items-start justify-between gap-4 border-b border-black/10 pb-3">
         <div className="flex items-center gap-3">
           {review.avatar ? (
-            <Image
+            <img
               src={review.avatar}
               alt={review.source}
               width={40}
@@ -86,7 +102,7 @@ function CriticReviewCard({ review }: { review: CriticReview }) {
       </div>
 
       <p className="text-[15px] lg:text-xs italic leading-relaxed text-neutral-800">
-        &quot;{review.quote_summary}&quot;
+        {review.quote_summary}
       </p>
     </article>
   );
@@ -105,7 +121,9 @@ export default function MoviePageClient({
   const [reviewsError, setReviewsError] = useState<string | null>(null);
 
   const stats = useMemo(() => calculateStats(reviews), [reviews]);
-  const displayDirector = movie.credits?.directors?.[0]?.name || movie.director || "Unknown";
+  const directors = uniquePeople(movie.credits?.directors);
+  const writers = uniquePeople(movie.credits?.writers);
+  const displayDirector = movie.director || "Unknown";
   const displayWriters = uniqueNames(movie.credits?.writers);
   const criticReviews = movie.critic_reviews ?? [];
   const trivia = movie.trivia ?? [];
@@ -192,7 +210,7 @@ export default function MoviePageClient({
 
             <div className="flex gap-6">
               <div className="relative h-max w-2/5 shrink-0 overflow-hidden rounded-xs">
-                <Image
+                <img
                   className="aspect-2/3 w-full border border-white/50 object-cover"
                   src={posterSrc}
                   width={200}
@@ -216,9 +234,25 @@ export default function MoviePageClient({
                     Directed by
                   </span>
 
-                  <span className="text-sm text-neutral-100">
-                    {displayDirector}
-                  </span>
+                  {directors.length > 0 ? (
+                    <span className="text-sm text-neutral-100">
+                      {directors.map((director, index) => (
+                        <Fragment key={director.id}>
+                          {index > 0 ? ", " : null}
+                          <Link
+                            href={`/crew/${director.id}`}
+                            className="transition-colors hover:text-white"
+                          >
+                            {director.name}
+                          </Link>
+                        </Fragment>
+                      ))}
+                    </span>
+                  ) : (
+                    <span className="text-sm text-neutral-100">
+                      {displayDirector}
+                    </span>
+                  )}
                 </div>
               )}
 
@@ -228,9 +262,25 @@ export default function MoviePageClient({
                     Written by
                   </span>
 
-                  <span className="text-sm text-neutral-100">
-                    {displayWriters}
-                  </span>
+                  {writers.length > 0 ? (
+                    <span className="text-sm text-neutral-100">
+                      {writers.map((writer, index) => (
+                        <Fragment key={writer.id}>
+                          {index > 0 ? ", " : null}
+                          <Link
+                            href={`/crew/${writer.id}`}
+                            className="transition-colors hover:text-white"
+                          >
+                            {writer.name}
+                          </Link>
+                        </Fragment>
+                      ))}
+                    </span>
+                  ) : (
+                    <span className="text-sm text-neutral-100">
+                      {displayWriters}
+                    </span>
+                  )}
                 </div>
               )}
 
@@ -318,10 +368,14 @@ export default function MoviePageClient({
             </h2>
             <div className="flex gap-6 overflow-x-auto pb-4 no-scrollbar">
               {movie.credits.actors.map((actor) => (
-                <div key={actor.id} className="max-w-25 min-w-25 space-y-4">
+                <Link
+                  key={actor.id}
+                  href={`/crew/${actor.id}`}
+                  className="max-w-25 min-w-25 space-y-4 rounded-md transition-colors hover:text-white focus:outline-none focus:ring-1 focus:ring-white/60"
+                >
                   <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-md border border-white/5 bg-surface-container-high">
                     {actor.profile_image ? (
-                      <Image
+                      <img
                         className="h-full w-full object-cover"
                         width={50}
                         height={50}
@@ -347,7 +401,7 @@ export default function MoviePageClient({
                       {actor.character}
                     </p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </section>
@@ -511,9 +565,18 @@ export default function MoviePageClient({
               Tags
             </h3>
 
-            <p className="font-label text-[11px] uppercase leading-6 tracking-[0.2em] text-neutral-600">
-              {keywords.map(keyword => `#${keyword}`).join(' | ').toUpperCase()}
-            </p>
+            <div className="flex flex-wrap gap-x-4 gap-y-2 font-label text-[11px] uppercase leading-6 tracking-[0.2em] text-neutral-600">
+              {keywords.map((keyword) => (
+                <Link
+                  key={keyword}
+                  href={tagHref(keyword)}
+                  className="transition-colors hover:text-white"
+                  title={`Browse ${keyword} movies`}
+                >
+                  #{keyword}
+                </Link>
+              ))}
+            </div>
           </section>
         )}
       </div>

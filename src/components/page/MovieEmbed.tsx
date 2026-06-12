@@ -10,7 +10,6 @@ import {
   MonitorPlay,
   X,
 } from "lucide-react";
-import Image from "next/image";
 
 import type { Review } from "@/lib/types";
 
@@ -34,19 +33,26 @@ export default function MovieEmbed({
   movieId,
   onReviewSubmitted,
 }: MovieEmbedProps) {
-  const [showIframe, setShowIframe] = useState(false);
-  const [isIframeLoading, setIsIframeLoading] = useState(true);
-  const [currentSource, setCurrentSource] = useState(source || "");
-  const [isPlayingTrailer, setIsPlayingTrailer] = useState(false);
-  const [showWhereToWatch, setShowWhereToWatch] = useState(false);
-  const [toastMsg, setToastMsg] = useState("");
-
   const mainSource = source || "";
   const trailerSource = trailerKey
     ? `https://www.youtube.com/embed/${trailerKey}?autoplay=1`
     : "";
   const hasMainSource = Boolean(mainSource);
-  const movieButtonDisabled = isPlayingTrailer && !hasMainSource;
+  const startsWithTrailer = !hasMainSource && Boolean(trailerSource);
+  const [showIframe, setShowIframe] = useState(false);
+  const [isIframeLoading, setIsIframeLoading] = useState(true);
+  const [currentSource, setCurrentSource] = useState(startsWithTrailer ? trailerSource : mainSource);
+  const [isPlayingTrailer, setIsPlayingTrailer] = useState(startsWithTrailer);
+  const [showWhereToWatch, setShowWhereToWatch] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+
+  const switchButtonDisabled = !trailerSource || (isPlayingTrailer && !hasMainSource);
+  const unavailableMessage = !hasMainSource
+    ? trailerSource
+      ? "Movie unavailable. Trailer ready."
+      : "Movie and trailer are currently unavailable."
+    : "";
+  const noticeMessage = toastMsg || unavailableMessage;
 
   const showToast = (msg: string) => {
     setToastMsg(msg);
@@ -63,7 +69,6 @@ export default function MovieEmbed({
     }
 
     if (trailerSource) {
-      showToast("Movie unavailable. Loading trailer instead.");
       setCurrentSource(trailerSource);
       setIsPlayingTrailer(true);
       setShowIframe(true);
@@ -100,12 +105,12 @@ export default function MovieEmbed({
     <section className="flex h-full w-full flex-col px-0 sm:px-4 md:overflow-y-auto no-scrollbar">
       <div className="mx-auto my-0 flex w-full max-w-215 flex-col gap-4 md:my-auto md:gap-6">
         <div className="group relative aspect-video w-full shrink-0 overflow-hidden border-white/10 bg-black md:border">
-          {toastMsg && (
+          {noticeMessage && (
             <div className="absolute left-4 top-4 z-[100] animate-in fade-in slide-in-from-top-2 duration-300">
               <div className="flex items-center gap-2 rounded-sm border border-amber-500/30 bg-neutral-900/95 px-4 py-2 text-white shadow-2xl backdrop-blur-sm">
                 <AlertCircle className="h-4 w-4 text-amber-500" />
                 <span className="font-label text-[10px] uppercase tracking-widest text-amber-50 sm:text-xs">
-                  {toastMsg}
+                  {noticeMessage}
                 </span>
               </div>
             </div>
@@ -117,7 +122,7 @@ export default function MovieEmbed({
               onClick={handlePlayMain}
             >
               {backdrop && (
-                <Image
+                <img
                   src={backdrop}
                   alt={`${title} backdrop`}
                   width={400}
@@ -166,8 +171,8 @@ export default function MovieEmbed({
           />
 
           <MovieActionButton
-            active={isPlayingTrailer && hasMainSource}
-            disabled={movieButtonDisabled}
+            active={isPlayingTrailer}
+            disabled={switchButtonDisabled}
             icon={
               isPlayingTrailer ? (
                 <Clapperboard className="h-5 w-5" />

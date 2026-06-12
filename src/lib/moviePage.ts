@@ -19,6 +19,33 @@ function pickStringArray(value: unknown): string[] {
     .map((item) => item.trim());
 }
 
+function pickSpokenLanguages(value: unknown) {
+  if (!Array.isArray(value)) return [];
+
+  return value.filter(
+    (item): item is { english_name: string; iso_639_1: string; name: string } =>
+      Boolean(
+        item &&
+          typeof item === "object" &&
+          typeof item.english_name === "string" &&
+          typeof item.iso_639_1 === "string" &&
+          typeof item.name === "string",
+      ),
+  );
+}
+
+function pickProductionCountryNames(value: unknown) {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .map((item) => {
+      if (!item || typeof item !== "object") return null;
+      const country = item as { name?: unknown };
+      return typeof country.name === "string" && country.name.trim() ? country.name.trim() : null;
+    })
+    .filter((item): item is string => Boolean(item));
+}
+
 function pickCriticReviews(value: unknown) {
   if (!Array.isArray(value)) return [];
 
@@ -67,6 +94,7 @@ export function normalizeMoviePayload(payload: any): Movie {
     alternative_titles: Array.isArray(payload?.alternative_titles)
       ? payload.alternative_titles.filter(Boolean)
       : [],
+    spoken_languages: pickSpokenLanguages(payload?.spoken_languages),
 
     budget: pickOptionalString(payload?.budget ?? additional?.budget),
     box_office: pickOptionalString(payload?.box_office ?? additional?.box_office),
@@ -93,8 +121,10 @@ export function normalizeMoviePayload(payload: any): Movie {
     production_countries: Array.isArray(payload?.production_countries)
       ? payload.production_countries.map((c: any) => c.iso_3166_1).join(", ")
       : undefined,
+    production_country_names: pickProductionCountryNames(payload?.production_countries),
       
     sources: payload?.sources || payload?.source ||  null,
+    available: typeof payload?.available === "boolean" ? payload.available : undefined,
     collection: payload?.collection || undefined,
     restricted: payload?.restricted || false,
   };

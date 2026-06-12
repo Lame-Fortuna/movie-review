@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRef, useState, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { movieHref } from "@/lib/href";
-import Image from "next/image";
 
 export default function TrendingCarousel({ movies }: { movies: any[] }) {
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -36,12 +35,11 @@ export default function TrendingCarousel({ movies }: { movies: any[] }) {
           {/* Image Container */}
           <div className="absolute inset-y-0 left-0 h-full w-full md:w-auto flex">
             <div className="relative h-full w-full md:w-auto md:min-w-[50vw] md:max-w-[80vw]">
-              <Image
+              <img
                 src={bgImage}
                 alt={movie.title}
-                fill
                 sizes="100vw"
-                className="object-cover object-left md:opacity-60 group-hover/slide:grayscale-0 group-hover/slide:opacity-100 md:transition-all md:duration-700 md:ease-out md:grayscale md:opacity-60"
+                className="absolute inset-0 h-full w-full object-cover object-left md:opacity-60 group-hover/slide:grayscale-0 group-hover/slide:opacity-100 md:transition-all md:duration-700 md:ease-out md:grayscale md:opacity-60"
                 loading="lazy"
                 decoding="async"
               />
@@ -126,16 +124,14 @@ export default function TrendingCarousel({ movies }: { movies: any[] }) {
           >
             <div className="absolute inset-y-0 left-0 h-full w-full md:w-auto flex">
               <div className="relative h-full w-full md:w-auto md:min-w-[50vw] md:max-w-[80vw]">
-                <Image
+                <img
                   src={`${firstMovie.backdrop}` || ""}
                   alt={firstMovie.title}
-                  fill
                   sizes="100vw"
-                  priority
                   fetchPriority="high"
                   loading="eager"
                   decoding="async"
-                  className="object-cover object-left group-hover/slide:opacity-100 md:transition-all md:duration-700 md:ease-out md:grayscale md:group-hover/slide:grayscale-0 md:opacity-60"
+                  className="absolute inset-0 h-full w-full object-cover object-left group-hover/slide:opacity-100 md:transition-all md:duration-700 md:ease-out md:grayscale md:group-hover/slide:grayscale-0 md:opacity-60"
                 />
                 <div className="hidden md:block absolute inset-y-0 right-0 w-[50%] lg:w-[45%] bg-linear-to-l from-neutral-950 via-neutral-950/70 to-transparent" />
               </div>

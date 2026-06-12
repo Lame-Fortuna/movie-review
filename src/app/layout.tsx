@@ -48,7 +48,8 @@ export const metadata: Metadata = {
     images: ["https://filmatlas.online/og-home.jpg"],
   },
   icons: {
-    icon: "/filmAtlas.ico",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
   },
 };
 

@@ -47,6 +47,19 @@ export type CriticalConsensus = {
   summary?: string;
 };
 
+export type SpokenLanguage = {
+  english_name: string;
+  iso_639_1: string;
+  name: string;
+};
+
+export type Collection = {
+  id: number;
+  name: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+};
+
 export type Movie = {
   tmdb_id: number;
   imdb_id?: string;
@@ -66,7 +79,7 @@ export type Movie = {
   genres?: string[];
   keywords?: string[];
   alternative_titles?: string[];
-  // spoken_languages?: string[];
+  spoken_languages?: SpokenLanguage[];
   
   // Financials
   budget?: string;
@@ -90,6 +103,7 @@ export type Movie = {
   
   // Regions & Providers
   production_countries?: string;
+  production_country_names?: string[];
   // where_to_watch?: WhereToWatch;
 
   // Enrichment
@@ -97,7 +111,8 @@ export type Movie = {
   
   // Meta
   sources?: string[] | null;
-  collection?: string;
+  available?: boolean;
+  collection?: Collection | null;
   restricted?: boolean;
 };
 

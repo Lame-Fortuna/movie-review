@@ -1,9 +1,22 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
+import { unstable_cache } from "next/cache";
 
-export const dynamic = "force-static";
+import { movieHref } from "@/lib/href";
+import { getAllCatalogues, getCollection } from "@/lib/mongodb";
+import { SITE_URL } from "@/lib/metadata";
+
 export const revalidate = 86400; // 24 hours
 
-const MOVIE_IDS = [
+type SitemapMovie = {
+  title: string;
+  year?: number;
+  tmdb_id: number;
+  updatedAt?: Date | string;
+  available?: boolean;
+  sources?: string[] | null;
+};
+
+const FALLBACK_MOVIE_PATHS = [
   "19/metropolis",
   "234/the-cabinet-of-dr-caligari",
   "631/sunrise-a-song-of-two-humans",
@@ -117,9 +130,7 @@ const MOVIE_IDS = [
   "31527/the-scarlet-empress",
   "42943/the-devil-is-a-woman",
   "254709/mazurka",
-  //"41212/titicut-follies",
   "4495/the-spirit-of-the-beehive",
-  //"25318/escape-from-sobibor",
   "171563/serpent",
   "141906/little-toys",
   "476734/pavement-butterfly",
@@ -141,7 +152,6 @@ const MOVIE_IDS = [
   "16372/the-innocents",
   "59802/incubus",
   "31253/girl-in-gold-boots",
-  //"16306/fantastic-planet",
   "109632/carmen",
   "174928/carmen",
   "114326/cyrano-de-bergerac",
@@ -158,7 +168,6 @@ const MOVIE_IDS = [
   "42538/sadie-thompson",
   "177219/the-sea-beast",
   "175437/shattered",
-  //"139788/sinners-in-paradise",
   "346084/so-this-is-paris",
   "44530/son-of-fury-the-story-of-benjamin-blake",
   "73575/sparrows",
@@ -205,38 +214,106 @@ const MOVIE_IDS = [
   "11605/the-list-of-adrian-messenger",
   "35006/the-mask-of-dimitrios",
   "25670/foreign-correspondent",
-  "29084/le-corbeau",
   "24452/the-little-shop-of-horrors",
   "10235/alexander-nevsky",
   "985/eraserhead",
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://filmatlas.online";
+const FALLBACK_CATALOGUE_PATHS = [
+  "/catalogue/noir",
+  "/catalogue/chaplin",
+  "/catalogue/oldbollywood",
+  "/catalogue/oldjapanese",
+];
 
-  // Prevent future dates due to clock skew
+const STATIC_PAGES = [
+  "",
+  "/catalogue",
+  "/legal/about",
+  "/legal/contact",
+  "/legal/disclaimer",
+  "/legal/dmca",
+  "/legal/policy",
+  "/legal/terms",
+];
+
+function normalizeDate(value?: Date | string) {
+  if (!value) return undefined;
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? undefined : date;
+}
+
+function uniquePaths(paths: string[]) {
+  return Array.from(new Set(paths.filter(Boolean)));
+}
+
+const getSitemapMovies = unstable_cache(
+  async (): Promise<SitemapMovie[]> => {
+    try {
+      const collection = await getCollection("homepage");
+      const document = await collection.findOne<{ movies?: SitemapMovie[] }>({ item: "sitemap" });
+      return Array.isArray(document?.movies) ? document.movies : [];
+    } catch (error) {
+      console.error("[Sitemap] Failed to fetch sitemap movies", error);
+      return [];
+    }
+  },
+  ["sitemap-movies"],
+  { revalidate, tags: ["sitemap"] },
+);
+
+const getSitemapCataloguePaths = unstable_cache(
+  async (): Promise<string[]> => {
+    try {
+      const catalogues = await getAllCatalogues();
+      return catalogues
+        .map((catalogue: any) => catalogue?._id?.toString())
+        .filter((slug): slug is string => Boolean(slug))
+        .map((slug) => `/catalogue/${slug}`);
+    } catch (error) {
+      console.error("[Sitemap] Failed to fetch catalogue paths", error);
+      return [];
+    }
+  },
+  ["sitemap-catalogues"],
+  { revalidate, tags: ["catalogues"] },
+);
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastMod = new Date(Date.now() - 5 * 60 * 1000);
+  const dbMovies = await getSitemapMovies();
+  const dbCataloguePaths = await getSitemapCataloguePaths();
+  const cataloguePaths = uniquePaths([
+    ...FALLBACK_CATALOGUE_PATHS,
+    ...dbCataloguePaths,
+  ]);
 
-  const staticPages = [
-    "",
-    "/catalogue/vintage",
-    "/catalogue/noir",
-    "/catalogue/chaplin",
-    "/catalogue/oldbollywood",
-    "/catalogue/oldjapanese",
-  ].map((path) => ({
-    url: `${baseUrl}${path}`,
+  const staticPages = [...STATIC_PAGES, ...cataloguePaths].map((path) => ({
+    url: `${SITE_URL}${path}`,
     lastModified: lastMod,
     changeFrequency: "weekly" as const,
-    priority: path === "" ? 1 : 0.8,
+    priority: path === "" ? 1 : path.startsWith("/catalogue") ? 0.75 : 0.3,
   }));
 
-  const moviePages = MOVIE_IDS.map((id) => ({
-    url: `${baseUrl}/movies/${id}`,
-    lastModified: lastMod,
-    changeFrequency: "monthly" as const,
-    priority: 0.9,
-  }));
+  const moviePages =
+    dbMovies.length > 0
+      ? dbMovies
+          .filter((movie) => movie.tmdb_id && movie.title)
+          .map((movie) => ({
+            url: `${SITE_URL}${movieHref(movie.tmdb_id, movie.title)}`,
+            lastModified: normalizeDate(movie.updatedAt) || lastMod,
+            changeFrequency: "monthly" as const,
+            priority:
+              movie.available || (Array.isArray(movie.sources) && movie.sources.length > 0)
+                ? 0.9
+                : 0.85,
+          }))
+      : FALLBACK_MOVIE_PATHS.map((path) => ({
+          url: `${SITE_URL}/movies/${path}`,
+          lastModified: lastMod,
+          changeFrequency: "monthly" as const,
+          priority: 0.85,
+        }));
 
   return [...staticPages, ...moviePages];
 }
