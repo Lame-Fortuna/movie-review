@@ -11,6 +11,10 @@ export function movieHref(id: number, title: string) {
   return `/movies/${id}/${slugifyMovieTitle(title)}`;
 }
 
+export function personHref(id: number, name: string) {
+  return `/persons/${id}/${slugifyMovieTitle(name || `person-${id}`)}`;
+}
+
 export function slugifyTag(tag: string) {
   return tag
     .toLowerCase()

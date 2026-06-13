@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { Star } from "lucide-react";
 
 import Recommendations from "@/components/page/Recommendation";
-import { tagHref } from "@/lib/href";
+import { personHref, tagHref } from "@/lib/href";
 import type { CreditsData, CriticReview, Movie, Review } from "@/lib/types";
 
 import MovieEmbed from "./MovieEmbed";
@@ -240,7 +240,7 @@ export default function MoviePageClient({
                         <Fragment key={director.id}>
                           {index > 0 ? ", " : null}
                           <Link
-                            href={`/crew/${director.id}`}
+                            href={personHref(director.id, director.name)}
                             className="transition-colors hover:text-white"
                           >
                             {director.name}
@@ -268,7 +268,7 @@ export default function MoviePageClient({
                         <Fragment key={writer.id}>
                           {index > 0 ? ", " : null}
                           <Link
-                            href={`/crew/${writer.id}`}
+                            href={personHref(writer.id, writer.name)}
                             className="transition-colors hover:text-white"
                           >
                             {writer.name}
@@ -370,7 +370,7 @@ export default function MoviePageClient({
               {movie.credits.actors.map((actor) => (
                 <Link
                   key={actor.id}
-                  href={`/crew/${actor.id}`}
+                  href={personHref(actor.id, actor.name)}
                   className="max-w-25 min-w-25 space-y-4 rounded-md transition-colors hover:text-white focus:outline-none focus:ring-1 focus:ring-white/60"
                 >
                   <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-md border border-white/5 bg-surface-container-high">

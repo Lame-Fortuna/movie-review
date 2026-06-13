@@ -53,9 +53,6 @@ export const movieApi = {
   search: (q: string, page = 1, sortBy = "popularity", order = "DESC") => 
     fetchFromWorker("/movie/search", { q, page, sortBy, order }),
     
-  crew: (id: string, role: string, page = 1, sortBy = "popularity", order = "DESC") => 
-    fetchFromWorker("/movie/crew", { id, role, page, sortBy, order }),
-    
   genre: (genreName: string, page = 1, sortBy = "popularity", order = "DESC") => 
     fetchFromWorker(`/genres/${genreName}`, { page, sortBy, order }) 
 };

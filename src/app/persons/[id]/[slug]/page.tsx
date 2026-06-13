@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { permanentRedirect } from "next/navigation";
 
 import MovieCard from "@/components/MovieCards";
+import { personHref } from "@/lib/href";
 import { DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL, createMetadata } from "@/lib/metadata";
 import movieLists from "@/lib/MovieLists.json";
 import type { Movie, MovieApiResponse } from "@/lib/types";
 
-type Params = Promise<{ id: string }>;
+type Params = Promise<{ id: string; slug: string }>;
 
 type TmdbPerson = {
   id: number;
@@ -19,30 +21,20 @@ type TmdbPerson = {
   profile_path?: string | null;
 };
 
-type TmdbMovieCredit = {
-  id: number;
-  title?: string;
-  original_title?: string;
-  overview?: string;
-  poster_path?: string | null;
-  backdrop_path?: string | null;
-  release_date?: string;
-  vote_average?: number;
-  character?: string;
-  job?: string;
-  department?: string;
-  popularity?: number;
+type CrewMovie = Movie & {
+  directors?: string[];
+  actors?: string[];
+  country?: string[];
+  language?: string;
+  audience_rating?: string;
 };
 
-type TmdbMovieCredits = {
-  cast?: TmdbMovieCredit[];
-  crew?: TmdbMovieCredit[];
-};
+type CrewMovieGroups = Record<string, CrewMovie[]>;
 
 const TMDB_BASE_URL = "https://api.themoviedb.org/3";
 const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
 const TMDB_REVALIDATE_SECONDS = 7 * 24 * 60 * 60;
-const MOVIE_API_BASE = "https://my-app.classic-mdb.workers.dev/api/movies";
+const MOVIE_API_BASE = "https://my-app.classic-mdb.workers.dev/api";
 
 function getTmdbApiKey() {
   return process.env.TMDB_API_KEY || process.env.TMDB_KEY || process.env.TMDB_key;
@@ -56,58 +48,18 @@ function tmdbImage(path?: string | null, size = "w500") {
   return path ? `${TMDB_IMAGE_BASE_URL}/${size}${path}` : null;
 }
 
-function yearFromDate(date?: string) {
-  const year = date?.slice(0, 4);
-  return year && /^\d{4}$/.test(year) ? Number(year) : undefined;
-}
-
 function formatLifeDates(person: Partial<TmdbPerson>) {
   if (person.birthday && person.deathday) return `${person.birthday} - ${person.deathday}`;
   return person.birthday || person.deathday || null;
 }
 
-function toMovie(credit: TmdbMovieCredit): Movie | null {
-  const title = credit.title || credit.original_title;
+function nameFromSlug(slug: string, id: string) {
+  const name = decodeURIComponent(slug)
+    .replace(/-/g, " ")
+    .trim()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
 
-  if (!credit.id || !title) {
-    return null;
-  }
-
-  return {
-    tmdb_id: credit.id,
-    title,
-    original_title: credit.original_title,
-    release_date: credit.release_date,
-    year: yearFromDate(credit.release_date),
-    poster: tmdbImage(credit.poster_path),
-    backdrop: tmdbImage(credit.backdrop_path, "w1280") || undefined,
-    plot_summary: credit.overview,
-    ratings: typeof credit.vote_average === "number" ? { tmdb_rating: credit.vote_average } : undefined,
-  };
-}
-
-function dedupeCredits(credits: TmdbMovieCredit[] = []) {
-  const seen = new Set<number>();
-
-  return credits
-    .filter((credit) => {
-      if (!credit.id || seen.has(credit.id)) {
-        return false;
-      }
-
-      seen.add(credit.id);
-      return true;
-    })
-    .sort((a, b) => {
-      const aYear = yearFromDate(a.release_date) ?? 0;
-      const bYear = yearFromDate(b.release_date) ?? 0;
-
-      if (aYear !== bYear) {
-        return bYear - aYear;
-      }
-
-      return (b.popularity ?? 0) - (a.popularity ?? 0);
-    });
+  return name && name !== `Person ${id}` ? name : `Person #${id}`;
 }
 
 async function fetchTmdb<T>(path: string): Promise<{ data: T | null; error: string | null }> {
@@ -152,34 +104,115 @@ async function fetchTmdb<T>(path: string): Promise<{ data: T | null; error: stri
   }
 }
 
-async function fetchCrewPageData(id: string) {
-  const [personResult, creditsResult] = await Promise.all([
+function isCrewMovie(value: unknown): value is CrewMovie {
+  return Boolean(
+    value &&
+      typeof value === "object" &&
+      typeof (value as CrewMovie).tmdb_id === "number" &&
+      typeof (value as CrewMovie).title === "string",
+  );
+}
+
+function normalizeCrewGroups(payload: unknown): CrewMovieGroups {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return {};
+  }
+
+  const groups: CrewMovieGroups = {};
+
+  for (const [role, movies] of Object.entries(payload)) {
+    if (!Array.isArray(movies)) {
+      continue;
+    }
+
+    const seen = new Set<number>();
+    const normalized = movies
+      .filter(isCrewMovie)
+      .filter((movie) => {
+        if (seen.has(movie.tmdb_id)) {
+          return false;
+        }
+
+        seen.add(movie.tmdb_id);
+        return true;
+      })
+      .sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
+
+    if (normalized.length > 0) {
+      groups[role] = normalized;
+    }
+  }
+
+  return groups;
+}
+
+async function fetchClassicCrewGroups(id: string): Promise<{ data: CrewMovieGroups; error: string | null }> {
+  try {
+    const response = await fetch(`${MOVIE_API_BASE}/movie/crew/${id}`, {
+      headers: {
+        "x-api-key": process.env.MOVIE_API_KEY || "",
+        "Content-Type": "application/json",
+      },
+      next: { revalidate: 6 * 60 * 60 },
+    });
+
+    if (response.status === 404) {
+      return {
+        data: {},
+        error: "No Film Atlas credits were found for this person yet.",
+      };
+    }
+
+    if (!response.ok) {
+      return {
+        data: {},
+        error: `Film Atlas credits failed with status ${response.status}.`,
+      };
+    }
+
+    return {
+      data: normalizeCrewGroups(await response.json()),
+      error: null,
+    };
+  } catch (error) {
+    console.error("[PersonPage] Failed to fetch classic-mdb person groups", error);
+    return {
+      data: {},
+      error: "Film Atlas credits are temporarily unavailable.",
+    };
+  }
+}
+
+async function fetchPersonPageData(id: string, slug: string) {
+  const [personResult, classicCreditsResult] = await Promise.all([
     fetchTmdb<TmdbPerson>(`/person/${id}`),
-    fetchTmdb<TmdbMovieCredits>(`/person/${id}/movie_credits`),
+    fetchClassicCrewGroups(id),
   ]);
   const person = personResult.data;
-  const credits = creditsResult.data;
-  const errors = [personResult.error, creditsResult.error].filter(Boolean) as string[];
+  const movieGroups = classicCreditsResult.data;
+  const tmdbErrors = [personResult.error].filter(Boolean) as string[];
+  const filmAtlasErrors = [classicCreditsResult.error].filter(Boolean) as string[];
+  const errors = [...tmdbErrors, ...filmAtlasErrors];
 
   const fallbackPerson: TmdbPerson = {
     id: Number(id) || 0,
-    name: `Crew Member #${id}`,
+    name: nameFromSlug(slug, id),
     biography: undefined,
     profile_path: null,
   };
 
   return {
     person: person?.id ? person : fallbackPerson,
-    castCredits: dedupeCredits(credits?.cast),
-    crewCredits: dedupeCredits(credits?.crew),
+    movieGroups,
     hasTmdbPerson: Boolean(person?.id),
+    filmAtlasCreditsFailed: filmAtlasErrors.length > 0,
     errors,
   };
 }
 
 async function fetchAvailableMovies() {
   try {
-    const response = await fetch(`${MOVIE_API_BASE}?page=1`, {
+    const response = await fetch(`${MOVIE_API_BASE}/movies?page=1`, {
       headers: {
         "x-api-key": process.env.MOVIE_API_KEY || "",
         "Content-Type": "application/json",
@@ -194,43 +227,50 @@ async function fetchAvailableMovies() {
     const data = (await response.json()) as MovieApiResponse;
     return data.results?.slice(0, 8) || (movieLists.IMDB35.slice(15, 23) as Movie[]);
   } catch (error) {
-    console.error("[CrewPage] Failed to fetch fallback movies", error);
+    console.error("[PersonPage] Failed to fetch fallback movies", error);
     return movieLists.IMDB35.slice(15, 23) as Movie[];
   }
 }
 
-function CreditGrid({
-  credits,
-  role,
-}: {
-  credits: TmdbMovieCredit[];
-  role: "cast" | "crew";
-}) {
-  if (credits.length === 0) {
-    return null;
-  }
+function roleLabel(role: string) {
+  if (role === "actor") return "Acting Credits";
+  if (role === "director") return "Directed";
+  if (role === "writer") return "Writing Credits";
 
+  return role
+    .split("_")
+    .filter(Boolean)
+    .map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`)
+    .join(" ");
+}
+
+function sortRoles(roles: string[]) {
+  const preferred = ["actor", "director", "writer", "screenplay", "producer"];
+
+  return [...roles].sort((a, b) => {
+    const aIndex = preferred.indexOf(a);
+    const bIndex = preferred.indexOf(b);
+
+    if (aIndex !== -1 || bIndex !== -1) {
+      return (aIndex === -1 ? preferred.length : aIndex) - (bIndex === -1 ? preferred.length : bIndex);
+    }
+
+    return a.localeCompare(b);
+  });
+}
+
+function countUniqueMovies(groups: CrewMovieGroups) {
+  return new Set(Object.values(groups).flat().map((movie) => movie.tmdb_id)).size;
+}
+
+function CreditGrid({ movies }: { movies: CrewMovie[] }) {
   return (
     <div className="grid grid-cols-2 justify-items-center gap-6 md:grid-cols-3 lg:grid-cols-4">
-      {credits.map((credit) => {
-        const movie = toMovie(credit);
-        const note = role === "cast" ? credit.character : credit.job;
-
-        if (!movie) {
-          return null;
-        }
-
-        return (
-          <div key={`${role}-${credit.id}`} className="w-32 space-y-2 md:w-48">
-            <MovieCard movie={movie} />
-            {note ? (
-              <p className="truncate px-1 font-label text-[11px] uppercase tracking-[0.18em] text-neutral-500" title={note}>
-                {note}
-              </p>
-            ) : null}
-          </div>
-        );
-      })}
+      {movies.map((movie) => (
+        <div key={movie.tmdb_id} className="w-32 space-y-2 md:w-48">
+          <MovieCard movie={movie} />
+        </div>
+      ))}
     </div>
   );
 }
@@ -257,7 +297,7 @@ function ErrorNotice({ errors }: { errors: string[] }) {
           Credits Temporarily Limited
         </h2>
         <p className="font-body text-sm leading-relaxed text-neutral-300">
-          TMDB is not reachable from this network right now, so this crew profile may be missing biography or credit data.
+          TMDB is not reachable from this network right now, so this person profile may be missing biography or credit data.
         </p>
         <p className="font-label text-[10px] uppercase tracking-[0.2em] text-neutral-500">
           {Array.from(new Set(errors)).join(" ")}
@@ -293,21 +333,21 @@ function AvailableMoviesFallback({ movies }: { movies: Movie[] }) {
 
 export async function generateMetadata(props: { params: Params }): Promise<Metadata> {
   const params = await props.params;
-  const data = await fetchCrewPageData(params.id);
+  const data = await fetchPersonPageData(params.id, params.slug);
 
   if (!data.hasTmdbPerson) {
     return createMetadata({
       title: "Filmography",
       description: "Browse Film Atlas movie credits and classic movie recommendations.",
-      path: `/crew/${params.id}`,
+      path: `/persons/${params.id}/${params.slug}`,
     });
   }
 
-  const { person, castCredits, crewCredits } = data;
-  const creditCount = castCredits.length + crewCredits.length;
+  const { person, movieGroups } = data;
+  const creditCount = countUniqueMovies(movieGroups);
   const description = `${person.name} filmography, movie credits, roles, and credited works on ${SITE_NAME}. Browse ${creditCount} credited movies.`;
   const profileImage = tmdbImage(person.profile_path, "w780") || DEFAULT_OG_IMAGE;
-  const url = `${SITE_URL}/crew/${person.id}`;
+  const url = `${SITE_URL}${personHref(person.id, person.name)}`;
 
   return {
     title: `${person.name} Movies & Credits`,
@@ -339,11 +379,19 @@ export async function generateMetadata(props: { params: Params }): Promise<Metad
   };
 }
 
-export default async function CrewPage(props: { params: Params }) {
+export default async function PersonPage(props: { params: Params }) {
   const params = await props.params;
-  const data = await fetchCrewPageData(params.id);
-  const fallbackMovies = data.errors.length > 0 ? await fetchAvailableMovies() : [];
-  const { person, castCredits, crewCredits, errors } = data;
+  const data = await fetchPersonPageData(params.id, params.slug);
+  const expectedPath = personHref(data.person.id, data.person.name);
+
+  if (data.hasTmdbPerson && `/persons/${params.id}/${params.slug}` !== expectedPath) {
+    permanentRedirect(expectedPath);
+  }
+
+  const fallbackMovies = data.filmAtlasCreditsFailed ? await fetchAvailableMovies() : [];
+  const { person, movieGroups, errors } = data;
+  const roles = sortRoles(Object.keys(movieGroups));
+  const creditCount = countUniqueMovies(movieGroups);
   const profileImage = tmdbImage(person.profile_path, "w500");
   const lifeDates = formatLifeDates(person);
 
@@ -362,7 +410,7 @@ export default async function CrewPage(props: { params: Params }) {
                 priority
               />
             ) : (
-          <span className="font-headline text-4xl font-bold text-neutral-400">
+              <span className="font-headline text-4xl font-bold text-neutral-400">
                 {person.name.slice(0, 1)}
               </span>
             )}
@@ -387,7 +435,7 @@ export default async function CrewPage(props: { params: Params }) {
         </div>
 
         <p className="font-label text-xs uppercase tracking-[0.2em] text-neutral-600">
-          {castCredits.length + crewCredits.length} credited works
+          {creditCount} credited works
         </p>
       </header>
 
@@ -401,37 +449,33 @@ export default async function CrewPage(props: { params: Params }) {
 
       <ErrorNotice errors={errors} />
 
-      <section className="space-y-8 py-10">
-        <div className="flex items-end justify-between border-b border-white/50 pb-4">
-          <h2 className="font-label text-xs uppercase tracking-[0.3em] text-neutral-500">
-            Acting Credits
-          </h2>
-          <span className="font-label text-xs uppercase tracking-[0.2em] text-neutral-600">
-            {castCredits.length}
-          </span>
-        </div>
-        {castCredits.length > 0 ? (
-          <CreditGrid credits={castCredits} role="cast" />
-        ) : (
-          <EmptyCredits label="Acting credits" />
-        )}
-      </section>
-
-      <section className="space-y-8 pb-10">
-        <div className="flex items-end justify-between border-b border-white/50 pb-4">
-          <h2 className="font-label text-xs uppercase tracking-[0.3em] text-neutral-500">
-            Crew Credits
-          </h2>
-          <span className="font-label text-xs uppercase tracking-[0.2em] text-neutral-600">
-            {crewCredits.length}
-          </span>
-        </div>
-        {crewCredits.length > 0 ? (
-          <CreditGrid credits={crewCredits} role="crew" />
-        ) : (
-          <EmptyCredits label="Crew credits" />
-        )}
-      </section>
+      {roles.length > 0 ? (
+        roles.map((role, index) => (
+          <section key={role} className={`space-y-8 ${index === 0 ? "py-10" : "pb-10"}`}>
+            <div className="flex items-end justify-between border-b border-white/50 pb-4">
+              <h2 className="font-label text-xs uppercase tracking-[0.3em] text-neutral-500">
+                {roleLabel(role)}
+              </h2>
+              <span className="font-label text-xs uppercase tracking-[0.2em] text-neutral-600">
+                {movieGroups[role].length}
+              </span>
+            </div>
+            <CreditGrid movies={movieGroups[role]} />
+          </section>
+        ))
+      ) : (
+        <section className="space-y-8 py-10">
+          <div className="flex items-end justify-between border-b border-white/50 pb-4">
+            <h2 className="font-label text-xs uppercase tracking-[0.3em] text-neutral-500">
+              Film Atlas Credits
+            </h2>
+            <span className="font-label text-xs uppercase tracking-[0.2em] text-neutral-600">
+              0
+            </span>
+          </div>
+          <EmptyCredits label="Film Atlas credits" />
+        </section>
+      )}
 
       <AvailableMoviesFallback movies={fallbackMovies} />
     </main>

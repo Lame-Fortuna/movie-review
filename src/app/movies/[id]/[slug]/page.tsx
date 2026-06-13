@@ -8,7 +8,7 @@ import {
   createMetadata,
 } from "@/lib/metadata";
 import { fetchMovieById } from "@/lib/moviePage";
-import { slugifyMovieTitle } from "@/lib/href";
+import { personHref, slugifyMovieTitle } from "@/lib/href";
 import type { Movie } from "@/lib/types";
 
 type PageProps = {
@@ -17,6 +17,8 @@ type PageProps = {
     slug: string;
   }>;
 };
+
+const FILM_ATLAS_VIDEO_PUBLISHED_AT = "2026-01-07T00:00:00+05:30";
 
 function uniqueStrings(values: Array<string | number | null | undefined>) {
   return Array.from(
@@ -187,12 +189,12 @@ function buildJsonLd(movie: Movie, movieUrl: string, description: string, keywor
   const directors = movie.credits?.directors?.map((director) => ({
     "@type": "Person",
     name: director.name,
-    url: `${SITE_URL}/crew/${director.id}`,
+    url: `${SITE_URL}${personHref(director.id, director.name)}`,
   }));
   const actors = movie.credits?.actors?.slice(0, 12).map((actor) => ({
     "@type": "Person",
     name: actor.name,
-    url: `${SITE_URL}/crew/${actor.id}`,
+    url: `${SITE_URL}${personHref(actor.id, actor.name)}`,
   }));
   const aggregateRating =
     typeof movie.ratings?.tmdb_rating === "number" && movie.ratings.tmdb_votes
@@ -239,7 +241,7 @@ function buildJsonLd(movie: Movie, movieUrl: string, description: string, keywor
         name: `Watch ${titleWithYear} for free`,
         description,
         thumbnailUrl: [image],
-        uploadDate: releaseDate || (movie.year ? `${movie.year}-01-01` : "1970-01-01"),
+        uploadDate: FILM_ATLAS_VIDEO_PUBLISHED_AT,
         duration,
         embedUrl: primarySource,
         url: movieUrl,
